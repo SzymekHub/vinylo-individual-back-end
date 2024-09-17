@@ -13,6 +13,7 @@ public class VinylService {
     @Autowired
     private VinylRepo repo;
 
+    //this is for when i wawnna fetch vinyl records by the id
     public Vinyl getVinylById(String id) { return new Vinyl("LP", "ALL RED", "I AM MUSIC", true);}
 
     public ArrayList<Vinyl> getVinyls()
