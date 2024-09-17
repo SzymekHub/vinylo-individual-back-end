@@ -19,11 +19,6 @@ public class VinylController {
     @GetMapping()
     public VinylsDTO getVinyls(@RequestParam (required = false) Boolean hasArtist)
     {
-        if (hasArtist == null)
-        {
-            hasArtist = false;
-        }
-
         ArrayList<Vinyl> vinyls = vinylService.getVinyls(hasArtist);
 
         VinylsDTO result = new VinylsDTO();
