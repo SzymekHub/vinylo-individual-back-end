@@ -6,20 +6,17 @@ import s3.individual.vinylo.domain.Vinyl;
 import s3.individual.vinylo.repositories.VinylRepo;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 @Service
 public class VinylService {
 
     @Autowired
-    private VinylRepo repo;
-    @Autowired
     private VinylRepo vinylRepo;
 
-    //this is for when i wawnna fetch vinyl records by the id
+    //this is for when I want to fetch vinyl records by the id
     public Vinyl getVinylById(String id)
     {
-        return repo.getVinylById(id);
+        return vinylRepo.getVinylById(id);
     }
 
     public ArrayList<Vinyl> getVinyls(Boolean hasArtist)

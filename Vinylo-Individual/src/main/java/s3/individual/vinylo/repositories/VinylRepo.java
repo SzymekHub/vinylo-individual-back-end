@@ -8,7 +8,7 @@ import java.util.ArrayList;
 @Repository
 public class VinylRepo {
 
-    private ArrayList<Vinyl> vinyls;
+    private final ArrayList<Vinyl> vinyls;
 
     public VinylRepo() {
         vinyls = new ArrayList<>();
@@ -16,6 +16,9 @@ public class VinylRepo {
         vinyls.add(new Vinyl("LP", "Rubber Soul", "Rock&Roll", true ));
     }
 
+    //The getVinyls() method is explicitly defined, replacing the need for the @Getter annotation from Lombok
+    //But I could add the @Getter. By adding @Getter, Lombok generates this method for you,
+    //allowing other classes to access the vinyls list without needing to explicitly define a getter method.
     public ArrayList<Vinyl> getVinyls() {
         return vinyls;
     }
