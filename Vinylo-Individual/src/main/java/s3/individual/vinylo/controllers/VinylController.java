@@ -1,10 +1,7 @@
 package s3.individual.vinylo.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import s3.individual.vinylo.controllers.dtos.VinylDTO;
 import s3.individual.vinylo.controllers.dtos.VinylsDTO;
 import s3.individual.vinylo.domain.Vinyl;
@@ -42,5 +39,19 @@ public class VinylController {
         }
 
         return result;
+    }
+
+    @GetMapping("/{id}")
+    public VinylDTO getVinyl(@PathVariable String id) {
+
+        Vinyl v = vinylService.getVinylById(id);
+
+        VinylDTO vd = new VinylDTO();
+        vd.hasArtist = v.getHasArtist();
+        vd.description = v.getDescription();
+        vd.name = v.getName();
+        vd.id = v.getId();
+
+        return vd;
     }
 }

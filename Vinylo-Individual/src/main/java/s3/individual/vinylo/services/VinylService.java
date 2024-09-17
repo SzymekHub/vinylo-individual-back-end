@@ -6,6 +6,7 @@ import s3.individual.vinylo.domain.Vinyl;
 import s3.individual.vinylo.repositories.VinylRepo;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 @Service
 public class VinylService {
@@ -14,7 +15,18 @@ public class VinylService {
     private VinylRepo repo;
 
     //this is for when i wawnna fetch vinyl records by the id
-    public Vinyl getVinylById(String id) { return new Vinyl("LP", "ALL RED", "I AM MUSIC", true);}
+    public Vinyl getVinylById(String id)
+    {
+
+        if (Objects.equals(id, "EP")){
+            return new Vinyl("EP", "ALL RED", "I AM MUSIC", false );
+        }
+        else if (Objects.equals(id, "LP")){
+            return new Vinyl("LP", "Rubber Soul", "Rock&Roll", true );
+        }
+
+        else return null;
+    }
 
     public ArrayList<Vinyl> getVinyls()
     {
