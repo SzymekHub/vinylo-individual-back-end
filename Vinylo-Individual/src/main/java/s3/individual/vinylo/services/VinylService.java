@@ -10,9 +10,15 @@ import java.util.ArrayList;
 @Service
 public class VinylService {
 
-    @Autowired
-    private VinylRepo vinylRepo;
+    private final VinylRepo vinylRepo;
 
+    public VinylService(VinylRepo vinylRepo) {
+        this.vinylRepo = vinylRepo;
+    }
+
+    public Vinyl createNewVinyl(Vinyl vinyl) {
+        return  vinylRepo.createNewVinyl(vinyl);
+    }
     //this is for when I want to fetch vinyl records by the id
     public Vinyl getVinylById(String id)
     {
@@ -34,11 +40,29 @@ public class VinylService {
         ArrayList<Vinyl> result = new ArrayList<>();
 
         for (Vinyl vinyl : vinyls) {
-            if (vinyl.getHasArtist()) {
+            if (vinyl.getisReleased()) {
                 result.add(vinyl);
             }
         }
 
         return result;
+    }
+
+    public Vinyl replaceVinyl(String id, Vinyl newVinyl) {
+        Vinyl existingVinyl = vinylRepo.getVinylById(id);
+
+        if (existingVinyl != null) {
+            existingVinyl.setName(newVinyl.getName());
+            existingVinyl.setDescription(newVinyl.getDescription());
+            existingVinyl.setIsReleased(newVinyl.getisReleased());
+            return existingVinyl;
+        } else {
+            return vinylRepo.createNewVinyl(newVinyl);
+        }
+    }
+
+
+    public boolean deleteVinylById(String id) {
+        return vinylRepo.deleteVinylById(id);
     }
 }

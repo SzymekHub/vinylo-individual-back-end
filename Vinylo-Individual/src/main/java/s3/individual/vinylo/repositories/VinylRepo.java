@@ -12,8 +12,8 @@ public class VinylRepo {
 
     public VinylRepo() {
         vinyls = new ArrayList<>();
-        vinyls.add(new Vinyl("EP", "ALL RED", "I AM MUSIC", false ));
-        vinyls.add(new Vinyl("LP", "Rubber Soul", "Rock&Roll", true ));
+        vinyls.add(new Vinyl("1", "EP","ALL RED", "I AM MUSIC", true, "PLAYBOI CARTI"));
+        vinyls.add(new Vinyl("2", "LP","Rubber Soul", "Rock&Roll", true, "The Beatles" ));
     }
 
     //The getVinyls() method is explicitly defined, replacing the need for the @Getter annotation from Lombok
@@ -30,5 +30,14 @@ public class VinylRepo {
             }
         }
         return null;
+    }
+
+    public Vinyl createNewVinyl(Vinyl newVinyl) {
+        vinyls.add(newVinyl);
+        return newVinyl;
+    }
+
+    public boolean deleteVinylById(String id) {
+        return vinyls.removeIf(v -> v.getId().equals(id));
     }
 }
