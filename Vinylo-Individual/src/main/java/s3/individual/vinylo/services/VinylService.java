@@ -1,9 +1,8 @@
 package s3.individual.vinylo.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import s3.individual.vinylo.domain.Vinyl;
-import s3.individual.vinylo.repositories.VinylRepo;
+import s3.individual.vinylo.business.Vinyl;
+import s3.individual.vinylo.persistence.interfaces.VinylRepo;
 
 import java.util.ArrayList;
 
@@ -20,20 +19,14 @@ public class VinylService {
         return  vinylRepo.createNewVinyl(vinyl);
     }
 
-    public Vinyl getVinylById(String id)
+    public Vinyl getVinylById(int id)
     {
         return vinylRepo.getVinylById(id);
     }
 
-    public ArrayList<Vinyl> getVinyls(Boolean hasArtist)
+    public ArrayList<Vinyl> getVinyls()
     {
-        ArrayList<Vinyl> allVinyls = vinylRepo.getVinyls();
-
-        if (hasArtist == null || !hasArtist) {
-            return allVinyls;
-        }
-
-        return allVinyls;
+        return vinylRepo.getVinyls();
 //        return filterVinylsByArtist(allVinyls);
     }
 
@@ -49,7 +42,7 @@ public class VinylService {
 //        return result;
 //    }
 
-    public Vinyl replaceVinyl(String id, Vinyl newVinyl) {
+    public Vinyl replaceVinyl(int id, Vinyl newVinyl) {
         Vinyl existingVinyl = vinylRepo.getVinylById(id);
 
         if (existingVinyl != null) {
@@ -57,7 +50,7 @@ public class VinylService {
             existingVinyl.setDescription(newVinyl.getDescription());
             existingVinyl.setIsReleased(newVinyl.getisReleased());
             existingVinyl.setAristName(newVinyl.getAristName());
-            existingVinyl.setAlbumCapacity(newVinyl.getAlbumCapacity());
+            existingVinyl.setVinylType(newVinyl.getvinylType());
             return existingVinyl;
         } else {
             return vinylRepo.createNewVinyl(newVinyl);
@@ -65,7 +58,7 @@ public class VinylService {
     }
 
 
-    public boolean deleteVinylById(String id) {
+    public boolean deleteVinylById(int id) {
         return vinylRepo.deleteVinylById(id);
     }
 }

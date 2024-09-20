@@ -4,8 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import s3.individual.vinylo.controllers.dtos.VinylDTO;
 import s3.individual.vinylo.controllers.dtos.VinylsDTO;
-import s3.individual.vinylo.domain.Vinyl;
-import s3.individual.vinylo.repositories.VinylRepo;
+import s3.individual.vinylo.business.Vinyl;
 import s3.individual.vinylo.services.VinylService;
 
 import java.util.ArrayList;
@@ -18,9 +17,9 @@ public class VinylController {
     private VinylService vinylService;
 
     @GetMapping()
-    public VinylsDTO getVinyls(@RequestParam (required = false) Boolean hasArtist)
+    public VinylsDTO getVinyls()
     {
-        ArrayList<Vinyl> vinyls = vinylService.getVinyls(hasArtist);
+        ArrayList<Vinyl> vinyls = vinylService.getVinyls();
 
         VinylsDTO result = new VinylsDTO();
 
@@ -32,7 +31,7 @@ public class VinylController {
             vd.description = v.getDescription();
             vd.name = v.getName();
             vd.id = v.getId();
-            vd.albumCapacity = v.getAlbumCapacity();
+            vd.vinylType = v.getvinylType();
             result.vinyls.add(vd);
         }
 
@@ -40,7 +39,7 @@ public class VinylController {
     }
 
     @GetMapping("/{id}")
-    public VinylDTO getVinyl(@PathVariable String id) {
+    public VinylDTO getVinyl(@PathVariable int id) {
 
         Vinyl v = vinylService.getVinylById(id);
 
@@ -49,7 +48,7 @@ public class VinylController {
         vd.isReleased = v.getisReleased();
         vd.description = v.getDescription();
         vd.name = v.getName();
-        vd.albumCapacity = v.getAlbumCapacity();
+        vd.vinylType = v.getvinylType();
         vd.id = v.getId();
 
         return vd;
@@ -61,13 +60,13 @@ public class VinylController {
     }
 
     @PutMapping("/{id}")
-    public Vinyl replaceVinyl(@RequestBody Vinyl newVinyl, @PathVariable String id) {
+    public Vinyl replaceVinyl(@RequestBody Vinyl newVinyl, @PathVariable int id) {
 
         return vinylService.replaceVinyl(id, newVinyl);
     }
 
     @DeleteMapping("/{id}")
-    public String deleteVinyl(@PathVariable String id) {
+    public String deleteVinyl(@PathVariable int id) {
         boolean isDeleted = vinylService.deleteVinylById(id);
         if (isDeleted) {
             return "Vinyl record with id " + id + " was successfully deleted.";

@@ -2,8 +2,8 @@ package s3.individual.vinylo.controllers.dtos;
 
 public class VinylDTO {
 
-    public String id;
-    public String albumCapacity;
+    public int id;
+    public String vinylType;
     public String name;
     public String description;
     public Boolean isReleased;

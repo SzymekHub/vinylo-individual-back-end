@@ -1,29 +1,29 @@
-package s3.individual.vinylo.domain;
+package s3.individual.vinylo.business;
 
 import lombok.Setter;
 
 @Setter
 public class Vinyl {
 
-    private String id;
-    private String albumCapacity;
+    private int id;
+    private String vinylType;
     private String name;
     private String description;
     private Boolean isReleased;
     private String aristName;
 
-    public Vinyl(String id, String albumCapacity, String name, String description, Boolean isReleased, String aristName) {
+    public Vinyl(int id, String vinylType, String name, String description, Boolean isReleased, String aristName) {
         this.id = id;
-        this.albumCapacity = albumCapacity;
+        this.vinylType = vinylType;
         this.name = name;
         this.description = description;
         this.isReleased = isReleased;
         this.aristName = aristName;
     }
 
-    public String getId() { return id; }
+    public int getId() { return id; }
 
-    public String getAlbumCapacity() { return albumCapacity; }
+    public String getvinylType() { return vinylType; }
 
     public String getName() { return name; }
 
