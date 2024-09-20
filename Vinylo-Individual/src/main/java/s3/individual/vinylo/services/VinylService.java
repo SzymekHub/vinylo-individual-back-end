@@ -19,7 +19,7 @@ public class VinylService {
     public Vinyl createNewVinyl(Vinyl vinyl) {
         return  vinylRepo.createNewVinyl(vinyl);
     }
-    //this is for when I want to fetch vinyl records by the id
+
     public Vinyl getVinylById(String id)
     {
         return vinylRepo.getVinylById(id);
@@ -33,20 +33,21 @@ public class VinylService {
             return allVinyls;
         }
 
-        return filterVinylsByArtist(allVinyls);
+        return allVinyls;
+//        return filterVinylsByArtist(allVinyls);
     }
 
-    private ArrayList<Vinyl> filterVinylsByArtist(ArrayList<Vinyl> vinyls) {
-        ArrayList<Vinyl> result = new ArrayList<>();
-
-        for (Vinyl vinyl : vinyls) {
-            if (vinyl.getisReleased()) {
-                result.add(vinyl);
-            }
-        }
-
-        return result;
-    }
+//    private ArrayList<Vinyl> filterVinylsByArtist(ArrayList<Vinyl> vinyls) {
+//        ArrayList<Vinyl> result = new ArrayList<>();
+//
+//        for (Vinyl vinyl : vinyls) {
+//            if (vinyl.getisReleased()) {
+//                result.add(vinyl);
+//            }
+//        }
+//
+//        return result;
+//    }
 
     public Vinyl replaceVinyl(String id, Vinyl newVinyl) {
         Vinyl existingVinyl = vinylRepo.getVinylById(id);
@@ -55,6 +56,8 @@ public class VinylService {
             existingVinyl.setName(newVinyl.getName());
             existingVinyl.setDescription(newVinyl.getDescription());
             existingVinyl.setIsReleased(newVinyl.getisReleased());
+            existingVinyl.setAristName(newVinyl.getAristName());
+            existingVinyl.setAlbumCapacity(newVinyl.getAlbumCapacity());
             return existingVinyl;
         } else {
             return vinylRepo.createNewVinyl(newVinyl);

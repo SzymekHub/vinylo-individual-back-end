@@ -16,8 +16,6 @@ public class VinylController {
 
     @Autowired
     private VinylService vinylService;
-    @Autowired
-    private VinylRepo vinylRepo;
 
     @GetMapping()
     public VinylsDTO getVinyls(@RequestParam (required = false) Boolean hasArtist)
@@ -57,13 +55,13 @@ public class VinylController {
         return vd;
     }
 
-    @PostMapping("/new")
-    Vinyl createNewVinyl(@RequestBody Vinyl newVinyl) {
+    @PostMapping()
+    public Vinyl createNewVinyl(@RequestBody Vinyl newVinyl) {
         return vinylService.createNewVinyl(newVinyl);
     }
 
     @PutMapping("/{id}")
-    Vinyl replaceVinyl(@RequestBody Vinyl newVinyl, @PathVariable String id) {
+    public Vinyl replaceVinyl(@RequestBody Vinyl newVinyl, @PathVariable String id) {
 
         return vinylService.replaceVinyl(id, newVinyl);
     }

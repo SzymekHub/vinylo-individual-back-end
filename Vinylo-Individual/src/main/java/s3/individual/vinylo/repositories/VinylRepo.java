@@ -5,6 +5,7 @@ import s3.individual.vinylo.domain.Vinyl;
 
 import java.util.ArrayList;
 
+//injection using spring. "Hey this is the repo"
 @Repository
 public class VinylRepo {
 
