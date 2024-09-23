@@ -12,9 +12,11 @@ stages:
 build:
   stage: build 
   script: 
-  - ./Vinylo-Individual/gradlew assemble
+  - cd Vinylo-Individual
+  - ./gradlew assemble
 
 test: 
   stage: test 
-  script: 
-  - ./Vinylo-Individual/gradlew test
+  script:
+  - cd Vinylo-Individual 
+  - ./gradlew test
