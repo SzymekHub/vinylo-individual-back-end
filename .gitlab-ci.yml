@@ -5,6 +5,9 @@
 variables:
   GRADLE_OPTS: "-Dorg.gradle.daemon=false"
 
+default:
+  image: gradle:8.10.1-jdk17
+
 stages: 
     - build 
     - test
@@ -13,10 +16,12 @@ build:
   stage: build 
   script: 
   - cd Vinylo-Individual
+  - shmod +x gradlew
   - ./gradlew assemble
 
 test: 
   stage: test 
   script:
-  - cd Vinylo-Individual 
+  - cd Vinylo-Individual
+  - shmod +x gradlew 
   - ./gradlew test
