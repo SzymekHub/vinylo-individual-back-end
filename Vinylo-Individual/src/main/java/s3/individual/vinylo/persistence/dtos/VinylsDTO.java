@@ -1,4 +1,4 @@
-package s3.individual.vinylo.controllers.dtos;
+package s3.individual.vinylo.persistence.dtos;
 
 import java.util.ArrayList;
 

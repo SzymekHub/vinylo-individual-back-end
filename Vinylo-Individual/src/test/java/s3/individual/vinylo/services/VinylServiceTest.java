@@ -2,7 +2,7 @@ package s3.individual.vinylo.services;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import s3.individual.vinylo.business.Vinyl;
+import s3.individual.vinylo.services.domain.Vinyl;
 import s3.individual.vinylo.services.serviceMocks.MockVinylRepo;
 
 import java.util.ArrayList;

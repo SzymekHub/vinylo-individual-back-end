@@ -1,4 +1,4 @@
-package s3.individual.vinylo.business;
+package s3.individual.vinylo.services.domain;
 
 import lombok.Setter;
 
@@ -21,6 +21,7 @@ public class Vinyl {
         this.aristName = aristName;
     }
 
+    //I can also just use @Getters but i wanted to do it manually so that i know i can chose which one to use.
     public int getId() { return id; }
 
     public String getvinylType() { return vinylType; }

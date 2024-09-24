@@ -1,6 +1,6 @@
-package s3.individual.vinylo.persistence.interfaces;
+package s3.individual.vinylo.services.interfaces;
 
-import s3.individual.vinylo.business.Vinyl;
+import s3.individual.vinylo.services.domain.Vinyl;
 
 import java.util.ArrayList;
 

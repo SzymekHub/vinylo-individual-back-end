@@ -1,8 +1,8 @@
 package s3.individual.vinylo.services;
 
 import org.springframework.stereotype.Service;
-import s3.individual.vinylo.business.Vinyl;
-import s3.individual.vinylo.persistence.interfaces.VinylRepo;
+import s3.individual.vinylo.services.domain.Vinyl;
+import s3.individual.vinylo.services.interfaces.VinylRepo;
 
 import java.util.ArrayList;
 

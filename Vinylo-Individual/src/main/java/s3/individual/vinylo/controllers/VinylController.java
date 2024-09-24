@@ -2,9 +2,10 @@ package s3.individual.vinylo.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import s3.individual.vinylo.controllers.dtos.VinylDTO;
-import s3.individual.vinylo.controllers.dtos.VinylsDTO;
-import s3.individual.vinylo.business.Vinyl;
+
+import s3.individual.vinylo.services.domain.Vinyl;
+import s3.individual.vinylo.persistence.dtos.VinylDTO;
+import s3.individual.vinylo.persistence.dtos.VinylsDTO;
 import s3.individual.vinylo.services.VinylService;
 
 import java.util.ArrayList;
