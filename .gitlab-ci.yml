@@ -16,12 +16,12 @@ build:
   stage: build 
   script: 
   - cd Vinylo-Individual
-  - shmod +x gradlew
+  - chmod +x gradlew
   - ./gradlew assemble
 
 test: 
   stage: test 
   script:
   - cd Vinylo-Individual
-  - shmod +x gradlew 
+  - chmod +x gradlew 
   - ./gradlew test
