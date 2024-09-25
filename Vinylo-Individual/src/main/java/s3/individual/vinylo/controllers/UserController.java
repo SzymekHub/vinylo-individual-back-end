@@ -31,7 +31,7 @@ public class UserController {
             ud.id = u.getId();
             ud.username = u.getUsername();
             ud.email = u.getEmail();
-            ud.password = u.getPassword();
+            //ud.password = u.getPassword();
             ud.isPremium = u.getIsPremium();
             result.users.add(ud);
         }
@@ -48,7 +48,7 @@ public class UserController {
          ud.id = u.getId();
          ud.username = u.getUsername();
          ud.email = u.getEmail();
-         ud.password = u.getPassword();
+         //ud.password = u.getPassword();
          ud.isPremium = u.getIsPremium();
          
          return ud;

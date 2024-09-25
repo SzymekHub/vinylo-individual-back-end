@@ -5,7 +5,7 @@ public class UserDTO {
     public int id;
     public String username;
     public String email;
-    public String password;
+    //public String password;
     public Boolean isPremium;
     
 }
