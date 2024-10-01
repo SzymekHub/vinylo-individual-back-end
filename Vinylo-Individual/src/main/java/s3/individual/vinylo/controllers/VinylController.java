@@ -1,8 +1,16 @@
 package s3.individual.vinylo.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
 import s3.individual.vinylo.services.domain.Vinyl;
 import s3.individual.vinylo.persistence.dtos.VinylDTO;
 import s3.individual.vinylo.persistence.dtos.VinylsDTO;
@@ -12,6 +20,7 @@ import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/vinyls")
+
 public class VinylController {
 
     @Autowired
@@ -39,8 +48,8 @@ public class VinylController {
         return result;
     }
 
-    @GetMapping("/{id}")
-    public VinylDTO getVinyl(@PathVariable int id) {
+    @GetMapping("{id}")
+    public VinylDTO getVinyl(@PathVariable("id") int id) {
 
         Vinyl v = vinylService.getVinylById(id);
 
@@ -56,18 +65,18 @@ public class VinylController {
     }
 
     @PostMapping()
-    public Vinyl createNewVinyl(@RequestBody Vinyl newVinyl) {
+    public Vinyl createNewVinyl(@RequestBody @Valid Vinyl newVinyl) {
         return vinylService.createNewVinyl(newVinyl);
     }
 
-    @PutMapping("/{id}")
-    public Vinyl replaceVinyl(@RequestBody Vinyl newVinyl, @PathVariable int id) {
+    @PutMapping("{id}")
+    public Vinyl replaceVinyl(@RequestBody Vinyl newVinyl, @PathVariable("id") int id) {
 
         return vinylService.replaceVinyl(id, newVinyl);
     }
 
-    @DeleteMapping("/{id}")
-    public String deleteVinyl(@PathVariable int id) {
+    @DeleteMapping("{id}")
+    public String deleteVinyl(@PathVariable("id") int id) {
         boolean isDeleted = vinylService.deleteVinylById(id);
         if (isDeleted) {
             return "Vinyl record with id " + id + " was successfully deleted.";

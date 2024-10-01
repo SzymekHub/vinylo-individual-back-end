@@ -4,7 +4,7 @@ package s3.individual.vinylo.persistence.dtos;
 public class AuctionDTO {
     public int id;
     public String title;
-    public VinylDTO Vinyl;
+    public VinylDTO vinyl;
     public UserDTO seller;
     public String description;
     public double startingPrice;

@@ -1,11 +1,18 @@
 package s3.individual.vinylo.services.domain;
 
+import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Setter
 @Getter
+@Builder
+@NoArgsConstructor
 public class User {
+    
+    @NotNull
     private int id;
     private String username;
     private String email;

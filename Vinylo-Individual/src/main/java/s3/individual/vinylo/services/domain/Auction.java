@@ -1,12 +1,18 @@
 package s3.individual.vinylo.services.domain;
 
+import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
 public class Auction {
 
+    @NotNull
     private int id;
     private String title;
     private Vinyl Vinyl;

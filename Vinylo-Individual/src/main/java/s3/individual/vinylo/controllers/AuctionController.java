@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
 import s3.individual.vinylo.persistence.dtos.AuctionDTO;
 import s3.individual.vinylo.persistence.dtos.AuctionsDTO;
 import s3.individual.vinylo.persistence.dtos.UserDTO;
@@ -38,15 +39,15 @@ public class AuctionController {
             ad.title = a.getTitle();
 
             // Initialize VinylDTO and UserDTO inside AuctionDTO
-            ad.Vinyl = new VinylDTO();  
+            ad.vinyl = new VinylDTO();  
             ad.seller = new UserDTO();  
 
-            ad.Vinyl.id = a.getVinyl().getId();
-            ad.Vinyl.vinylType = a.getVinyl().getvinylType();
-            ad.Vinyl.name = a.getVinyl().getName();
-            ad.Vinyl.description = a.getVinyl().getDescription();
-            ad.Vinyl.isReleased = a.getVinyl().getisReleased();
-            ad.Vinyl.aristName = a.getVinyl().getAristName();
+            ad.vinyl.id = a.getVinyl().getId();
+            ad.vinyl.vinylType = a.getVinyl().getvinylType();
+            ad.vinyl.name = a.getVinyl().getName();
+            ad.vinyl.description = a.getVinyl().getDescription();
+            ad.vinyl.isReleased = a.getVinyl().getisReleased();
+            ad.vinyl.aristName = a.getVinyl().getAristName();
 
             ad.seller.id = a.getSeller().getId();
             ad.seller.username = a.getSeller().getUsername();
@@ -64,8 +65,8 @@ public class AuctionController {
     return result;
     }
 
-    @GetMapping("/{id}")
-    public AuctionDTO getAuction(@PathVariable int id) 
+    @GetMapping("{id}")
+    public AuctionDTO getAuction(@PathVariable("id") int id) 
     {
     
         Auction a = auctionService.getAuctionsById(id);
@@ -73,16 +74,17 @@ public class AuctionController {
         AuctionDTO ad = new AuctionDTO();
         ad.id = a.getId();
         ad.title = a.getTitle();
+        
         // Initialize VinylDTO and UserDTO inside AuctionDTO
-        ad.Vinyl = new VinylDTO();  
+        ad.vinyl = new VinylDTO();  
         ad.seller = new UserDTO();  
 
-        ad.Vinyl.id = a.getVinyl().getId();
-        ad.Vinyl.vinylType = a.getVinyl().getvinylType();
-        ad.Vinyl.name = a.getVinyl().getName();
-        ad.Vinyl.description = a.getVinyl().getDescription();
-        ad.Vinyl.isReleased = a.getVinyl().getisReleased();
-        ad.Vinyl.aristName = a.getVinyl().getAristName();
+        ad.vinyl.id = a.getVinyl().getId();
+        ad.vinyl.vinylType = a.getVinyl().getvinylType();
+        ad.vinyl.name = a.getVinyl().getName();
+        ad.vinyl.description = a.getVinyl().getDescription();
+        ad.vinyl.isReleased = a.getVinyl().getisReleased();
+        ad.vinyl.aristName = a.getVinyl().getAristName();
 
         ad.seller.id = a.getSeller().getId();
         ad.seller.username = a.getSeller().getUsername();
@@ -98,7 +100,7 @@ public class AuctionController {
         } 
 
     @PostMapping()
-    public Auction creAuction(@RequestBody Auction newAuction) 
+    public Auction creAuction(@RequestBody @Valid Auction newAuction) 
     {
         return auctionService.createAuction(newAuction);
     }
