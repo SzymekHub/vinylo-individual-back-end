@@ -14,7 +14,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
-    // Handle when the URL is incorrect or missing
+    // Handles when the URL is incorrect or missing
     @ExceptionHandler(NoHandlerFoundException.class)
     public ResponseEntity<String> handleNoHandlerFoundException(NoHandlerFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -24,7 +24,7 @@ public class GlobalExceptionHandler {
     // Fallback for other exceptions
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleException(Exception ex) {
-        // Handle other exceptions as needed
+        // Handles other exceptions as needed
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error");
     }
 }
