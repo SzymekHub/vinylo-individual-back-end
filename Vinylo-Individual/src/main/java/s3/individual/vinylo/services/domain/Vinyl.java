@@ -13,15 +13,15 @@ public class Vinyl {
     @NotNull
     private int id;
     private String vinylType;
-    private String name;
+    private String title;
     private String description;
     private Boolean isReleased;
     private String aristName;
 
-    public Vinyl(int id, String vinylType, String name, String description, Boolean isReleased, String aristName) {
+    public Vinyl(int id, String vinylType, String title, String description, Boolean isReleased, String aristName) {
         this.id = id;
         this.vinylType = vinylType;
-        this.name = name;
+        this.title = title;
         this.description = description;
         this.isReleased = isReleased;
         this.aristName = aristName;
@@ -32,7 +32,7 @@ public class Vinyl {
 
     public String getvinylType() { return vinylType; }
 
-    public String getName() { return name; }
+    public String getTitle() { return title; }
 
     public String getDescription() { return description; }
 

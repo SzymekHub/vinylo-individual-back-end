@@ -83,7 +83,7 @@ public class VinylServiceTest {
         assertEquals(newVinyl.getAristName(), vinyl.getAristName());
         assertEquals(newVinyl.getisReleased(), vinyl.getisReleased());
         assertEquals(newVinyl.getDescription(), vinyl.getDescription());
-        assertEquals(newVinyl.getName(), vinyl.getName());
+        assertEquals(newVinyl.getTitle(), vinyl.getTitle());
         assertEquals(newVinyl.getvinylType(), vinyl.getvinylType());
         assertEquals(existingVinyl, vinyl);
     }

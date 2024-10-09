@@ -46,7 +46,7 @@ public class VinylService {
         Vinyl existingVinyl = vinylRepo.getVinylById(id);
 
         if (existingVinyl != null) {
-            existingVinyl.setName(newVinyl.getName());
+            existingVinyl.setTitle(newVinyl.getTitle());
             existingVinyl.setDescription(newVinyl.getDescription());
             existingVinyl.setIsReleased(newVinyl.getisReleased());
             existingVinyl.setAristName(newVinyl.getAristName());

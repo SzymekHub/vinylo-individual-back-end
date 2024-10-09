@@ -43,7 +43,7 @@ public class VinylController {
             vd.aristName = v.getAristName();
             vd.isReleased = v.getisReleased();
             vd.description = v.getDescription();
-            vd.name = v.getName();
+            vd.title = v.getTitle();
             vd.id = v.getId();
             vd.vinylType = v.getvinylType();
             result.vinyls.add(vd);
@@ -69,7 +69,7 @@ public class VinylController {
         vd.aristName = v.getAristName();
         vd.isReleased = v.getisReleased();
         vd.description = v.getDescription();
-        vd.name = v.getName();
+        vd.title = v.getTitle();
         vd.vinylType = v.getvinylType();
         vd.id = v.getId();
 
