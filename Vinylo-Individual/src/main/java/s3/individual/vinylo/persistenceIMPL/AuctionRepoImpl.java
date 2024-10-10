@@ -1,16 +1,15 @@
-package s3.individual.vinylo.persistence;
+package s3.individual.vinylo.persistenceIMPL;
 
 import java.util.ArrayList;
 
 import org.springframework.stereotype.Repository;
 import lombok.Getter;
-
+import s3.individual.vinylo.Models.persistence.AuctionRepo;
+import s3.individual.vinylo.Models.persistence.UserRepo;
+import s3.individual.vinylo.Models.persistence.VinylRepo;
 import s3.individual.vinylo.services.domain.Auction;
 import s3.individual.vinylo.services.domain.User;
 import s3.individual.vinylo.services.domain.Vinyl;
-import s3.individual.vinylo.services.interfaces.AuctionRepo;
-import s3.individual.vinylo.services.interfaces.UserRepo;
-import s3.individual.vinylo.services.interfaces.VinylRepo;
 
 @Repository
 @Getter

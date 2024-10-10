@@ -2,8 +2,8 @@ package s3.individual.vinylo.services.serviceMocks;
 
 import java.util.ArrayList;
 
+import s3.individual.vinylo.Models.persistence.VinylRepo;
 import s3.individual.vinylo.services.domain.Vinyl;
-import s3.individual.vinylo.services.interfaces.VinylRepo;
 
 public class MockVinylRepo implements VinylRepo {
 

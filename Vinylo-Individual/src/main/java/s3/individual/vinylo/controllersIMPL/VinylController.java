@@ -1,4 +1,4 @@
-package s3.individual.vinylo.controllers;
+package s3.individual.vinylo.controllersIMPL;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import s3.individual.vinylo.services.domain.Vinyl;
-import s3.individual.vinylo.controllers.Exceptions.CustomNotFoundException;
-import s3.individual.vinylo.persistence.dtos.VinylDTO;
-import s3.individual.vinylo.persistence.dtos.VinylsDTO;
+import s3.individual.vinylo.Exceptions.CustomNotFoundException;
+import s3.individual.vinylo.Models.dtos.VinylDTO;
+import s3.individual.vinylo.Models.dtos.VinylsDTO;
 import s3.individual.vinylo.services.VinylService;
 
 import java.util.ArrayList;

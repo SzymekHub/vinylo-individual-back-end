@@ -1,4 +1,4 @@
-package s3.individual.vinylo.controllers.Exceptions;
+package s3.individual.vinylo.Exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

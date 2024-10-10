@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import s3.individual.vinylo.Models.persistence.AuctionRepo;
 import s3.individual.vinylo.services.domain.Auction;
-import s3.individual.vinylo.services.interfaces.AuctionRepo;
 
 @Service
 public class AuctionService {

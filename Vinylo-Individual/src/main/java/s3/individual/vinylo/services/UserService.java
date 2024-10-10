@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import org.springframework.stereotype.Service;
 
+import s3.individual.vinylo.Models.persistence.UserRepo;
 import s3.individual.vinylo.services.domain.User;
-import s3.individual.vinylo.services.interfaces.UserRepo;
 
 @Service
 public class UserService {

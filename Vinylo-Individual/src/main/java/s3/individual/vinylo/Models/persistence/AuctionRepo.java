@@ -1,4 +1,4 @@
-package s3.individual.vinylo.services.interfaces;
+package s3.individual.vinylo.Models.persistence;
 
 import java.util.ArrayList;
 

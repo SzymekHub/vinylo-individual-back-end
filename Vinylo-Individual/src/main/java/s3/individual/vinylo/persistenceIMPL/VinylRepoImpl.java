@@ -1,8 +1,9 @@
-package s3.individual.vinylo.persistence;
+package s3.individual.vinylo.persistenceIMPL;
 
 import org.springframework.stereotype.Repository;
+
+import s3.individual.vinylo.Models.persistence.VinylRepo;
 import s3.individual.vinylo.services.domain.Vinyl;
-import s3.individual.vinylo.services.interfaces.VinylRepo;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package s3.individual.vinylo.controllers;
+package s3.individual.vinylo.controllersIMPL;
 
 import java.util.ArrayList;
 
@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
-import s3.individual.vinylo.persistence.dtos.UserDTO;
-import s3.individual.vinylo.persistence.dtos.UsersDTO;
+import s3.individual.vinylo.Models.dtos.UserDTO;
+import s3.individual.vinylo.Models.dtos.UsersDTO;
 import s3.individual.vinylo.services.UserService;
 import s3.individual.vinylo.services.domain.User;
 

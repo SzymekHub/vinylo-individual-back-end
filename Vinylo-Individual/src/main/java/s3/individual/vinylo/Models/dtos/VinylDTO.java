@@ -1,4 +1,4 @@
-package s3.individual.vinylo.persistence.dtos;
+package s3.individual.vinylo.Models.dtos;
 
 public class VinylDTO {
 
