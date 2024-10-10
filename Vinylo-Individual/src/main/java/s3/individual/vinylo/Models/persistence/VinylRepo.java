@@ -1,12 +1,13 @@
 package s3.individual.vinylo.Models.persistence;
 
-import s3.individual.vinylo.services.domain.Vinyl;
 
-import java.util.ArrayList;
+import java.util.List;
+
+import s3.individual.vinylo.services.domain.Vinyl;
 
 public interface VinylRepo {
 
-    ArrayList<Vinyl> getVinyls();
+    List<Vinyl> getVinyls();
 
     Vinyl getVinylById(int id);
 

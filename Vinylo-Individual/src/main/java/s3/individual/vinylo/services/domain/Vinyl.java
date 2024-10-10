@@ -11,12 +11,12 @@ import lombok.Setter;
 public class Vinyl {
 
     @NotNull
-    private int id;
-    private String vinylType;
-    private String title;
-    private String description;
-    private Boolean isReleased;
-    private String artistName;
+    public int id;
+    public String vinylType;
+    public String title;
+    public String description;
+    public Boolean isReleased;
+    public String artistName;
 
     public Vinyl(int id, String vinylType, String title, String description, Boolean isReleased, String artistName) {
         this.id = id;

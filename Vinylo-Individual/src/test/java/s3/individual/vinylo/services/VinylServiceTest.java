@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import s3.individual.vinylo.services.domain.Vinyl;
 import s3.individual.vinylo.services.serviceMocks.MockVinylRepo;
 
-import java.util.ArrayList;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 public class VinylServiceTest {
@@ -61,7 +61,7 @@ public class VinylServiceTest {
         mockVinylRepo.createNewVinyl(vinyl2);
 
         // Act - Execute the method to be tested
-        ArrayList<Vinyl> vinyls = vinylService.getVinyls();
+        List<Vinyl> vinyls = vinylService.getVinyls();
 
         // Assert - Check if the method post-condition is as expected
         assertEquals(2, vinyls.size() );

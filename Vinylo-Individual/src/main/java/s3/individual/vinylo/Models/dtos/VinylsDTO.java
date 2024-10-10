@@ -1,7 +1,7 @@
 package s3.individual.vinylo.Models.dtos;
 
-import java.util.ArrayList;
+import java.util.*;
 
 public class VinylsDTO {
-    public ArrayList<VinylDTO> vinyls = new ArrayList<>();
+    public List<VinylDTO> vinyls = new ArrayList<>();
 }

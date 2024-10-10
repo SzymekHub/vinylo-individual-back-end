@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import s3.individual.vinylo.Models.persistence.VinylRepo;
 import s3.individual.vinylo.services.domain.Vinyl;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class VinylService {
@@ -16,8 +16,9 @@ public class VinylService {
         this.vinylRepo = vinylRepo;
     }
 
-    public Vinyl createNewVinyl(Vinyl vinyl) {
-        return  vinylRepo.createNewVinyl(vinyl);
+    public Vinyl createNewVinyl(Vinyl newvinyl) {
+
+        return  vinylRepo.createNewVinyl(newvinyl);
     }
 
     public Vinyl getVinylById(int id)
@@ -25,23 +26,10 @@ public class VinylService {
         return vinylRepo.getVinylById(id);
     }
 
-    public ArrayList<Vinyl> getVinyls()
+    public List<Vinyl> getVinyls()
     {
         return vinylRepo.getVinyls();
-//        return filterVinylsByArtist(allVinyls);
     }
-
-//    private ArrayList<Vinyl> filterVinylsByArtist(ArrayList<Vinyl> vinyls) {
-//        ArrayList<Vinyl> result = new ArrayList<>();
-//
-//        for (Vinyl vinyl : vinyls) {
-//            if (vinyl.getisReleased()) {
-//                result.add(vinyl);
-//            }
-//        }
-//
-//        return result;
-//    }
 
     public Vinyl replaceVinyl(int id, Vinyl newVinyl) {
         Vinyl existingVinyl = vinylRepo.getVinylById(id);
