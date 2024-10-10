@@ -16,15 +16,15 @@ public class Vinyl {
     private String title;
     private String description;
     private Boolean isReleased;
-    private String aristName;
+    private String artistName;
 
-    public Vinyl(int id, String vinylType, String title, String description, Boolean isReleased, String aristName) {
+    public Vinyl(int id, String vinylType, String title, String description, Boolean isReleased, String artistName) {
         this.id = id;
         this.vinylType = vinylType;
         this.title = title;
         this.description = description;
         this.isReleased = isReleased;
-        this.aristName = aristName;
+        this.artistName = artistName;
     }
 
     //I can also just use @Getters but i wanted to do it manually so that i know i can chose which one to use.
@@ -38,6 +38,6 @@ public class Vinyl {
 
     public Boolean getisReleased() { return isReleased; }
 
-    public String getAristName() { return aristName; }
+    public String getArtistName() { return artistName; }
 
 }

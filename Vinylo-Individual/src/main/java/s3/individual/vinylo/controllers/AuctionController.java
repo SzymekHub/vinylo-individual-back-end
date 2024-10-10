@@ -47,7 +47,7 @@ public class AuctionController {
             ad.vinyl.title = a.getVinyl().getTitle();
             ad.vinyl.description = a.getVinyl().getDescription();
             ad.vinyl.isReleased = a.getVinyl().getisReleased();
-            ad.vinyl.aristName = a.getVinyl().getAristName();
+            ad.vinyl.artistName = a.getVinyl().getArtistName();
 
             ad.seller.id = a.getSeller().getId();
             ad.seller.username = a.getSeller().getUsername();
@@ -84,7 +84,7 @@ public class AuctionController {
         ad.vinyl.title = a.getVinyl().getTitle();
         ad.vinyl.description = a.getVinyl().getDescription();
         ad.vinyl.isReleased = a.getVinyl().getisReleased();
-        ad.vinyl.aristName = a.getVinyl().getAristName();
+        ad.vinyl.artistName = a.getVinyl().getArtistName();
 
         ad.seller.id = a.getSeller().getId();
         ad.seller.username = a.getSeller().getUsername();

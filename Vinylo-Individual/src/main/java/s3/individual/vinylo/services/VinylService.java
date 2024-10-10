@@ -49,7 +49,7 @@ public class VinylService {
             existingVinyl.setTitle(newVinyl.getTitle());
             existingVinyl.setDescription(newVinyl.getDescription());
             existingVinyl.setIsReleased(newVinyl.getisReleased());
-            existingVinyl.setAristName(newVinyl.getAristName());
+            existingVinyl.setArtistName(newVinyl.getArtistName());
             existingVinyl.setVinylType(newVinyl.getvinylType());
             return existingVinyl;
         } else {

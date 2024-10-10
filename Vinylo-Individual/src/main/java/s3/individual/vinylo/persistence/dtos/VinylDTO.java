@@ -7,5 +7,5 @@ public class VinylDTO {
     public String title;
     public String description;
     public Boolean isReleased;
-    public String aristName;
+    public String artistName;
 }

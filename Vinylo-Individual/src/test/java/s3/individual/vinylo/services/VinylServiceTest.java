@@ -80,7 +80,7 @@ public class VinylServiceTest {
         Vinyl vinyl = vinylService.replaceVinyl(10, newVinyl);
 
         // Assert - Check if the method post-condition is as expected
-        assertEquals(newVinyl.getAristName(), vinyl.getAristName());
+        assertEquals(newVinyl.getArtistName(), vinyl.getArtistName());
         assertEquals(newVinyl.getisReleased(), vinyl.getisReleased());
         assertEquals(newVinyl.getDescription(), vinyl.getDescription());
         assertEquals(newVinyl.getTitle(), vinyl.getTitle());

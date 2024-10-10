@@ -40,7 +40,7 @@ public class VinylController {
         for (Vinyl v: vinyls)
         {
             VinylDTO vd = new VinylDTO();
-            vd.aristName = v.getAristName();
+            vd.artistName = v.getArtistName();
             vd.isReleased = v.getisReleased();
             vd.description = v.getDescription();
             vd.title = v.getTitle();
@@ -66,7 +66,7 @@ public class VinylController {
         }
        
         VinylDTO vd = new VinylDTO();
-        vd.aristName = v.getAristName();
+        vd.artistName = v.getArtistName();
         vd.isReleased = v.getisReleased();
         vd.description = v.getDescription();
         vd.title = v.getTitle();
