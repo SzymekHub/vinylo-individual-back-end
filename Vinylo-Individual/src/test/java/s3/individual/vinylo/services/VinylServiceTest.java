@@ -40,7 +40,7 @@ public class VinylServiceTest {
     }
 
     @Test
-    void getVinylById() {
+    void getVinylByIdShouldReturnAVinylRecordWithTheCorrectId() {
         // Arrange
         Vinyl vinyl = new Vinyl(10, "LP", "Test2 Album", "Test2 Description", false, "Artist2");
         mockVinylRepo.createNewVinyl(vinyl);
@@ -53,7 +53,7 @@ public class VinylServiceTest {
     }
 
     @Test
-    void getVinyls() {
+    void getVinylsShouldReturnAllVinylRecords() {
         // Arrange
         Vinyl vinyl = new Vinyl(10, "LP", "Test2 Album", "Test2 Description", false, "Artist2");
         Vinyl vinyl2 = new Vinyl(12, "EP", "Test3 Album", "Test3 Description", true, "Artist3");
@@ -70,7 +70,7 @@ public class VinylServiceTest {
     }
 
     @Test
-    void replaceVinyl() {
+    void replaceVinylShouldReplaceAnExistingVinylByIdWithNewData() {
         // Arrange
         Vinyl existingVinyl = new Vinyl(10, "LP", "Test2 Album", "Test2 Description", false, "Artist2");
         Vinyl newVinyl = new Vinyl(10, "EP", "Test3 Album", "Test3 Description", true, "Artist3");
@@ -89,7 +89,7 @@ public class VinylServiceTest {
     }
 
     @Test
-    void deleteVinylById() {
+    void deleteVinylByIdShouldDeleteAnExistingVinylById() {
         // Arrange
         Vinyl vinyl = new Vinyl(10, "LP", "Test Album", "Test2 Description", false, "Artist2");
         mockVinylRepo.createNewVinyl(vinyl);
