@@ -1,6 +1,6 @@
 package s3.individual.vinylo.persistenceIMPL;
 
-import java.util.ArrayList;
+import java.util.*;
 
 import org.springframework.stereotype.Repository;
 import lombok.Getter;
@@ -17,41 +17,57 @@ public class AuctionRepoImpl implements AuctionRepo {
     
     private final VinylRepo vinylRepo;
     private final UserRepo userRepo;
-    private final ArrayList<Auction> auctions;
+    private final List<Auction> allAuctions;
 
 
     public AuctionRepoImpl(VinylRepo vRepo, UserRepo uRepo) {
-        vinylRepo = vRepo;
-        userRepo = uRepo;
-        auctions = new ArrayList<>();
+        this.vinylRepo = vRepo;
+        this.userRepo = uRepo;
+        allAuctions = CreateSomeAuctions();
+    }
 
-        // Retrieve Vinyl and User by ID
-        Vinyl vinyl = vinylRepo.getVinylById(1);
-        User user  = userRepo.getUserById(1);
+    private List<Auction> CreateSomeAuctions() {
+     // Retrieve Vinyl and User by ID
 
-        Vinyl vinyl2 = vinylRepo.getVinylById(2);
-        User user2  = userRepo.getUserById(2);
+     List<Auction> auctions = new ArrayList<>();
+     Vinyl vinyl = vinylRepo.getVinylById(1);
+     User user  = userRepo.getUserById(1);
 
-        auctions.add(new Auction(1, "All new EP", vinyl, user, "PLAYBOI CARTI'S NEW EP", 666.00, 999.00, "25/09/2024", "01/10/2024"));
-        auctions.add(new Auction(2, "All new LP", vinyl2, user2, "The Beatles greatest LP", 250.00, 360.00, "28/09/2024", "31/10/2024"));
+     Vinyl vinyl2 = vinylRepo.getVinylById(2);
+     User user2  = userRepo.getUserById(2);
+
+     auctions.add(new Auction(1, "All new EP", vinyl, user, "PLAYBOI CARTI'S NEW EP", 666.00, 999.00, "25/09/2024", "01/10/2024"));
+     auctions.add(new Auction(2, "All new LP", vinyl2, user2, "The Beatles greatest LP", 250.00, 360.00, "28/09/2024", "31/10/2024"));
+
+     return auctions;
     }
 
 
     @Override
     public Auction getAuctionById(int id) {
-        return auctions.stream()
+        return allAuctions.stream()
         .filter(a -> a.getId() == id)
         .findFirst().orElse(null);
     }
 
     @Override
-    public ArrayList<Auction> getAuctions() {
-        return auctions;
+    public List<Auction> getAuctions() {
+        return new ArrayList<>(allAuctions);
     }
 
     @Override
-    public Auction save(Auction auction) {
-        auctions.add(auction);
+    public Auction createNewAuction(Auction auction) {
+        // Use the repositories to fetch Vinyl and User objects dynamically
+        Vinyl vinyl = vinylRepo.getVinylById(auction.getVinyl().getId());
+        User seller = userRepo.getUserById(auction.getSeller().getId());
+
+        if (vinyl == null || seller == null) {
+            throw new IllegalArgumentException("Invalid Vinyl or User ID");
+        }
+
+        auction.setVinyl(vinyl);
+        auction.setSeller(seller);
+        allAuctions.add(auction);
         return auction;
     }
 

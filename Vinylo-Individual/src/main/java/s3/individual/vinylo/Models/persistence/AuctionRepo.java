@@ -1,13 +1,14 @@
 package s3.individual.vinylo.Models.persistence;
 
-import java.util.ArrayList;
+import java.util.*;
 
 import s3.individual.vinylo.services.domain.Auction;
 
 public interface AuctionRepo {
-    Auction save (Auction auction);;
 
-    ArrayList<Auction> getAuctions();
+    List<Auction> getAuctions();
+    
+    Auction createNewAuction (Auction auction);;
 
     Auction getAuctionById(int id);
 }

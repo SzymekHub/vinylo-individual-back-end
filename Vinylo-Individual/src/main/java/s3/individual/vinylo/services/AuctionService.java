@@ -1,6 +1,6 @@
 package s3.individual.vinylo.services;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,15 +18,9 @@ public class AuctionService {
         
         this.auctionRepo = auctionRepo;
     }
-
-    public ArrayList<Auction> getAuctions(){
-
-        return auctionRepo.getAuctions();
-    }
-
     public Auction createAuction(Auction auction){
 
-        return auctionRepo.save(auction);
+        return auctionRepo.createNewAuction(auction);
     }
 
     public Auction getAuctionsById(int id) {
@@ -34,11 +28,16 @@ public class AuctionService {
         return auctionRepo.getAuctionById(id);
     }
 
+    public List<Auction> getAuctions(){
+
+        return auctionRepo.getAuctions();
+    }
+
     public boolean placeBid(int auctionId, double bidAmount) {
         Auction auction = auctionRepo.getAuctionById(auctionId);
         if (auction != null && bidAmount > auction.getCurrentPrice()) {
             auction.setCurrentPrice(bidAmount);
-            auctionRepo.save(auction);
+            auctionRepo.createNewAuction(auction);
             return true;
         }
         return false;
