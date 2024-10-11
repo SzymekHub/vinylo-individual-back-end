@@ -2,35 +2,38 @@ package s3.individual.vinylo.persistenceIMPL;
 
 import org.springframework.stereotype.Repository;
 
-import lombok.Getter;
 import s3.individual.vinylo.Models.persistence.UserRepo;
 import s3.individual.vinylo.services.domain.User;
 
-import java.util.ArrayList;
+import java.util.*;
 
 //injection using spring. "Hey this is the repo"
 @Repository
-@Getter
 public class UserRepoImpl implements UserRepo {
 
 
-    private final ArrayList<User> users;
+    private final List<User> allUsers;
 
     public UserRepoImpl() {
-        users = new ArrayList<>();
+        allUsers = CreateSomeUsers();
+    }
+
+    private List<User> CreateSomeUsers() {
+        List<User> users = new ArrayList<>();        
         users.add(new User(1, "Premium User 1", "PremiumUser@gmail.com", "I am premium", true));
         users.add(new User(2, "Regular user", "RegularUser@gmail.com", "I am a regular", false));
 
+        return users;
     }
 
-    // @Override
-    // public ArrayList<User> getUsers() {
-    //     return users;
-    // }
+    @Override
+    public List<User> getUsers() {
+        return new ArrayList<>(allUsers);
+    }
 
     @Override
     public User getUserById(int id) {
-        for (User u : users) {
+        for (User u : allUsers) {
             if (u.getId() == (id)) {
                 return u;
             }
@@ -40,20 +43,20 @@ public class UserRepoImpl implements UserRepo {
 
     @Override
     public User findByUsername(String username) {
-        return users.stream()
+        return allUsers.stream()
             .filter(user -> user.getUsername().equals(username))
             .findFirst().orElse(null);
     }
 
     @Override
     public User createNewUser(User newUser) {
-        users.add(newUser);
+        allUsers.add(newUser);
         return newUser;
     }
 
     @Override
     public boolean deativateUserById(int id) {
-        return users.removeIf(u -> u.getId() == (id));
+        return  allUsers.removeIf(u -> u.id == (id));
     }
 
 }

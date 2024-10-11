@@ -1,6 +1,6 @@
 package s3.individual.vinylo.services;
 
-import java.util.ArrayList;
+import java.util.*;
 
 import org.springframework.stereotype.Service;
 
@@ -16,24 +16,24 @@ public class UserService {
         this.userRepo = userRepo;
     }
 
+    public User createNewUser(User user) {
+        return userRepo.createNewUser(user);
+    }
+
     public User getUserById(int id) {
         return userRepo.getUserById(id);
+    }
+
+    public List<User> getUsers() {
+        return userRepo.getUsers();
     }
 
     public User findByUsername(String username) {
         return userRepo.findByUsername(username);
     }
 
-    public User createNewUser(User user) {
-        return userRepo.createNewUser(user);
-    }
-
     public boolean deativateUserById(int id) {  
         return userRepo.deativateUserById(id);  
-    }
-
-    public ArrayList<User> getUsers() {
-        return userRepo.getUsers();
     }
     
 }

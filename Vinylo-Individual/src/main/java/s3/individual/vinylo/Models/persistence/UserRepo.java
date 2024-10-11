@@ -2,11 +2,11 @@ package s3.individual.vinylo.Models.persistence;
 
 import s3.individual.vinylo.services.domain.User;
 
-import java.util.ArrayList;
+import java.util.*;
 
 public interface UserRepo {
 
-    ArrayList<User> getUsers();
+    List<User> getUsers();
 
     User getUserById(int id);
 
