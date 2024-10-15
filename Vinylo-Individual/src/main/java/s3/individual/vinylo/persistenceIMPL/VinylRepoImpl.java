@@ -2,7 +2,9 @@ package s3.individual.vinylo.persistenceIMPL;
 
 import org.springframework.stereotype.Repository;
 
+import s3.individual.vinylo.Models.persistence.ArtistRepo;
 import s3.individual.vinylo.Models.persistence.VinylRepo;
+import s3.individual.vinylo.services.domain.Artist;
 import s3.individual.vinylo.services.domain.Vinyl;
 
 import java.util.ArrayList;
@@ -12,17 +14,23 @@ import java.util.List;
 @Repository
 public class VinylRepoImpl implements VinylRepo {
 
+    private final ArtistRepo artistRepo;
     private final List<Vinyl> allVinyls;
 
 
-    public VinylRepoImpl() {
+    public VinylRepoImpl(ArtistRepo aRepo) {
+        this.artistRepo = aRepo;
         allVinyls = CreateSomeVinyls();
     }
 
     private List<Vinyl> CreateSomeVinyls() {
         List<Vinyl> vinyls = new ArrayList<>();
-        vinyls.add(new Vinyl(1, "EP","ALL RED", "I AM MUSIC", true, "PLAYBOI CARTI"));
-        vinyls.add(new Vinyl(2, "LP","Rubber Soul", "Rock&Roll", true, "The Beatles" ));
+
+        Artist arist1 = artistRepo.getArtistById(1);
+        Artist arist2 = artistRepo.getArtistById(2);
+
+        vinyls.add(new Vinyl(0, "EP","ALL RED", "I AM MUSIC", true, arist1));
+        vinyls.add(new Vinyl(1, "LP","Rubber Soul", "Rock&Roll", true, arist2 ));
 
         return vinyls;
     }

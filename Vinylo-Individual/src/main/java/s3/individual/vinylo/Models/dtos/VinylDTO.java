@@ -12,5 +12,5 @@ public class VinylDTO {
     public String title;
     public String description;
     public Boolean isReleased;
-    public String artistName;
+    public ArtistDTO artist;
 }

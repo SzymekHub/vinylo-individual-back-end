@@ -20,8 +20,8 @@ public class UserRepoImpl implements UserRepo {
 
     private List<User> CreateSomeUsers() {
         List<User> users = new ArrayList<>();        
-        users.add(new User(1, "Premium User 1", "PremiumUser@gmail.com", "I am premium", true));
-        users.add(new User(2, "Regular user", "RegularUser@gmail.com", "I am a regular", false));
+        users.add(new User(0, "Premium User 1", "PremiumUser@gmail.com", "I am premium", true));
+        users.add(new User(1, "Regular user", "RegularUser@gmail.com", "I am a regular", false));
 
         return users;
     }

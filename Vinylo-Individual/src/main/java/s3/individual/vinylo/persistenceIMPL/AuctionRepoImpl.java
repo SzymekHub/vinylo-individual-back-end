@@ -36,8 +36,8 @@ public class AuctionRepoImpl implements AuctionRepo {
      Vinyl vinyl2 = vinylRepo.getVinylById(2);
      User user2  = userRepo.getUserById(2);
 
-     auctions.add(new Auction(1, "All new EP", vinyl, user, "PLAYBOI CARTI'S NEW EP", 666.00, 999.00, "25/09/2024", "01/10/2024"));
-     auctions.add(new Auction(2, "All new LP", vinyl2, user2, "The Beatles greatest LP", 250.00, 360.00, "28/09/2024", "31/10/2024"));
+     auctions.add(new Auction(0, "All new EP", vinyl, user, "PLAYBOI CARTI'S NEW EP", 666.00, 999.00, "25/09/2024", "01/10/2024"));
+     auctions.add(new Auction(1, "All new LP", vinyl2, user2, "The Beatles greatest LP", 250.00, 360.00, "28/09/2024", "31/10/2024"));
 
      return auctions;
     }

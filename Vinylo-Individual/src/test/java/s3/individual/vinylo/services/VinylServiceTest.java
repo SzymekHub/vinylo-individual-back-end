@@ -2,6 +2,8 @@ package s3.individual.vinylo.services;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import s3.individual.vinylo.services.domain.Artist;
 import s3.individual.vinylo.services.domain.Vinyl;
 import s3.individual.vinylo.services.serviceMocks.MockVinylRepo;
 
@@ -22,7 +24,10 @@ public class VinylServiceTest {
     @Test
     void createNewVinylShouldReturnANewVinylRecord() {
         // Arrange
-        Vinyl vinyl = new Vinyl(10, "LP", "Test Album", "Test Description", false, "Artist");
+
+        Artist arist1 = new Artist(1, "Artist1", "Artist1 bio");
+
+        Vinyl vinyl = new Vinyl(10, "LP", "Test Album", "Test Description", false, arist1);
 
         // Act - Execute the method to be tested
         Vinyl result = vinylService.createNewVinyl(vinyl);
@@ -42,7 +47,9 @@ public class VinylServiceTest {
     @Test
     void getVinylByIdShouldReturnAVinylRecordWithTheCorrectId() {
         // Arrange
-        Vinyl vinyl = new Vinyl(10, "LP", "Test2 Album", "Test2 Description", false, "Artist2");
+        Artist artist2 = new Artist(2, "Artist2", "Artist2 bio");
+
+        Vinyl vinyl = new Vinyl(10, "LP", "Test2 Album", "Test2 Description", false, artist2);
         mockVinylRepo.createNewVinyl(vinyl);
 
         // Act - Execute the method to be tested
@@ -55,8 +62,12 @@ public class VinylServiceTest {
     @Test
     void getVinylsShouldReturnAllVinylRecords() {
         // Arrange
-        Vinyl vinyl = new Vinyl(10, "LP", "Test2 Album", "Test2 Description", false, "Artist2");
-        Vinyl vinyl2 = new Vinyl(12, "EP", "Test3 Album", "Test3 Description", true, "Artist3");
+        Artist artist2 = new Artist(2, "Artist2", "Artist2 bio");
+        Artist artist3 = new Artist(3, "Artist3", "Artist3 bio");
+
+        
+        Vinyl vinyl = new Vinyl(10, "LP", "Test2 Album", "Test2 Description", false, artist2);
+        Vinyl vinyl2 = new Vinyl(12, "EP", "Test3 Album", "Test3 Description", true, artist3);
         mockVinylRepo.createNewVinyl(vinyl);
         mockVinylRepo.createNewVinyl(vinyl2);
 
@@ -72,15 +83,19 @@ public class VinylServiceTest {
     @Test
     void replaceVinylShouldReplaceAnExistingVinylByIdWithNewData() {
         // Arrange
-        Vinyl existingVinyl = new Vinyl(10, "LP", "Test2 Album", "Test2 Description", false, "Artist2");
-        Vinyl newVinyl = new Vinyl(10, "EP", "Test3 Album", "Test3 Description", true, "Artist3");
+        Artist artist2 = new Artist(2, "Artist2", "Artist2 bio");
+        Artist artist3 = new Artist(3, "Artist3", "Artist3 bio");
+
+        
+        Vinyl existingVinyl = new Vinyl(10, "LP", "Test2 Album", "Test2 Description", false, artist2);
+        Vinyl newVinyl = new Vinyl(10, "EP", "Test3 Album", "Test3 Description", true, artist3);
         mockVinylRepo.createNewVinyl(existingVinyl);
 
         // Act - Execute the method to be tested
         Vinyl vinyl = vinylService.replaceVinyl(10, newVinyl);
 
         // Assert - Check if the method post-condition is as expected
-        assertEquals(newVinyl.getArtistName(), vinyl.getArtistName());
+        assertEquals(newVinyl.getArtist(), vinyl.getArtist());
         assertEquals(newVinyl.getisReleased(), vinyl.getisReleased());
         assertEquals(newVinyl.getDescription(), vinyl.getDescription());
         assertEquals(newVinyl.getTitle(), vinyl.getTitle());
@@ -91,7 +106,8 @@ public class VinylServiceTest {
     @Test
     void deleteVinylByIdShouldDeleteAnExistingVinylById() {
         // Arrange
-        Vinyl vinyl = new Vinyl(10, "LP", "Test Album", "Test2 Description", false, "Artist2");
+        Artist artist2 = new Artist(2, "Artist2", "Artist2 bio");
+        Vinyl vinyl = new Vinyl(10, "LP", "Test Album", "Test2 Description", false, artist2);
         mockVinylRepo.createNewVinyl(vinyl);
 
         // Act - Execute the method to be tested

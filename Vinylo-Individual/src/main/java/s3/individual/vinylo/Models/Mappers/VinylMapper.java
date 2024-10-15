@@ -19,7 +19,7 @@ public class VinylMapper {
                 vinylDTO.getTitle(),
                 vinylDTO.getDescription(),
                 vinylDTO.getIsReleased(),
-                vinylDTO.getArtistName()
+                ArtistMapper.toArtist(vinylDTO.getArtist())
         );
     }
 
@@ -36,7 +36,7 @@ public class VinylMapper {
         vinylDTO.setTitle(vinyl.getTitle());
         vinylDTO.setDescription(vinyl.getDescription());
         vinylDTO.setIsReleased(vinyl.getisReleased());
-        vinylDTO.setArtistName(vinyl.getArtistName());
+        vinylDTO.setArtist(ArtistMapper.toArtistDTO(vinyl.getArtist()));
 
         return vinylDTO;
         
