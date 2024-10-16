@@ -57,6 +57,7 @@ sonarqube_scan:
   stage: sonarqube_scan
   script:
     - cd Vinylo-Individual
+    - chmod +x gradlew
     - ./gradlew sonarqube
   only:
     - master
