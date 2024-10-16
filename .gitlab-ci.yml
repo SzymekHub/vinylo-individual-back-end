@@ -3,25 +3,48 @@
 # runtime for each build is more reliable since the runtime is completely
 # isolated from any previous builds.
 variables:
+  # This sets a Gradle option to disable the Gradle daemon.
+  # The Gradle daemon improves build speed by keeping the JVM alive between builds,
+  # but it can cause issues in CI environments where isolated, clean builds are preferred.
   GRADLE_OPTS: "-Dorg.gradle.daemon=false"
 
+# Default settings for the entire pipeline.
 default:
+  # This specifies the Docker image to be used in the pipeline.
+  # The image is a Gradle image version 8.10.1 with JDK 17, providing the necessary
+  # environment to run Gradle tasks like build and test.
   image: gradle:8.10.1-jdk17
 
+# Define the different stages of the CI/CD pipeline.
 stages: 
+    # The 'build' stage will compile the project.
     - build 
+    # The 'test' stage will run tests after the build has been successfully completed.
     - test
 
+# Job to handle the build process.
 build:
+  # Specifies that this job is part of the 'build' stage.
   stage: build 
+  # The commands to execute as part of the build process.
   script: 
+  # Change directory into the 'Vinylo-Individual' folder where the project is located.
   - cd Vinylo-Individual
+  # Grant execution permissions to the Gradle wrapper script 'gradlew'.
+  # This ensures that the script can be executed by the pipeline.
   - chmod +x gradlew
+  # Execute the Gradle 'assemble' task, which compiles the code and prepares it for testing.
   - ./gradlew assemble
 
+# Job to handle the testing process.
 test: 
+  # Specifies that this job is part of the 'test' stage.
   stage: test 
+  # The commands to execute as part of the testing process.
   script:
+  # Change directory into the 'Vinylo-Individual' folder where the project is located.
   - cd Vinylo-Individual
+  # Again, ensure that the Gradle wrapper script has execution permissions.
   - chmod +x gradlew 
+  # Execute the Gradle 'test' task, which runs all unit and integration tests.
   - ./gradlew test
