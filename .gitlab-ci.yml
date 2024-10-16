@@ -21,7 +21,7 @@ stages:
     - build 
     # The 'test' stage will run tests after the build has been successfully completed.
     - test
-    - sonarqube
+    - sonar
 
 # Job to handle the build process.
 build:
@@ -50,10 +50,10 @@ test:
   # Execute the Gradle 'test' task, which runs all unit and integration tests.
   - ./gradlew test
 
-# SonarQube scan job.
-sonarqube:
-  stage: sonarqube
+# Sonar scan job.
+sonar:
+  stage: sonar
   script:
     - cd Vinylo-Individual
     - chmod +x gradlew
-    - ./gradlew sonarqube
+    - ./gradlew sonar
