@@ -26,8 +26,8 @@ public class VinylRepoImpl implements VinylRepo {
     private List<Vinyl> CreateSomeVinyls() {
         List<Vinyl> vinyls = new ArrayList<>();
 
-        Artist arist1 = artistRepo.getArtistById(1);
-        Artist arist2 = artistRepo.getArtistById(2);
+        Artist arist1 = artistRepo.getArtistById(0);
+        Artist arist2 = artistRepo.getArtistById(1);
 
         vinyls.add(new Vinyl(0, "EP","ALL RED", "I AM MUSIC", true, arist1));
         vinyls.add(new Vinyl(1, "LP","Rubber Soul", "Rock&Roll", true, arist2 ));

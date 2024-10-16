@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.3.3'
     id 'io.spring.dependency-management' version '1.1.6'
+    id "org.sonarqube" version "5.1.0.4882"
 }
 
 group = 'S3.Individual'
@@ -31,6 +32,13 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+sonar {
+  properties {
+    property "sonar.projectKey", "Vinylo-Individual-SonarQube"
+    property "sonar.host.url", "http://localhost:9000"
+    property "sonar.token", "sqp_e277f48b5e3f49cce3bf7919f84713a42c77f0f0"
+  }
 }
 
 tasks.named('test') {
