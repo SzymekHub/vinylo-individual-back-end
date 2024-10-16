@@ -21,6 +21,8 @@ stages:
     - build 
     # The 'test' stage will run tests after the build has been successfully completed.
     - test
+    # the 'sonarqube' stage will run SonarQube sacn after tests
+    -sonarqube_scan
 
 # Job to handle the build process.
 build:
@@ -48,3 +50,19 @@ test:
   - chmod +x gradlew 
   # Execute the Gradle 'test' task, which runs all unit and integration tests.
   - ./gradlew test
+
+  # SonarQube scan job
+sonarqube_scan:
+  stage: sonarqube_scan
+  # I Use SonarQube scanner Docker image to run the SonarQube analysis
+  image:
+    name: sonarsource/sonar-scanner-cli:latest  
+    entrypoint: [""]
+  script:
+    - cd Vinylo-Individual
+    - chmod +x gradlew
+    # Run SonarQube analysis using Gradle's SonarQube plugin
+    - ./gradlew sonarqube
+  only:
+    - merge_requests
+    - master
