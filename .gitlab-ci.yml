@@ -7,8 +7,6 @@ variables:
   # The Gradle daemon improves build speed by keeping the JVM alive between builds,
   # but it can cause issues in CI environments where isolated, clean builds are preferred.
   GRADLE_OPTS: "-Dorg.gradle.daemon=false"
-  SONAR_HOST_URL: "http://localhost:9000"  # SonarQube server URL
-  SONAR_TOKEN: "sqp_e277f48b5e3f49cce3bf7919f84713a42c77f0f0"  # SonarQube token
 
 # Default settings for the entire pipeline.
 default:
@@ -23,7 +21,7 @@ stages:
     - build 
     # The 'test' stage will run tests after the build has been successfully completed.
     - test
-    - sonarqube_scan
+    - sonarqube
 
 # Job to handle the build process.
 build:
@@ -53,11 +51,9 @@ test:
   - ./gradlew test
 
 # SonarQube scan job.
-sonarqube_scan:
-  stage: sonarqube_scan
+sonarqube:
+  stage: sonarqube
   script:
     - cd Vinylo-Individual
     - chmod +x gradlew
     - ./gradlew sonarqube
-  only:
-    - master
