@@ -38,9 +38,9 @@ build:
   # Execute the Gradle 'assemble' task, which compiles the code and prepares it for testing.
   - ./gradlew assemble
 
-    artifacts:
-      paths:
-      -Vinylo-Individual/build/libs/
+  artifacts:
+    paths:
+    - Vinylo-Individual/build/libs/
     expire_in: 1 hour
 
 # Runs docker in docker
@@ -63,7 +63,7 @@ docker-build:
   script:
   # Change directory into the 'Vinylo-Individual' folder where the project is located.
   - cd Vinylo-Individual
-- docker build -t Vinylo-Individual .
+  - docker build -t Vinylo-Individual .
 
 # Job to handle the testing process.
 test: 
