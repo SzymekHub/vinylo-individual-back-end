@@ -63,7 +63,7 @@ docker-build:
   script:
   # Change directory into the 'Vinylo-Individual' folder where the project is located.
   - cd Vinylo-Individual
-  - docker build -t Vinylo-Individual .
+  - docker build -t vinylo-individual .
 
 # Job to handle the testing process.
 test: 
