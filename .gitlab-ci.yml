@@ -85,4 +85,4 @@ sonar:
     - cd Vinylo-Individual
     - chmod +x gradlew
     - ./gradlew sonar
-allow_failure: true
+  allow_failure: true
