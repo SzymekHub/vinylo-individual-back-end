@@ -5,7 +5,7 @@ import java.util.*;
 import org.springframework.stereotype.Repository;
 
 import s3.individual.vinylo.Models.persistence.ArtistRepo;
-import s3.individual.vinylo.services.domain.Artist;
+import s3.individual.vinylo.serviceIMPL.domain.Artist;
 
 @Repository
 public class ArtistRepoImpl implements ArtistRepo {

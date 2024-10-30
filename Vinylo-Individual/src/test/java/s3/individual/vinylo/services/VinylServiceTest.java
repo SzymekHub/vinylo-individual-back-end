@@ -3,8 +3,10 @@ package s3.individual.vinylo.services;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import s3.individual.vinylo.services.domain.Artist;
-import s3.individual.vinylo.services.domain.Vinyl;
+import s3.individual.vinylo.Models.services.VinylService;
+import s3.individual.vinylo.serviceIMPL.VinylServiceIMPL;
+import s3.individual.vinylo.serviceIMPL.domain.Artist;
+import s3.individual.vinylo.serviceIMPL.domain.Vinyl;
 import s3.individual.vinylo.services.serviceMocks.MockVinylRepo;
 
 import java.util.*;
@@ -18,7 +20,7 @@ public class VinylServiceTest {
     @BeforeEach
     void setUp() {
         mockVinylRepo = new MockVinylRepo();
-        vinylService = new VinylService(mockVinylRepo);
+        vinylService = new VinylServiceIMPL(mockVinylRepo);
     }
 
     @Test

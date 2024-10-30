@@ -1,4 +1,4 @@
-package s3.individual.vinylo.controllersIMPL;
+package s3.individual.vinylo.controllers;
 
 import java.util.List;
 
@@ -16,21 +16,19 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 import s3.individual.vinylo.Exceptions.CustomNotFoundException;
 import s3.individual.vinylo.Models.Mappers.UserMapper;
-import s3.individual.vinylo.Models.controllers.UserController;
 import s3.individual.vinylo.Models.dtos.UserDTO;
 import s3.individual.vinylo.Models.dtos.UsersDTO;
-import s3.individual.vinylo.services.UserService;
-import s3.individual.vinylo.services.domain.User;
+import s3.individual.vinylo.Models.services.UserService;
+import s3.individual.vinylo.serviceIMPL.domain.User;
 
 
 @RestController
 @RequestMapping("/users") 
-public class UserControllerIMPL implements UserController {
+public class UserController {
 
     @Autowired
     private UserService userService;
 
-    @Override
     @GetMapping()
     public UsersDTO getUsers() {
         
@@ -41,7 +39,6 @@ public class UserControllerIMPL implements UserController {
         return result;
     }
 
-    @Override
     @GetMapping("{id}")
     public ResponseEntity<?> getUser(@PathVariable("id") int id) {
 
@@ -57,7 +54,6 @@ public class UserControllerIMPL implements UserController {
          return ResponseEntity.ok(ud);
     }
 
-    @Override
     @PostMapping()
     public UserDTO createNewUser(@RequestBody @Valid UserDTO newUserDTO) {
         User newUser = UserMapper.toUser(newUserDTO);
@@ -65,7 +61,6 @@ public class UserControllerIMPL implements UserController {
         return UserMapper.toUserDTO(createdUser);
     }
 
-    @Override
     @DeleteMapping("{id}")
     public ResponseEntity<String> deativateUserById(@PathVariable("id") int id) {  
         boolean isDeleted = userService.deativateUserById(id);

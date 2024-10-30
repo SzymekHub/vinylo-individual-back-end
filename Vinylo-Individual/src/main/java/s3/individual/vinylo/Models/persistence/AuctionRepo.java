@@ -2,7 +2,7 @@ package s3.individual.vinylo.Models.persistence;
 
 import java.util.*;
 
-import s3.individual.vinylo.services.domain.Auction;
+import s3.individual.vinylo.serviceIMPL.domain.Auction;
 
 public interface AuctionRepo {
 

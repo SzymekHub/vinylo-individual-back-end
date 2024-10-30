@@ -3,7 +3,7 @@ package s3.individual.vinylo.Models.persistence;
 
 import java.util.List;
 
-import s3.individual.vinylo.services.domain.Vinyl;
+import s3.individual.vinylo.serviceIMPL.domain.Vinyl;
 
 public interface VinylRepo {
 

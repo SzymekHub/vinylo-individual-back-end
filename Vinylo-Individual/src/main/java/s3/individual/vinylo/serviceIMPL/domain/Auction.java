@@ -1,4 +1,4 @@
-package s3.individual.vinylo.services.domain;
+package s3.individual.vinylo.serviceIMPL.domain;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;

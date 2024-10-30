@@ -1,36 +1,41 @@
-package s3.individual.vinylo.services;
+package s3.individual.vinylo.serviceIMPL;
 
 import org.springframework.stereotype.Service;
 
 import s3.individual.vinylo.Models.persistence.VinylRepo;
-import s3.individual.vinylo.services.domain.Vinyl;
+import s3.individual.vinylo.Models.services.VinylService;
+import s3.individual.vinylo.serviceIMPL.domain.Vinyl;
 
 import java.util.List;
 
 @Service
-public class VinylService {
+public class VinylServiceIMPL implements VinylService {
 
     private final VinylRepo vinylRepo;
 
-    public VinylService(VinylRepo vinylRepo) {
+    public VinylServiceIMPL(VinylRepo vinylRepo) {
         this.vinylRepo = vinylRepo;
     }
 
+    @Override
     public Vinyl createNewVinyl(Vinyl newvinyl) {
 
         return  vinylRepo.createNewVinyl(newvinyl);
     }
 
+    @Override
     public Vinyl getVinylById(int id)
     {
         return vinylRepo.getVinylById(id);
     }
 
+    @Override
     public List<Vinyl> getVinyls()
     {
         return vinylRepo.getVinyls();
     }
 
+    @Override
     public Vinyl replaceVinyl(int id, Vinyl newVinyl) {
         Vinyl existingVinyl = vinylRepo.getVinylById(id);
 
@@ -47,6 +52,7 @@ public class VinylService {
     }
 
 
+    @Override
     public boolean deleteVinylById(int id) {
         return vinylRepo.deleteVinylById(id);
     }

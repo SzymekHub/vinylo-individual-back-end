@@ -1,18 +1,19 @@
-package s3.individual.vinylo.Models.persistence;
+package s3.individual.vinylo.Models.services;
 
-import java.util.*;
+import java.util.List;
 
 import s3.individual.vinylo.serviceIMPL.domain.User;
 
-public interface UserRepo {
+public interface UserService {
 
-    List<User> getUsers();
+    User createNewUser(User user);
 
     User getUserById(int id);
 
-    User createNewUser(User user);
+    List<User> getUsers();
 
     User findByUsername(String username);
 
     boolean deativateUserById(int id);
+
 }

@@ -4,7 +4,7 @@ import java.util.*;
 
 import s3.individual.vinylo.Models.dtos.VinylDTO;
 import s3.individual.vinylo.Models.dtos.VinylsDTO;
-import s3.individual.vinylo.services.domain.Vinyl;
+import s3.individual.vinylo.serviceIMPL.domain.Vinyl;
 
 public class VinylMapper {
 

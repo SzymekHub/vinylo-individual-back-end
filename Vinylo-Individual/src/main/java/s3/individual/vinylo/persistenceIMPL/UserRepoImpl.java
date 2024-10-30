@@ -3,7 +3,7 @@ package s3.individual.vinylo.persistenceIMPL;
 import org.springframework.stereotype.Repository;
 
 import s3.individual.vinylo.Models.persistence.UserRepo;
-import s3.individual.vinylo.services.domain.User;
+import s3.individual.vinylo.serviceIMPL.domain.User;
 
 import java.util.*;
 

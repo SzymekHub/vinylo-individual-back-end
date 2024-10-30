@@ -4,7 +4,7 @@ import java.util.*;
 
 import s3.individual.vinylo.Models.dtos.ArtistDTO;
 import s3.individual.vinylo.Models.dtos.ArtistsDTO;
-import s3.individual.vinylo.services.domain.Artist;
+import s3.individual.vinylo.serviceIMPL.domain.Artist;
 
 public class ArtistMapper {
     

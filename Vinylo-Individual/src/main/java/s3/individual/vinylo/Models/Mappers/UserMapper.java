@@ -3,7 +3,7 @@ package s3.individual.vinylo.Models.Mappers;
 import java.util.*;
 import s3.individual.vinylo.Models.dtos.UserDTO;
 import s3.individual.vinylo.Models.dtos.UsersDTO;
-import s3.individual.vinylo.services.domain.User;
+import s3.individual.vinylo.serviceIMPL.domain.User;
 
 public class UserMapper {
     public static User toUser(UserDTO userDTO) {

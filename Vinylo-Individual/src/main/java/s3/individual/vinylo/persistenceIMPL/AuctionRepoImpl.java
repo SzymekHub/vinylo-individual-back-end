@@ -7,9 +7,9 @@ import lombok.Getter;
 import s3.individual.vinylo.Models.persistence.AuctionRepo;
 import s3.individual.vinylo.Models.persistence.UserRepo;
 import s3.individual.vinylo.Models.persistence.VinylRepo;
-import s3.individual.vinylo.services.domain.Auction;
-import s3.individual.vinylo.services.domain.User;
-import s3.individual.vinylo.services.domain.Vinyl;
+import s3.individual.vinylo.serviceIMPL.domain.Auction;
+import s3.individual.vinylo.serviceIMPL.domain.User;
+import s3.individual.vinylo.serviceIMPL.domain.Vinyl;
 
 @Repository
 @Getter

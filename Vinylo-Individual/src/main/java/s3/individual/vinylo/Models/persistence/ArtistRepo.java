@@ -2,7 +2,7 @@ package s3.individual.vinylo.Models.persistence;
 
 import java.util.List;
 
-import s3.individual.vinylo.services.domain.Artist;
+import s3.individual.vinylo.serviceIMPL.domain.Artist;
 
 public interface ArtistRepo {
 

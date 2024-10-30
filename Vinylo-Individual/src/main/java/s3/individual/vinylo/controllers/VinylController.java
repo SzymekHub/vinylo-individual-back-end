@@ -1,4 +1,4 @@
-package s3.individual.vinylo.controllersIMPL;
+package s3.individual.vinylo.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,25 +14,23 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import jakarta.validation.Valid;
-import s3.individual.vinylo.services.domain.Vinyl;
 import s3.individual.vinylo.Exceptions.CustomNotFoundException;
 import s3.individual.vinylo.Models.Mappers.VinylMapper;
-import s3.individual.vinylo.Models.controllers.VinylController;
 import s3.individual.vinylo.Models.dtos.VinylDTO;
 import s3.individual.vinylo.Models.dtos.VinylsDTO;
-import s3.individual.vinylo.services.VinylService;
+import s3.individual.vinylo.Models.services.VinylService;
+import s3.individual.vinylo.serviceIMPL.domain.Vinyl;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/vinyls")
 
-public class VinylControllerIMPL implements VinylController {
+public class VinylController {
 
     @Autowired
     private VinylService vinylService;
 
-    @Override
     @GetMapping()
     public VinylsDTO getVinyls()
     {
@@ -45,7 +43,6 @@ public class VinylControllerIMPL implements VinylController {
     //I changed return type to ResponseEntity<?> to handle HTTP responses.
     //This allows the method to return both a ResponseEntity<VinylDTO> when a valid vinyl record is found, 
     // and a ResponseEntity<String> when an error occurs (e.g., vinyl not found).
-    @Override
     @GetMapping("{id}")
     public ResponseEntity<?> getVinyl(@PathVariable("id") int id) {
 
@@ -62,7 +59,6 @@ public class VinylControllerIMPL implements VinylController {
         return ResponseEntity.ok(vd);
     }
 
-    @Override
     @PostMapping()
     public VinylDTO createNewVinyl(@RequestBody @Valid VinylDTO newVinylDTO) {
         Vinyl newVinyl = VinylMapper.toVinyl(newVinylDTO);
@@ -70,7 +66,6 @@ public class VinylControllerIMPL implements VinylController {
         return VinylMapper.toVinylDTO(cretedVinyl);
     }
 
-    @Override
     @PutMapping("{id}")
     public VinylDTO replaceVinyl(@RequestBody VinylDTO newVinylDTO, @PathVariable("id") int id) {
         Vinyl newVinyl = VinylMapper.toVinyl(newVinylDTO);
@@ -79,7 +74,6 @@ public class VinylControllerIMPL implements VinylController {
     }
 
     //I changed return type to ResponseEntity<String> to handle HTTP responses.
-    @Override
     @DeleteMapping("{id}")
     public ResponseEntity<String> deleteVinyl(@PathVariable("id") int id) {
         boolean isDeleted = vinylService.deleteVinylById(id);

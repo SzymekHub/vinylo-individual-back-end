@@ -1,4 +1,4 @@
-package s3.individual.vinylo.controllersIMPL;
+package s3.individual.vinylo.controllers;
 
 import java.util.*;
 
@@ -14,20 +14,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import s3.individual.vinylo.Models.Mappers.ArtistMapper;
-import s3.individual.vinylo.Models.controllers.ArtistController;
 import s3.individual.vinylo.Models.dtos.ArtistDTO;
 import s3.individual.vinylo.Models.dtos.ArtistsDTO;
-import s3.individual.vinylo.services.ArtistService;
-import s3.individual.vinylo.services.domain.Artist;
+import s3.individual.vinylo.Models.services.ArtistService;
+import s3.individual.vinylo.serviceIMPL.domain.Artist;
 
 @RestController
 @RequestMapping("/artist")
-public class ArtistControllerIMPL implements ArtistController {
+public class ArtistController {
 
     @Autowired
     private ArtistService artistService;
     
-    @Override
     @GetMapping()
     public ArtistsDTO getArtists() {
         List<Artist> artists = artistService.getArtists();
@@ -37,7 +35,6 @@ public class ArtistControllerIMPL implements ArtistController {
         return result;
     }
 
-    @Override
     @GetMapping("{id}")
     public ResponseEntity<?> getArtistById(@PathVariable("id") int id) 
     {
@@ -52,7 +49,6 @@ public class ArtistControllerIMPL implements ArtistController {
         return ResponseEntity.ok(ad);
     } 
 
-    @Override
     @PostMapping()
     public ArtistDTO createArtist(@RequestBody @Valid ArtistDTO newArtist) {
 

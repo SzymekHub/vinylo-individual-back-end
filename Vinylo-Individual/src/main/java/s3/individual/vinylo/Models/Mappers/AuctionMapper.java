@@ -4,7 +4,7 @@ package s3.individual.vinylo.Models.Mappers;
 import java.util.*;
 import s3.individual.vinylo.Models.dtos.AuctionDTO;
 import s3.individual.vinylo.Models.dtos.AuctionsDTO;
-import s3.individual.vinylo.services.domain.Auction;
+import s3.individual.vinylo.serviceIMPL.domain.Auction;
 
 public class AuctionMapper {
 
