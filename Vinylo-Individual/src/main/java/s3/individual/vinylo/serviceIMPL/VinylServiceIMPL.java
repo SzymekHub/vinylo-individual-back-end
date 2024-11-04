@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import s3.individual.vinylo.Models.persistence.VinylRepo;
 import s3.individual.vinylo.Models.services.VinylService;
 import s3.individual.vinylo.serviceIMPL.domain.Vinyl;
+import jakarta.transaction.Transactional;
 
 import java.util.List;
 
@@ -17,21 +18,23 @@ public class VinylServiceIMPL implements VinylService {
         this.vinylRepo = vinylRepo;
     }
 
+    // @Transactional -> That’s all it takes to have all queries triggered inside
+    // the method inside a same database transaction.
+    // !! Always remember of using transactions in your use-cases!
+    @Transactional
     @Override
     public Vinyl createNewVinyl(Vinyl newvinyl) {
 
-        return  vinylRepo.createNewVinyl(newvinyl);
+        return vinylRepo.createNewVinyl(newvinyl);
     }
 
     @Override
-    public Vinyl getVinylById(int id)
-    {
+    public Vinyl getVinylById(int id) {
         return vinylRepo.getVinylById(id);
     }
 
     @Override
-    public List<Vinyl> getVinyls()
-    {
+    public List<Vinyl> getVinyls() {
         return vinylRepo.getVinyls();
     }
 
@@ -50,7 +53,6 @@ public class VinylServiceIMPL implements VinylService {
             return vinylRepo.createNewVinyl(newVinyl);
         }
     }
-
 
     @Override
     public boolean deleteVinylById(int id) {
