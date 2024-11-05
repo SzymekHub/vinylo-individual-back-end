@@ -2,9 +2,9 @@ package s3.individual.vinylo.serviceIMPL;
 
 import org.springframework.stereotype.Service;
 
-import s3.individual.vinylo.Models.persistence.VinylRepo;
-import s3.individual.vinylo.Models.services.VinylService;
-import s3.individual.vinylo.serviceIMPL.domain.Vinyl;
+import s3.individual.vinylo.persistence.VinylRepo;
+import s3.individual.vinylo.services.VinylService;
+import s3.individual.vinylo.domain.Vinyl;
 import jakarta.transaction.Transactional;
 
 import java.util.List;

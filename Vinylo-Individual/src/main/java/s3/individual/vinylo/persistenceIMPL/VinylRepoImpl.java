@@ -2,10 +2,10 @@ package s3.individual.vinylo.persistenceIMPL;
 
 import org.springframework.stereotype.Repository;
 
-import s3.individual.vinylo.Models.persistence.ArtistRepo;
-import s3.individual.vinylo.Models.persistence.VinylRepo;
-import s3.individual.vinylo.serviceIMPL.domain.Artist;
-import s3.individual.vinylo.serviceIMPL.domain.Vinyl;
+import s3.individual.vinylo.persistence.ArtistRepo;
+import s3.individual.vinylo.persistence.VinylRepo;
+import s3.individual.vinylo.domain.Artist;
+import s3.individual.vinylo.domain.Vinyl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,6 @@ public class VinylRepoImpl implements VinylRepo {
 
     private final ArtistRepo artistRepo;
     private final List<Vinyl> allVinyls;
-
 
     public VinylRepoImpl(ArtistRepo aRepo) {
         this.artistRepo = aRepo;
@@ -29,15 +28,18 @@ public class VinylRepoImpl implements VinylRepo {
         Artist arist1 = artistRepo.getArtistById(0);
         Artist arist2 = artistRepo.getArtistById(1);
 
-        vinyls.add(new Vinyl(0, "EP","ALL RED", "I AM MUSIC", true, arist1));
-        vinyls.add(new Vinyl(1, "LP","Rubber Soul", "Rock&Roll", true, arist2 ));
+        vinyls.add(new Vinyl(0, "EP", "ALL RED", "I AM MUSIC", true, arist1));
+        vinyls.add(new Vinyl(1, "LP", "Rubber Soul", "Rock&Roll", true, arist2));
 
         return vinyls;
     }
 
-    //The getVinyls() method is explicitly defined, replacing the need for the @Getter annotation from Lombok
-    //But I could add the @Getter. By adding @Getter, Lombok generates this method for you,
-    //allowing other classes to access the vinyls list without needing to explicitly define a getter method.
+    // The getVinyls() method is explicitly defined, replacing the need for the
+    // @Getter annotation from Lombok
+    // But I could add the @Getter. By adding @Getter, Lombok generates this method
+    // for you,
+    // allowing other classes to access the vinyls list without needing to
+    // explicitly define a getter method.
     @Override
     public List<Vinyl> getVinyls() {
         return new ArrayList<>(allVinyls);

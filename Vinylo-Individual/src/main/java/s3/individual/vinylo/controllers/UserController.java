@@ -14,16 +14,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
-import s3.individual.vinylo.Exceptions.CustomNotFoundException;
-import s3.individual.vinylo.Models.Mappers.UserMapper;
-import s3.individual.vinylo.Models.dtos.UserDTO;
-import s3.individual.vinylo.Models.dtos.UsersDTO;
-import s3.individual.vinylo.Models.services.UserService;
-import s3.individual.vinylo.serviceIMPL.domain.User;
-
+import s3.individual.vinylo.exceptions.CustomNotFoundException;
+import s3.individual.vinylo.domain.Mappers.UserMapper;
+import s3.individual.vinylo.domain.dtos.UserDTO;
+import s3.individual.vinylo.domain.dtos.UsersDTO;
+import s3.individual.vinylo.services.UserService;
+import s3.individual.vinylo.domain.User;
 
 @RestController
-@RequestMapping("/users") 
+@RequestMapping("/users")
 public class UserController {
 
     @Autowired
@@ -31,10 +30,10 @@ public class UserController {
 
     @GetMapping()
     public UsersDTO getUsers() {
-        
+
         List<User> users = userService.getUsers();
 
-        UsersDTO result =  UserMapper.toUsersDTO(users);
+        UsersDTO result = UserMapper.toUsersDTO(users);
 
         return result;
     }
@@ -42,16 +41,16 @@ public class UserController {
     @GetMapping("{id}")
     public ResponseEntity<?> getUser(@PathVariable("id") int id) {
 
-         User u = userService.getUserById(id);
+        User u = userService.getUserById(id);
 
-         if (u == null) {
-             // If the user is not found, throw this specific exception
-             throw new CustomNotFoundException("User record not found");
-         }
-         
-         UserDTO ud = UserMapper.toUserDTO(u);
+        if (u == null) {
+            // If the user is not found, throw this specific exception
+            throw new CustomNotFoundException("User record not found");
+        }
 
-         return ResponseEntity.ok(ud);
+        UserDTO ud = UserMapper.toUserDTO(u);
+
+        return ResponseEntity.ok(ud);
     }
 
     @PostMapping()
@@ -62,7 +61,7 @@ public class UserController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<String> deativateUserById(@PathVariable("id") int id) {  
+    public ResponseEntity<String> deativateUserById(@PathVariable("id") int id) {
         boolean isDeleted = userService.deativateUserById(id);
         if (isDeleted) {
             return ResponseEntity.ok("User with id " + id + " was successfully deleted.");

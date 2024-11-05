@@ -4,15 +4,15 @@ import java.util.*;
 
 import org.springframework.stereotype.Service;
 
-import s3.individual.vinylo.Models.persistence.UserRepo;
-import s3.individual.vinylo.Models.services.UserService;
-import s3.individual.vinylo.serviceIMPL.domain.User;
+import s3.individual.vinylo.persistence.UserRepo;
+import s3.individual.vinylo.services.UserService;
+import s3.individual.vinylo.domain.User;
 
 @Service
 public class UserServiceIMPL implements UserService {
-    
+
     private final UserRepo userRepo;
-    
+
     public UserServiceIMPL(UserRepo userRepo) {
         this.userRepo = userRepo;
     }
@@ -38,8 +38,8 @@ public class UserServiceIMPL implements UserService {
     }
 
     @Override
-    public boolean deativateUserById(int id) {  
-        return userRepo.deativateUserById(id);  
+    public boolean deativateUserById(int id) {
+        return userRepo.deativateUserById(id);
     }
-    
+
 }

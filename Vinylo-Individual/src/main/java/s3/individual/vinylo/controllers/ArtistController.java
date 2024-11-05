@@ -4,7 +4,7 @@ import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import s3.individual.vinylo.Exceptions.CustomNotFoundException;
+import s3.individual.vinylo.exceptions.CustomNotFoundException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
-import s3.individual.vinylo.Models.Mappers.ArtistMapper;
-import s3.individual.vinylo.Models.dtos.ArtistDTO;
-import s3.individual.vinylo.Models.dtos.ArtistsDTO;
-import s3.individual.vinylo.Models.services.ArtistService;
-import s3.individual.vinylo.serviceIMPL.domain.Artist;
+import s3.individual.vinylo.domain.Mappers.ArtistMapper;
+import s3.individual.vinylo.domain.dtos.ArtistDTO;
+import s3.individual.vinylo.domain.dtos.ArtistsDTO;
+import s3.individual.vinylo.services.ArtistService;
+import s3.individual.vinylo.domain.Artist;
 
 @RestController
 @RequestMapping("/artist")
@@ -25,7 +25,7 @@ public class ArtistController {
 
     @Autowired
     private ArtistService artistService;
-    
+
     @GetMapping()
     public ArtistsDTO getArtists() {
         List<Artist> artists = artistService.getArtists();
@@ -36,8 +36,7 @@ public class ArtistController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<?> getArtistById(@PathVariable("id") int id) 
-    {
+    public ResponseEntity<?> getArtistById(@PathVariable("id") int id) {
         Artist a = artistService.geArtistById(id);
 
         if (a == null) {
@@ -47,7 +46,7 @@ public class ArtistController {
         ArtistDTO ad = ArtistMapper.toArtistDTO(a);
 
         return ResponseEntity.ok(ad);
-    } 
+    }
 
     @PostMapping()
     public ArtistDTO createArtist(@RequestBody @Valid ArtistDTO newArtist) {

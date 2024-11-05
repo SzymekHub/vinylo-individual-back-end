@@ -2,15 +2,14 @@ package s3.individual.vinylo.persistenceIMPL;
 
 import org.springframework.stereotype.Repository;
 
-import s3.individual.vinylo.Models.persistence.UserRepo;
-import s3.individual.vinylo.serviceIMPL.domain.User;
+import s3.individual.vinylo.persistence.UserRepo;
+import s3.individual.vinylo.domain.User;
 
 import java.util.*;
 
 //injection using spring. "Hey this is the repo"
 @Repository
 public class UserRepoImpl implements UserRepo {
-
 
     private final List<User> allUsers;
 
@@ -19,7 +18,7 @@ public class UserRepoImpl implements UserRepo {
     }
 
     private List<User> CreateSomeUsers() {
-        List<User> users = new ArrayList<>();        
+        List<User> users = new ArrayList<>();
         users.add(new User(0, "Premium User 1", "PremiumUser@gmail.com", "I am premium", true));
         users.add(new User(1, "Regular user", "RegularUser@gmail.com", "I am a regular", false));
 
@@ -44,8 +43,8 @@ public class UserRepoImpl implements UserRepo {
     @Override
     public User findByUsername(String username) {
         return allUsers.stream()
-            .filter(user -> user.getUsername().equals(username))
-            .findFirst().orElse(null);
+                .filter(user -> user.getUsername().equals(username))
+                .findFirst().orElse(null);
     }
 
     @Override
@@ -56,7 +55,7 @@ public class UserRepoImpl implements UserRepo {
 
     @Override
     public boolean deativateUserById(int id) {
-        return  allUsers.removeIf(u -> u.id == (id));
+        return allUsers.removeIf(u -> u.id == (id));
     }
 
 }

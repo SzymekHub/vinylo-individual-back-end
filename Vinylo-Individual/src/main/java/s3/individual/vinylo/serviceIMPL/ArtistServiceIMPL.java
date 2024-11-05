@@ -4,9 +4,9 @@ import java.util.*;
 
 import org.springframework.stereotype.Service;
 
-import s3.individual.vinylo.Models.persistence.ArtistRepo;
-import s3.individual.vinylo.Models.services.ArtistService;
-import s3.individual.vinylo.serviceIMPL.domain.Artist;
+import s3.individual.vinylo.persistence.ArtistRepo;
+import s3.individual.vinylo.services.ArtistService;
+import s3.individual.vinylo.domain.Artist;
 
 @Service
 public class ArtistServiceIMPL implements ArtistService {
@@ -22,7 +22,7 @@ public class ArtistServiceIMPL implements ArtistService {
 
         return artistRepo.createNewArtist(newArtist);
     }
-    
+
     @Override
     public Artist geArtistById(int id) {
         return artistRepo.getArtistById(id);

@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
-import s3.individual.vinylo.Exceptions.CustomNotFoundException;
-import s3.individual.vinylo.Models.Mappers.AuctionMapper;
-import s3.individual.vinylo.Models.dtos.AuctionDTO;
-import s3.individual.vinylo.Models.dtos.AuctionsDTO;
-import s3.individual.vinylo.Models.services.AuctionService;
-import s3.individual.vinylo.serviceIMPL.domain.Auction;
+import s3.individual.vinylo.exceptions.CustomNotFoundException;
+import s3.individual.vinylo.domain.Mappers.AuctionMapper;
+import s3.individual.vinylo.domain.dtos.AuctionDTO;
+import s3.individual.vinylo.domain.dtos.AuctionsDTO;
+import s3.individual.vinylo.services.AuctionService;
+import s3.individual.vinylo.domain.Auction;
 
 @RestController
 @RequestMapping("/auctions")
@@ -25,10 +25,10 @@ public class AuctionController {
 
     @Autowired
     private AuctionService auctionService;
-    
+
     @GetMapping()
     public AuctionsDTO geAuctions() {
-        
+
         List<Auction> auctions = auctionService.getAuctions();
 
         AuctionsDTO result = AuctionMapper.toAuctionsDTO(auctions);
@@ -37,8 +37,7 @@ public class AuctionController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<?> getAuction(@PathVariable("id") int id) 
-    {
+    public ResponseEntity<?> getAuction(@PathVariable("id") int id) {
         Auction a = auctionService.getAuctionsById(id);
 
         if (a == null) {
@@ -49,11 +48,10 @@ public class AuctionController {
 
         return ResponseEntity.ok(ad);
 
-    } 
+    }
 
     @PostMapping()
-    public AuctionDTO creAuction(@RequestBody @Valid AuctionDTO newAuction) 
-    {
+    public AuctionDTO creAuction(@RequestBody @Valid AuctionDTO newAuction) {
         Auction newAcution = AuctionMapper.toAuction(newAuction);
         Auction createdAuction = auctionService.createAuction(newAcution);
         return AuctionMapper.toAuctionDTO(createdAuction);

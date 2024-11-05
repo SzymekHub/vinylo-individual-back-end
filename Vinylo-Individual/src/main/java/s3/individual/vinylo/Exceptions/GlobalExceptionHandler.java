@@ -1,4 +1,4 @@
-package s3.individual.vinylo.Exceptions;
+package s3.individual.vinylo.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +18,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NoHandlerFoundException.class)
     public ResponseEntity<String> handleNoHandlerFoundException(NoHandlerFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                             .body("Looks like you have run into a '/error'. Please check the URL and try again.");
+                .body("Looks like you have run into a '/error'. Please check the URL and try again.");
     }
 
     // Fallback for other exceptions

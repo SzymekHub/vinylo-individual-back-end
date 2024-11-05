@@ -5,22 +5,23 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import s3.individual.vinylo.Models.persistence.AuctionRepo;
-import s3.individual.vinylo.Models.services.AuctionService;
-import s3.individual.vinylo.serviceIMPL.domain.Auction;
+import s3.individual.vinylo.persistence.AuctionRepo;
+import s3.individual.vinylo.services.AuctionService;
+import s3.individual.vinylo.domain.Auction;
 
 @Service
 public class AuctionServiceIMPL implements AuctionService {
-    
+
     private final AuctionRepo auctionRepo;
 
     @Autowired
     public AuctionServiceIMPL(AuctionRepo auctionRepo) {
-        
+
         this.auctionRepo = auctionRepo;
     }
+
     @Override
-    public Auction createAuction(Auction auction){
+    public Auction createAuction(Auction auction) {
 
         return auctionRepo.createNewAuction(auction);
     }
@@ -32,7 +33,7 @@ public class AuctionServiceIMPL implements AuctionService {
     }
 
     @Override
-    public List<Auction> getAuctions(){
+    public List<Auction> getAuctions() {
 
         return auctionRepo.getAuctions();
     }
