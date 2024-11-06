@@ -2,7 +2,6 @@ package s3.individual.vinylo.controllers;
 
 import java.util.*;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import s3.individual.vinylo.exceptions.CustomNotFoundException;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,16 +22,17 @@ import s3.individual.vinylo.domain.Artist;
 @RequestMapping("/artist")
 public class ArtistController {
 
-    @Autowired
-    private ArtistService artistService;
+    private final ArtistService artistService;
+
+    public ArtistController(ArtistService artistService) {
+        this.artistService = artistService;
+    }
 
     @GetMapping()
     public ArtistsDTO getArtists() {
         List<Artist> artists = artistService.getArtists();
 
-        ArtistsDTO result = ArtistMapper.toArtistsDTO(artists);
-
-        return result;
+        return ArtistMapper.toArtistsDTO(artists);
     }
 
     @GetMapping("{id}")

@@ -2,7 +2,6 @@ package s3.individual.vinylo.controllers;
 
 import java.util.*;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,17 +22,18 @@ import s3.individual.vinylo.domain.Auction;
 @RequestMapping("/auctions")
 public class AuctionController {
 
-    @Autowired
-    private AuctionService auctionService;
+    private final AuctionService auctionService;
+
+    public AuctionController(AuctionService auctionService) {
+        this.auctionService = auctionService;
+    }
 
     @GetMapping()
     public AuctionsDTO geAuctions() {
 
         List<Auction> auctions = auctionService.getAuctions();
 
-        AuctionsDTO result = AuctionMapper.toAuctionsDTO(auctions);
-
-        return result;
+        return AuctionMapper.toAuctionsDTO(auctions);
     }
 
     @GetMapping("{id}")
@@ -52,8 +52,8 @@ public class AuctionController {
 
     @PostMapping()
     public AuctionDTO creAuction(@RequestBody @Valid AuctionDTO newAuction) {
-        Auction newAcution = AuctionMapper.toAuction(newAuction);
-        Auction createdAuction = auctionService.createAuction(newAcution);
+        Auction newAuctions = AuctionMapper.toAuction(newAuction);
+        Auction createdAuction = auctionService.createAuction(newAuctions);
         return AuctionMapper.toAuctionDTO(createdAuction);
     }
 }

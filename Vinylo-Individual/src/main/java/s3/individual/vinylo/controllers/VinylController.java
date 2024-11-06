@@ -1,6 +1,5 @@
 package s3.individual.vinylo.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,8 +26,11 @@ import java.util.List;
 
 public class VinylController {
 
-    @Autowired
-    private VinylService vinylService;
+    private final VinylService vinylService;
+
+    public VinylController(VinylService vinylService) {
+        this.vinylService = vinylService;
+    }
 
     @GetMapping()
     public VinylsDTO getVinyls() {
