@@ -6,17 +6,15 @@ import s3.individual.vinylo.persistence.VinylRepo;
 import s3.individual.vinylo.services.VinylService;
 import s3.individual.vinylo.domain.Vinyl;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class VinylServiceIMPL implements VinylService {
 
     private final VinylRepo vinylRepo;
-
-    public VinylServiceIMPL(VinylRepo vinylRepo) {
-        this.vinylRepo = vinylRepo;
-    }
 
     @Override
     @Transactional
