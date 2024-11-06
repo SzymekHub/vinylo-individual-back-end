@@ -26,7 +26,7 @@ public class MockVinylRepo implements VinylRepo {
     }
 
     @Override
-    public Vinyl createNewVinyl(Vinyl newVinyl) {
+    public Vinyl saveVinyl(Vinyl newVinyl) {
         vinyls.add(newVinyl);
         return newVinyl;
     }

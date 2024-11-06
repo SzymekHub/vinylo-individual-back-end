@@ -5,14 +5,13 @@ import java.util.List;
 import s3.individual.vinylo.domain.Vinyl;
 
 public interface VinylService {
+    Vinyl saveVinyl(int id, Vinyl newVinyl);
 
-    Vinyl createNewVinyl(Vinyl newvinyl);
+    Vinyl saveVinyl(Vinyl newVinyl); // Overloaded method for creating new vinyl
 
     Vinyl getVinylById(int id);
 
     List<Vinyl> getVinyls();
-
-    Vinyl replaceVinyl(int id, Vinyl newVinyl);
 
     boolean deleteVinylById(int id);
 

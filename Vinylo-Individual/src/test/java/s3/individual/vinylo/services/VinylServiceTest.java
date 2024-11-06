@@ -32,7 +32,7 @@ public class VinylServiceTest {
         Vinyl vinyl = new Vinyl(10, "LP", "Test Album", "Test Description", false, arist1);
 
         // Act - Execute the method to be tested
-        Vinyl result = vinylService.createNewVinyl(vinyl);
+        Vinyl result = vinylService.saveVinyl(vinyl);
 
         // Assert - Check if the method post-condition is as expected
         assertEquals(vinyl, result);
@@ -53,7 +53,7 @@ public class VinylServiceTest {
         Artist artist2 = new Artist(2, "Artist2", "Artist2 bio");
 
         Vinyl vinyl = new Vinyl(10, "LP", "Test2 Album", "Test2 Description", false, artist2);
-        mockVinylRepo.createNewVinyl(vinyl);
+        mockVinylRepo.saveVinyl(vinyl);
 
         // Act - Execute the method to be tested
         Vinyl result = vinylService.getVinylById(10);
@@ -70,8 +70,8 @@ public class VinylServiceTest {
 
         Vinyl vinyl = new Vinyl(10, "LP", "Test2 Album", "Test2 Description", false, artist2);
         Vinyl vinyl2 = new Vinyl(12, "EP", "Test3 Album", "Test3 Description", true, artist3);
-        mockVinylRepo.createNewVinyl(vinyl);
-        mockVinylRepo.createNewVinyl(vinyl2);
+        mockVinylRepo.saveVinyl(vinyl);
+        mockVinylRepo.saveVinyl(vinyl2);
 
         // Act - Execute the method to be tested
         List<Vinyl> vinyls = vinylService.getVinyls();
@@ -90,10 +90,10 @@ public class VinylServiceTest {
 
         Vinyl existingVinyl = new Vinyl(10, "LP", "Test2 Album", "Test2 Description", false, artist2);
         Vinyl newVinyl = new Vinyl(10, "EP", "Test3 Album", "Test3 Description", true, artist3);
-        mockVinylRepo.createNewVinyl(existingVinyl);
+        mockVinylRepo.saveVinyl(existingVinyl);
 
         // Act - Execute the method to be tested
-        Vinyl vinyl = vinylService.replaceVinyl(10, newVinyl);
+        Vinyl vinyl = vinylService.saveVinyl(10, newVinyl);
 
         // Assert - Check if the method post-condition is as expected
         assertEquals(newVinyl.getArtist(), vinyl.getArtist());
@@ -109,7 +109,7 @@ public class VinylServiceTest {
         // Arrange
         Artist artist2 = new Artist(2, "Artist2", "Artist2 bio");
         Vinyl vinyl = new Vinyl(10, "LP", "Test Album", "Test2 Description", false, artist2);
-        mockVinylRepo.createNewVinyl(vinyl);
+        mockVinylRepo.saveVinyl(vinyl);
 
         // Act - Execute the method to be tested
         boolean result = vinylService.deleteVinylById(10);

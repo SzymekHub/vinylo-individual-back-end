@@ -60,14 +60,14 @@ public class VinylController {
     @PostMapping()
     public VinylDTO createNewVinyl(@RequestBody @Valid VinylDTO newVinylDTO) {
         Vinyl newVinyl = VinylMapper.toVinyl(newVinylDTO);
-        Vinyl cretedVinyl = vinylService.createNewVinyl(newVinyl);
-        return VinylMapper.toVinylDTO(cretedVinyl);
+        Vinyl createdVinyl = vinylService.saveVinyl(newVinyl);
+        return VinylMapper.toVinylDTO(createdVinyl);
     }
 
     @PutMapping("{id}")
     public VinylDTO replaceVinyl(@RequestBody VinylDTO newVinylDTO, @PathVariable("id") int id) {
         Vinyl newVinyl = VinylMapper.toVinyl(newVinylDTO);
-        Vinyl replacedVinyl = vinylService.replaceVinyl(id, newVinyl);
+        Vinyl replacedVinyl = vinylService.saveVinyl(id, newVinyl); // Correctly passing both id and newVinyl
         return VinylMapper.toVinylDTO(replacedVinyl);
     }
 

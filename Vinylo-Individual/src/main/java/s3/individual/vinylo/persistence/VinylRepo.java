@@ -10,7 +10,7 @@ public interface VinylRepo {
 
     Vinyl getVinylById(int id);
 
-    Vinyl createNewVinyl(Vinyl vinyl);
+    Vinyl saveVinyl(Vinyl vinyl);
 
     boolean deleteVinylById(int id);
 }

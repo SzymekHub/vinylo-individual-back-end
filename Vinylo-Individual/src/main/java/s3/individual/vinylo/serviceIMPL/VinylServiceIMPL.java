@@ -18,14 +18,35 @@ public class VinylServiceIMPL implements VinylService {
         this.vinylRepo = vinylRepo;
     }
 
+    @Override
+    @Transactional
+    public Vinyl saveVinyl(Vinyl newVinyl) {
+        // Create a new vinyl if it doesn't exist
+        return vinylRepo.saveVinyl(newVinyl);
+    }
+
     // @Transactional -> That’s all it takes to have all queries triggered inside
     // the method inside a same database transaction.
     // !! Always remember of using transactions in your use-cases!
-    @Transactional
     @Override
-    public Vinyl createNewVinyl(Vinyl newvinyl) {
+    @Transactional
+    public Vinyl saveVinyl(int id, Vinyl newVinyl) {
+        Vinyl existingVinyl = vinylRepo.getVinylById(id);
 
-        return vinylRepo.createNewVinyl(newvinyl);
+        if (existingVinyl != null) {
+            // Update the existing vinyl with the new details
+            existingVinyl.setTitle(newVinyl.getTitle());
+            existingVinyl.setDescription(newVinyl.getDescription());
+            existingVinyl.setIsReleased(newVinyl.getisReleased());
+            existingVinyl.setArtist(newVinyl.getArtist());
+            existingVinyl.setVinylType(newVinyl.getvinylType());
+
+            // Save the updated vinyl to the database
+            return vinylRepo.saveVinyl(existingVinyl); // Save the updated vinyl
+        } else {
+            // Create a new vinyl if it doesn't exist
+            return vinylRepo.saveVinyl(newVinyl);
+        }
     }
 
     @Override
@@ -35,23 +56,8 @@ public class VinylServiceIMPL implements VinylService {
 
     @Override
     public List<Vinyl> getVinyls() {
+
         return vinylRepo.getVinyls();
-    }
-
-    @Override
-    public Vinyl replaceVinyl(int id, Vinyl newVinyl) {
-        Vinyl existingVinyl = vinylRepo.getVinylById(id);
-
-        if (existingVinyl != null) {
-            existingVinyl.setTitle(newVinyl.getTitle());
-            existingVinyl.setDescription(newVinyl.getDescription());
-            existingVinyl.setIsReleased(newVinyl.getisReleased());
-            existingVinyl.setArtist(newVinyl.getArtist());
-            existingVinyl.setVinylType(newVinyl.getvinylType());
-            return existingVinyl;
-        } else {
-            return vinylRepo.createNewVinyl(newVinyl);
-        }
     }
 
     @Override
