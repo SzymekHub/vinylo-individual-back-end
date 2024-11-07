@@ -62,7 +62,11 @@ public class VinylController {
     @PostMapping()
     public VinylDTO createNewVinyl(@RequestBody @Valid VinylDTO newVinylDTO) {
         Vinyl newVinyl = VinylMapper.toVinyl(newVinylDTO);
-        Vinyl createdVinyl = vinylService.saveVinyl(newVinyl);
+        // Because I use Integer in the saveVinyl method I allow nulls, so i can make
+        // new vinyls
+        // Integer is a wrapper class for int, which means it can hold an integer value
+        // but also allows for null.
+        Vinyl createdVinyl = vinylService.saveVinyl(null, newVinyl);
         return VinylMapper.toVinylDTO(createdVinyl);
     }
 

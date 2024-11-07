@@ -13,122 +13,152 @@ import s3.individual.vinylo.domain.Vinyl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
+import java.util.List;
+
 @ExtendWith(MockitoExtension.class)
 class VinylServiceIMPLTests {
 
-    @Mock
-    private VinylRepo vinylRepoMock;
+        @Mock
+        private VinylRepo vinylRepoMock;
 
-    @InjectMocks
-    private VinylServiceIMPL vinylService;
+        @InjectMocks
+        private VinylServiceIMPL vinylService;
 
-    @Test
-    void testGetVinylById_ShouldReturnVinylWithGivenId() {
-        // Arrange
-        int vinylId = 1;
-        Vinyl expectedVinyl = Vinyl.builder()
-                .id(vinylId)
-                .vinylType("EP")
-                .title("ALL RED")
-                .description("I AM MUSIC")
-                .isReleased(true)
-                .artist(Artist.builder()
-                        .id(1)
-                        .name("PLAYBOI CARTI")
-                        .bio("syrup")
-                        .build())
-                .build();
+        private Artist createArtist(int id, String name, String bio) {
+                return Artist.builder()
+                                .id(id)
+                                .name(name)
+                                .bio(bio)
+                                .build();
+        }
 
-        when(vinylRepoMock.getVinylById(vinylId)).thenReturn(expectedVinyl);
+        private Vinyl createVinyl(int id, String title, String vinylType, String description, boolean isReleased,
+                        Artist artist) {
+                return Vinyl.builder()
+                                .id(id)
+                                .title(title)
+                                .vinylType(vinylType)
+                                .description(description)
+                                .isReleased(isReleased)
+                                .artist(artist)
+                                .build();
+        }
 
-        // Act
-        Vinyl actualVinyl = vinylService.getVinylById(vinylId);
+        @Test
+        void testSaveVinyl_ShouldSaveAndReturnNewVinyl() {
+                // Arrange
+                Vinyl newVinyl = createVinyl(2,
+                                "Rubber Soul",
+                                "LP",
+                                "ROCK&ROLL",
+                                true,
+                                createArtist(2, "The Beatles", "Yeah yeah yeah"));
 
-        // Assert
-        assertEquals(expectedVinyl, actualVinyl);
-        verify(vinylRepoMock, times(1)).getVinylById(vinylId);
-    }
+                when(vinylRepoMock.saveVinyl(newVinyl)).thenReturn(newVinyl);
 
-    @Test
-    void testSaveVinyl_ShouldSaveAndReturnNewVinyl() {
-        // Arrange
-        Vinyl newVinyl = Vinyl.builder()
-                .vinylType("LP")
-                .title("Rubber Soul")
-                .description("ROCK&ROLL")
-                .isReleased(true)
-                .artist(Artist.builder()
-                        .id(2)
-                        .name("The Beatles")
-                        .bio("Yeah yeah yeah")
-                        .build())
-                .build();
+                // Act
+                Vinyl savedVinyl = vinylService.saveVinyl(null, newVinyl);
 
-        when(vinylRepoMock.saveVinyl(newVinyl)).thenReturn(newVinyl);
+                // Assert
+                assertEquals(newVinyl, savedVinyl);
+                verify(vinylRepoMock).saveVinyl(newVinyl);
+        }
 
-        // Act
-        Vinyl savedVinyl = vinylService.saveVinyl(newVinyl);
+        @Test
+        void testSaveVinyl_ShouldUpdateExistingVinyl() {
+                // Arrange
+                int vinylId = 2;
 
-        // Assert
-        assertEquals(newVinyl, savedVinyl);
-        verify(vinylRepoMock).saveVinyl(newVinyl);
-    }
+                // Set up an existing vinyl in the mock repo
+                Vinyl existingVinyl = createVinyl(vinylId,
+                                "Rubber Soul",
+                                "LP",
+                                "ROCK&ROLL",
+                                true,
+                                createArtist(2, "The Beatles", "Yeah yeah yeah"));
 
-    @Test
-    void testSaveVinyl_ShouldUpdateExistingVinyl() {
-        // Arrange
-        int vinylId = 1;
+                // Updated details for the vinyl
+                Vinyl updatedVinyl = createVinyl(vinylId, "Soul Rubber", "LP", "ROLL&ROCK", false,
+                                createArtist(2, "The Beatles", "yeah Yeah yeah"));
 
-        // Set up an existing vinyl in the mock repo
-        Vinyl existingVinyl = Vinyl.builder()
-                .id(vinylId)
-                .vinylType("LP")
-                .title("Original Album")
-                .description("Original Description")
-                .isReleased(false)
-                .artist(new Artist(1, "Original Artist", "Bio"))
-                .build();
+                // Mock the repository behavior
+                when(vinylRepoMock.getVinylById(vinylId)).thenReturn(existingVinyl);
+                when(vinylRepoMock.saveVinyl(existingVinyl)).thenReturn(updatedVinyl);
 
-        // Updated details for the vinyl
-        Vinyl updatedVinyl = Vinyl.builder()
-                .id(vinylId)
-                .vinylType("EP")
-                .title("Updated Album")
-                .description("Updated Description")
-                .isReleased(true)
-                .artist(new Artist(1, "Updated Artist", "Updated Bio"))
-                .build();
+                // Act
+                Vinyl result = vinylService.saveVinyl(vinylId, updatedVinyl);
 
-        // Mock the repository behavior
-        when(vinylRepoMock.getVinylById(vinylId)).thenReturn(existingVinyl);
-        when(vinylRepoMock.saveVinyl(existingVinyl)).thenReturn(updatedVinyl);
+                // Assert
+                assertEquals("Soul Rubber", result.getTitle());
+                assertEquals("ROLL&ROCK", result.getDescription());
+                assertEquals("LP", result.getvinylType());
+                assertEquals(false, result.getisReleased());
+                assertEquals("The Beatles", result.getArtist().getName());
 
-        // Act
-        Vinyl result = vinylService.saveVinyl(vinylId, updatedVinyl);
+                // Verify that the repository's save method was called with the updated vinyl
+                verify(vinylRepoMock).saveVinyl(existingVinyl);
+                verify(vinylRepoMock).getVinylById(vinylId);
+        }
 
-        // Assert
-        assertEquals("Updated Album", result.getTitle());
-        assertEquals("Updated Description", result.getDescription());
-        assertEquals("EP", result.getvinylType());
-        assertEquals(true, result.getisReleased());
-        assertEquals("Updated Artist", result.getArtist().getName());
+        @Test
+        void testGetVinylById_ShouldReturnVinylWithGivenId() {
+                // Arrange
+                int vinylId = 1;
+                Vinyl expectedVinyl = createVinyl(vinylId,
+                                "ALL RED",
+                                "EP",
+                                "I AM MUSIC",
+                                true,
+                                createArtist(1, "PLAYBOI CARTI", "syrup"));
 
-        // Verify that the repository's save method was called with the updated vinyl
-        verify(vinylRepoMock, times(1)).saveVinyl(existingVinyl);
-        verify(vinylRepoMock, times(1)).getVinylById(vinylId);
-    }
+                when(vinylRepoMock.getVinylById(vinylId)).thenReturn(expectedVinyl);
 
-    @Test
-    void testDeleteVinylById_ShouldReturnTrueWhenVinylIsDeleted() {
-        // Arrange
-        int vinylId = 1;
-        when(vinylRepoMock.deleteVinylById(vinylId)).thenReturn(true);
+                // Act
+                Vinyl actualVinyl = vinylService.getVinylById(vinylId);
 
-        // Act
-        boolean isDeleted = vinylService.deleteVinylById(vinylId);
+                // Assert
+                assertEquals(expectedVinyl, actualVinyl);
+                verify(vinylRepoMock).getVinylById(vinylId);
+        }
 
-        // Assert
-        assertEquals(true, isDeleted);
-        verify(vinylRepoMock, times(1)).deleteVinylById(vinylId);
-    }
+        @Test
+        void getVinyls_ShouldReturnAllVinylRecords() {
+                // Arrange
+                Vinyl vinyl1 = createVinyl(3,
+                                "Abbey Road",
+                                "LP",
+                                "Classic Beatles album",
+                                true,
+                                createArtist(2, "The Beatles", "Legendary rock band"));
+
+                Vinyl vinyl2 = createVinyl(4,
+                                "Purple Rain",
+                                "EP",
+                                "Iconic Prince single",
+                                true,
+                                createArtist(3, "Prince", "The Purple One"));
+
+                when(vinylRepoMock.getVinyls()).thenReturn(List.of(vinyl1, vinyl2));
+
+                // Act
+                List<Vinyl> actualVinyls = vinylService.getVinyls();
+
+                // Assert
+                assertEquals(List.of(vinyl1, vinyl2), actualVinyls);
+                verify(vinylRepoMock).getVinyls();
+        }
+
+        @Test
+        void testDeleteVinylById_ShouldReturnTrueWhenVinylIsDeleted() {
+                // Arrange
+                int vinylId = 1;
+                when(vinylRepoMock.deleteVinylById(vinylId)).thenReturn(true);
+
+                // Act
+                boolean isDeleted = vinylService.deleteVinylById(vinylId);
+
+                // Assert
+                assertEquals(true, isDeleted);
+                verify(vinylRepoMock).deleteVinylById(vinylId);
+        }
 }

@@ -32,7 +32,7 @@ public class VinylServiceTest {
         Vinyl vinyl = new Vinyl(10, "LP", "Test Album", "Test Description", false, arist1);
 
         // Act - Execute the method to be tested
-        Vinyl result = vinylService.saveVinyl(vinyl);
+        Vinyl result = vinylService.saveVinyl(null, vinyl);
 
         // Assert - Check if the method post-condition is as expected
         assertEquals(vinyl, result);

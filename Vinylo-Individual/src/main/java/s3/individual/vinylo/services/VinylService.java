@@ -5,9 +5,10 @@ import java.util.List;
 import s3.individual.vinylo.domain.Vinyl;
 
 public interface VinylService {
-    Vinyl saveVinyl(int id, Vinyl newVinyl);
-
-    Vinyl saveVinyl(Vinyl newVinyl); // Overloaded method for creating new vinyl
+    // I use Integer here so that it can allow nulls, so i can make new vinyls
+    // Integer is a wrapper class for int, which means it can hold an integer value
+    // but also allows for null.
+    Vinyl saveVinyl(Integer id, Vinyl newVinyl);
 
     Vinyl getVinylById(int id);
 

@@ -16,20 +16,16 @@ public class VinylServiceIMPL implements VinylService {
 
     private final VinylRepo vinylRepo;
 
-    @Override
-    @Transactional
-    public Vinyl saveVinyl(Vinyl newVinyl) {
-        // Create a new vinyl if it doesn't exist
-        return vinylRepo.saveVinyl(newVinyl);
-    }
-
     // @Transactional -> That’s all it takes to have all queries triggered inside
     // the method inside a same database transaction.
     // !! Always remember of using transactions in your use-cases!
     @Override
     @Transactional
-    public Vinyl saveVinyl(int id, Vinyl newVinyl) {
-        Vinyl existingVinyl = vinylRepo.getVinylById(id);
+    public Vinyl saveVinyl(Integer id, Vinyl newVinyl) {
+        // I use Integer here so that it can allow nulls, so i can make new vinyls
+        // Integer is a wrapper class for int, which means it can hold an integer value
+        // but also allows for null.
+        Vinyl existingVinyl = (id != null) ? vinylRepo.getVinylById(id) : null;
 
         if (existingVinyl != null) {
             // Update the existing vinyl with the new details
@@ -40,7 +36,7 @@ public class VinylServiceIMPL implements VinylService {
             existingVinyl.setVinylType(newVinyl.getvinylType());
 
             // Save the updated vinyl to the database
-            return vinylRepo.saveVinyl(existingVinyl); // Save the updated vinyl
+            return vinylRepo.saveVinyl(existingVinyl);
         } else {
             // Create a new vinyl if it doesn't exist
             return vinylRepo.saveVinyl(newVinyl);
