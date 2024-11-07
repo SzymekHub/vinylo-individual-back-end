@@ -3,7 +3,6 @@ package s3.individual.vinylo.persistence.JPArepositoryIMPL;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import s3.individual.vinylo.domain.Vinyl;
@@ -16,7 +15,6 @@ public class VinylJPARepoIMPL implements VinylRepo {
 
     private final VinylJPARepo vinylJPARepo;
 
-    @Autowired
     public VinylJPARepoIMPL(VinylJPARepo vinylJPARepo) {
         this.vinylJPARepo = vinylJPARepo;
     }

@@ -2,7 +2,6 @@ package s3.individual.vinylo.serviceIMPL;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import s3.individual.vinylo.persistence.AuctionRepo;
@@ -14,7 +13,6 @@ public class AuctionServiceIMPL implements AuctionService {
 
     private final AuctionRepo auctionRepo;
 
-    @Autowired
     public AuctionServiceIMPL(AuctionRepo auctionRepo) {
 
         this.auctionRepo = auctionRepo;
