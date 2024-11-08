@@ -9,8 +9,10 @@ import s3.individual.vinylo.persistence.VinylRepo;
 import s3.individual.vinylo.serviceIMPL.VinylServiceIMPL;
 import s3.individual.vinylo.domain.Artist;
 import s3.individual.vinylo.domain.Vinyl;
+import s3.individual.vinylo.exceptions.CustomNotFoundException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 import java.util.List;
@@ -101,6 +103,21 @@ class VinylServiceIMPLTests {
         }
 
         @Test
+        void testSaveVinyl_ShouldThrowExceptionWhenVinylNotFoundForUpdate() {
+                // Arrange
+                int vinylId = 2;
+                Vinyl updatedVinyl = createVinyl(vinylId, "Soul Rubber", "LP", "ROLL&ROCK", false,
+                                createArtist(2, "The Beatles", "yeah yeah"));
+
+                when(vinylRepoMock.getVinylById(vinylId)).thenReturn(null);
+
+                // Act & Assert
+                assertThrows(CustomNotFoundException.class, () -> {
+                        vinylService.saveVinyl(vinylId, updatedVinyl);
+                });
+        }
+
+        @Test
         void testGetVinylById_ShouldReturnVinylWithGivenId() {
                 // Arrange
                 int vinylId = 1;
@@ -152,13 +169,17 @@ class VinylServiceIMPLTests {
         void testDeleteVinylById_ShouldReturnTrueWhenVinylIsDeleted() {
                 // Arrange
                 int vinylId = 1;
+                // Mock the repository to return true when delete is called
                 when(vinylRepoMock.deleteVinylById(vinylId)).thenReturn(true);
 
                 // Act
                 boolean isDeleted = vinylService.deleteVinylById(vinylId);
 
                 // Assert
+                // Verify the return value
                 assertEquals(true, isDeleted);
+                // Ensure the method was called with the correct
+                // parameter
                 verify(vinylRepoMock).deleteVinylById(vinylId);
         }
 }

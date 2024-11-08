@@ -4,23 +4,39 @@ import java.util.*;
 
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import s3.individual.vinylo.persistence.ArtistRepo;
 import s3.individual.vinylo.services.ArtistService;
 import s3.individual.vinylo.domain.Artist;
+import s3.individual.vinylo.exceptions.CustomNotFoundException;
 
 @Service
+@RequiredArgsConstructor
 public class ArtistServiceIMPL implements ArtistService {
 
     private final ArtistRepo artistRepo;
 
-    public ArtistServiceIMPL(ArtistRepo artistRepo) {
-        this.artistRepo = artistRepo;
-    }
-
     @Override
-    public Artist createNewArtist(Artist newArtist) {
+    @Transactional
+    public Artist saveArtist(Integer id, Artist newArtist) {
+        if (id != null) {
+            // Check if the artist exists
+            Artist existingArtist = artistRepo.getArtistById(id);
+            if (existingArtist == null) {
+                // Throw an exception if the artist does not exist
+                throw new CustomNotFoundException(
+                        "Artist with ID " + id + " was not found. A new artist will be created");
+            }
+            // Update the existing artists bio with new details
+            existingArtist.setBio(newArtist.getBio());
 
-        return artistRepo.createNewArtist(newArtist);
+            // Save the updated artist to the database
+            return artistRepo.saveArtist(existingArtist);
+
+        }
+        // if no ID is provided or artist does not exist, create a new one
+        return artistRepo.saveArtist(newArtist);
     }
 
     @Override

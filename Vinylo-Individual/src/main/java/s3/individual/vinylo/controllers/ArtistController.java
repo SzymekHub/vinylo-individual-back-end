@@ -17,6 +17,7 @@ import s3.individual.vinylo.domain.dtos.ArtistDTO;
 import s3.individual.vinylo.domain.dtos.ArtistsDTO;
 import s3.individual.vinylo.services.ArtistService;
 import s3.individual.vinylo.domain.Artist;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @RequestMapping("/artist")
@@ -49,11 +50,18 @@ public class ArtistController {
     }
 
     @PostMapping()
-    public ArtistDTO createArtist(@RequestBody @Valid ArtistDTO newArtist) {
+    public ArtistDTO createArtist(@RequestBody @Valid ArtistDTO newArtistDTO) {
+        Artist newArtist = ArtistMapper.toArtist(newArtistDTO);
+        Artist createArtist = artistService.saveArtist(null, newArtist);
 
-        Artist newArtistEntity = ArtistMapper.toArtist(newArtist);
-        Artist createArtist = artistService.createNewArtist(newArtistEntity);
         return ArtistMapper.toArtistDTO(createArtist);
+    }
+
+    @PutMapping("{id}")
+    public ArtistDTO replaceArtistBio(@RequestBody ArtistDTO newArtistDTO, @PathVariable("id") int id) {
+        Artist newArtist = ArtistMapper.toArtist(newArtistDTO);
+        Artist replaceArtist = artistService.saveArtist(id, newArtist);
+        return ArtistMapper.toArtistDTO(replaceArtist);
     }
 
 }

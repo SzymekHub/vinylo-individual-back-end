@@ -5,6 +5,7 @@ import s3.individual.vinylo.persistence.entity.VinylEntity;
 
 public interface VinylJPARepo extends JpaRepository<VinylEntity, Integer> {
 
+    boolean existsById(int id);
     // // Find all vinyls by a specific artist's ID
     // List<VinylEntity> findByArtistId(int artistId);
 

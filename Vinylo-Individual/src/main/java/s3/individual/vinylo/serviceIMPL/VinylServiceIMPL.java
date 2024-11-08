@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import s3.individual.vinylo.persistence.VinylRepo;
 import s3.individual.vinylo.services.VinylService;
 import s3.individual.vinylo.domain.Vinyl;
+import s3.individual.vinylo.exceptions.CustomInternalServerErrorException;
+import s3.individual.vinylo.exceptions.CustomNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
@@ -22,24 +24,32 @@ public class VinylServiceIMPL implements VinylService {
     @Override
     @Transactional
     public Vinyl saveVinyl(Integer id, Vinyl newVinyl) {
-        // I use Integer here so that it can allow nulls, so i can make new vinyls
-        // Integer is a wrapper class for int, which means it can hold an integer value
-        // but also allows for null.
-        Vinyl existingVinyl = (id != null) ? vinylRepo.getVinylById(id) : null;
+        try {
+            if (id != null) {
+                // Check if the vinyl exists
+                Vinyl existingVinyl = vinylRepo.getVinylById(id);
+                if (existingVinyl == null) {
+                    // Throw an exception if the vinyl doesn't exist
+                    throw new CustomNotFoundException(
+                            "Vinyl with ID " + id + " was not found.  A new vinyl will be created");
+                }
+                // Update the existing vinyl with the new details
+                existingVinyl.setTitle(newVinyl.getTitle());
+                existingVinyl.setDescription(newVinyl.getDescription());
+                existingVinyl.setIsReleased(newVinyl.getisReleased());
+                existingVinyl.setArtist(newVinyl.getArtist());
+                existingVinyl.setVinylType(newVinyl.getvinylType());
 
-        if (existingVinyl != null) {
-            // Update the existing vinyl with the new details
-            existingVinyl.setTitle(newVinyl.getTitle());
-            existingVinyl.setDescription(newVinyl.getDescription());
-            existingVinyl.setIsReleased(newVinyl.getisReleased());
-            existingVinyl.setArtist(newVinyl.getArtist());
-            existingVinyl.setVinylType(newVinyl.getvinylType());
+                // Save the updated vinyl to the database
+                return vinylRepo.saveVinyl(existingVinyl);
 
-            // Save the updated vinyl to the database
-            return vinylRepo.saveVinyl(existingVinyl);
-        } else {
-            // Create a new vinyl if it doesn't exist
-            return vinylRepo.saveVinyl(newVinyl);
+            } else {
+                // If no ID is provided or vinyl doesn't exist, create a new one
+                return vinylRepo.saveVinyl(newVinyl);
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Log the error
+            throw new CustomInternalServerErrorException("Failed to save the vinyl.");
         }
     }
 

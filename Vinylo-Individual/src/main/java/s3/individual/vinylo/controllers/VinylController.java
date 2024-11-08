@@ -16,7 +16,9 @@ import s3.individual.vinylo.exceptions.CustomNotFoundException;
 import s3.individual.vinylo.domain.Mappers.VinylMapper;
 import s3.individual.vinylo.domain.dtos.VinylDTO;
 import s3.individual.vinylo.domain.dtos.VinylsDTO;
+import s3.individual.vinylo.services.ArtistService;
 import s3.individual.vinylo.services.VinylService;
+import s3.individual.vinylo.domain.Artist;
 import s3.individual.vinylo.domain.Vinyl;
 
 import java.util.List;
@@ -27,17 +29,18 @@ import java.util.List;
 public class VinylController {
 
     private final VinylService vinylService;
+    private final ArtistService artistService;
 
-    public VinylController(VinylService vinylService) {
+    public VinylController(VinylService vinylService, ArtistService artistService) {
         this.vinylService = vinylService;
+        this.artistService = artistService;
     }
 
     @GetMapping()
     public VinylsDTO getVinyls() {
         List<Vinyl> vinyls = vinylService.getVinyls();
 
-        VinylsDTO result = VinylMapper.toVinylsDTO(vinyls);
-        return result;
+        return VinylMapper.toVinylsDTO(vinyls);
     }
 
     // I changed return type to ResponseEntity<?> to handle HTTP responses.
@@ -60,14 +63,21 @@ public class VinylController {
     }
 
     @PostMapping()
-    public VinylDTO createNewVinyl(@RequestBody @Valid VinylDTO newVinylDTO) {
+    public ResponseEntity<VinylDTO> createNewVinyl(@RequestBody @Valid VinylDTO newVinylDTO) {
+        // Fetch the artist by ID from the database
+        Artist artist = artistService.geArtistById(newVinylDTO.getArtist().id);
+        if (artist == null) {
+            throw new CustomNotFoundException("Artist not found.");
+        }
+        System.out.println("Artist Found: " + artist); // Simple log, use a logging framework for production
+
+        // Set the artist in the new Vinyl entity
         Vinyl newVinyl = VinylMapper.toVinyl(newVinylDTO);
-        // Because I use Integer in the saveVinyl method I allow nulls, so i can make
-        // new vinyls
-        // Integer is a wrapper class for int, which means it can hold an integer value
-        // but also allows for null.
-        Vinyl createdVinyl = vinylService.saveVinyl(null, newVinyl);
-        return VinylMapper.toVinylDTO(createdVinyl);
+        newVinyl.setArtist(artist);
+
+        // Save and return the new Vinyl
+        Vinyl savedVinyl = vinylService.saveVinyl(null, newVinyl);
+        return ResponseEntity.status(HttpStatus.CREATED).body(VinylMapper.toVinylDTO(savedVinyl));
     }
 
     @PutMapping("{id}")

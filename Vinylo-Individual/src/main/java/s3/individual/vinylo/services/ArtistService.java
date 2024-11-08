@@ -6,7 +6,7 @@ import s3.individual.vinylo.domain.Artist;
 
 public interface ArtistService {
 
-    Artist createNewArtist(Artist newArtist);
+    Artist saveArtist(Integer id, Artist newArtist);
 
     Artist geArtistById(int id);
 

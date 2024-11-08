@@ -12,7 +12,7 @@ public interface ArtistRepo {
 
     Artist getArtistById(int id);
 
-    Artist createNewArtist(Artist newArtist);
+    Artist saveArtist(Artist newArtist);
 
     boolean deactivateArtistById(int id);
 
