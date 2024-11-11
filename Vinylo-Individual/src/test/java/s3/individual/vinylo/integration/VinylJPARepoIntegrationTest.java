@@ -1,7 +1,7 @@
 package s3.individual.vinylo.integration;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -49,7 +49,7 @@ class VinylJPARepoIntegrationTest {
     @Test
     void TestCreateNewVinyl_ShouldReturnANewVinyl() {
         VinylEntity savedVinyl = vinylJPARepo.save(testVinyl);
-        assertNotNull(savedVinyl.getId());
+        assertEquals(1, savedVinyl.getId());
         assertNotEquals(("LP"), savedVinyl.getVinylType());
     }
 

@@ -8,7 +8,7 @@ public interface AuctionRepo {
 
     List<Auction> getAuctions();
 
-    Auction createNewAuction(Auction auction);;
+    Auction createNewAuction(Auction auction);
 
     Auction getAuctionById(int id);
 }
