@@ -8,7 +8,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import s3.individual.vinylo.domain.Artist;
 import s3.individual.vinylo.exceptions.CustomNotFoundException;
 import s3.individual.vinylo.persistence.ArtistRepo;
-import s3.individual.vinylo.serviceIMPL.ArtistServiceIMPL;
+import s3.individual.vinylo.serviceimpl.ArtistServiceIMPL;
 
 import java.util.List;
 

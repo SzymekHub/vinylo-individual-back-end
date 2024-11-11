@@ -6,7 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import s3.individual.vinylo.persistence.VinylRepo;
-import s3.individual.vinylo.serviceIMPL.VinylServiceIMPL;
+import s3.individual.vinylo.serviceimpl.VinylServiceIMPL;
 import s3.individual.vinylo.domain.Artist;
 import s3.individual.vinylo.domain.Vinyl;
 // import s3.individual.vinylo.exceptions.CustomNotFoundException;

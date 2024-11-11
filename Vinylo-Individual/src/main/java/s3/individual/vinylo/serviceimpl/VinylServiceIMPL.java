@@ -1,4 +1,4 @@
-package s3.individual.vinylo.serviceIMPL;
+package s3.individual.vinylo.serviceimpl;
 
 import org.springframework.stereotype.Service;
 

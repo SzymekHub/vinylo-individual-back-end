@@ -1,4 +1,4 @@
-package s3.individual.vinylo.persistenceIMPL;
+package s3.individual.vinylo.persistenceimpl;
 
 import java.util.*;
 
