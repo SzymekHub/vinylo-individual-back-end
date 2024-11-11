@@ -65,7 +65,7 @@ public class VinylController {
     @PostMapping()
     public ResponseEntity<VinylDTO> createNewVinyl(@RequestBody @Valid VinylDTO newVinylDTO) {
         // Fetch the artist by ID from the database
-        Artist artist = artistService.geArtistById(newVinylDTO.getArtist().id);
+        Artist artist = artistService.geArtistById(newVinylDTO.getArtist().getId());
         if (artist == null) {
             throw new CustomNotFoundException("Artist not found.");
         }

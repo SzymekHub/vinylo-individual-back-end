@@ -6,14 +6,14 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AuctionDTO {
-    public int id;
-    public String title;
-    public VinylDTO vinyl;
-    public UserDTO seller;
-    public String description;
-    public double startingPrice;
-    public double currentPrice;
-    public String startTime;
-    public String endTime;
+    private int id;
+    private String title;
+    private VinylDTO vinyl;
+    private UserDTO seller;
+    private String description;
+    private double startingPrice;
+    private double currentPrice;
+    private String startTime;
+    private String endTime;
 
 }

@@ -40,14 +40,14 @@ public class UserMapper {
     public static UsersDTO toUsersDTO(List<User> users) {
         UsersDTO usersDTO = new UsersDTO();
         for (User user : users) {
-            usersDTO.users.add(toUserDTO(user));
+            usersDTO.getUsers().add(toUserDTO(user));
         }
         return usersDTO;
     }
 
     public static List<User> toUsers(UsersDTO usersDTO) {
         List<User> users = new ArrayList<>();
-        for (UserDTO userDTO : usersDTO.users) {
+        for (UserDTO userDTO : usersDTO.getUsers()) {
             users.add(toUser(userDTO));
         }
         return users;

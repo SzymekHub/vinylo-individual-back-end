@@ -48,14 +48,14 @@ public class VinylMapper {
     public static VinylsDTO toVinylsDTO(List<Vinyl> vinyls) {
         VinylsDTO vinylsDTO = new VinylsDTO();
         for (Vinyl v : vinyls) {
-            vinylsDTO.vinyls.add(toVinylDTO(v));
+            vinylsDTO.getVinyls().add(toVinylDTO(v));
         }
         return vinylsDTO;
     }
 
     public static List<Vinyl> toVinyls(VinylsDTO vinylsDTO) {
         List<Vinyl> vinyls = new ArrayList<>();
-        for (VinylDTO v : vinylsDTO.vinyls) {
+        for (VinylDTO v : vinylsDTO.getVinyls()) {
             vinyls.add(toVinyl(v));
         }
         return vinyls;

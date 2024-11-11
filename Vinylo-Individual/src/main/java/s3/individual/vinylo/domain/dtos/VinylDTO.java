@@ -16,10 +16,10 @@ import lombok.Setter;
 @AllArgsConstructor
 public class VinylDTO {
 
-    public int id;
-    public String vinylType;
-    public String title;
-    public String description;
-    public Boolean isReleased;
-    public ArtistDTO artist;
+    private int id;
+    private String vinylType;
+    private String title;
+    private String description;
+    private Boolean isReleased;
+    private ArtistDTO artist;
 }

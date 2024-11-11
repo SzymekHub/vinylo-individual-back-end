@@ -12,8 +12,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ArtistDTO {
 
-    public int id;
-    public String name;
-    public String bio;
+    private int id;
+    private String name;
+    private String bio;
 
 }

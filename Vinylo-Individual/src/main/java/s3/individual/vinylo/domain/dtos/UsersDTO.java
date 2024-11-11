@@ -1,7 +1,12 @@
 package s3.individual.vinylo.domain.dtos;
 
-import java.util.ArrayList;
+import java.util.*;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class UsersDTO {
-    public ArrayList<UserDTO> users = new ArrayList<>();
+    private List<UserDTO> users = new ArrayList<>();
 }

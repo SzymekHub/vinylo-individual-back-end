@@ -49,14 +49,14 @@ public class AuctionMapper {
     public static AuctionsDTO toAuctionsDTO(List<Auction> auctions) {
         AuctionsDTO ad = new AuctionsDTO();
         for (Auction a : auctions) {
-            ad.auctions.add(toAuctionDTO(a));
+            ad.getAuctions().add(toAuctionDTO(a));
         }
         return ad;
     }
 
     public static List<Auction> tAuctions(AuctionsDTO ad) {
         List<Auction> auctions = new ArrayList<>();
-        for (AuctionDTO a : ad.auctions) {
+        for (AuctionDTO a : ad.getAuctions()) {
             auctions.add(toAuction(a));
         }
         return auctions;

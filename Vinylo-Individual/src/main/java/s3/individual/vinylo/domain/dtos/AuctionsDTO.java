@@ -1,7 +1,12 @@
 package s3.individual.vinylo.domain.dtos;
 
-import java.util.ArrayList;
+import java.util.*;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class AuctionsDTO {
-    public ArrayList<AuctionDTO> auctions = new ArrayList<>();
+    private List<AuctionDTO> auctions = new ArrayList<>();
 }

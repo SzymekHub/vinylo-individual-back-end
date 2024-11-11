@@ -38,14 +38,14 @@ public class ArtistMapper {
     public static ArtistsDTO toArtistsDTO(List<Artist> artists) {
         ArtistsDTO ad = new ArtistsDTO();
         for (Artist a : artists) {
-            ad.artists.add(toArtistDTO(a));
+            ad.getArtists().add(toArtistDTO(a));
         }
         return ad;
     }
 
     public static List<Artist> tArtists(ArtistsDTO ad) {
         List<Artist> artists = new ArrayList<>();
-        for (ArtistDTO a : ad.artists) {
+        for (ArtistDTO a : ad.getArtists()) {
             artists.add(toArtist(a));
         }
         return artists;
