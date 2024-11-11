@@ -1,4 +1,4 @@
-package s3.individual.vinylo.persistence.jPArepository;
+package s3.individual.vinylo.persistence.jparepository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import s3.individual.vinylo.persistence.entity.VinylEntity;

@@ -13,8 +13,8 @@ import java.util.Optional;
 
 import s3.individual.vinylo.persistence.entity.ArtistEntity;
 import s3.individual.vinylo.persistence.entity.VinylEntity;
-import s3.individual.vinylo.persistence.jPArepository.ArtistJPARepo;
-import s3.individual.vinylo.persistence.jPArepository.VinylJPARepo;
+import s3.individual.vinylo.persistence.jparepository.ArtistJPARepo;
+import s3.individual.vinylo.persistence.jparepository.VinylJPARepo;
 
 @DataJpaTest
 @ActiveProfiles("test")
