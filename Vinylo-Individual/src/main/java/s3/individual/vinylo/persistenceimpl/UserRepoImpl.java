@@ -55,7 +55,7 @@ public class UserRepoImpl implements UserRepo {
 
     @Override
     public boolean deativateUserById(int id) {
-        return allUsers.removeIf(u -> u.id == (id));
+        return allUsers.removeIf(u -> u.getId() == (id));
     }
 
 }
