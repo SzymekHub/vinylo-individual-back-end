@@ -37,7 +37,7 @@ public class ArtistController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<?> getArtistById(@PathVariable("id") int id) {
+    public ResponseEntity<ArtistDTO> getArtistById(@PathVariable("id") int id) {
         Artist a = artistService.geArtistById(id);
 
         if (a == null) {

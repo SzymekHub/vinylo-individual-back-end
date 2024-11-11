@@ -13,21 +13,21 @@ import lombok.Setter;
 public class Auction {
 
     @NotNull
-    public int id;
-    public String title;
-    public Vinyl Vinyl;
-    public User seller;
-    public String description;
-    public double startingPrice;
-    public double currentPrice;
-    public String startTime;
-    public String endTime;
+    private int id;
+    private String title;
+    private Vinyl vinyl;
+    private User seller;
+    private String description;
+    private double startingPrice;
+    private double currentPrice;
+    private String startTime;
+    private String endTime;
 
-    public Auction(int id, String title, Vinyl Vinyl, User seller, String description, double startingPrice,
+    public Auction(int id, String title, Vinyl vinyl, User seller, String description, double startingPrice,
             double currentPrice, String startTime, String endTime) {
         this.id = id;
         this.title = title;
-        this.Vinyl = Vinyl;
+        this.vinyl = vinyl;
         this.seller = seller;
         this.description = description;
         this.startingPrice = startingPrice;

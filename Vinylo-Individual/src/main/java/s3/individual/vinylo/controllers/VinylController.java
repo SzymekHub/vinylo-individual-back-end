@@ -48,7 +48,7 @@ public class VinylController {
     // vinyl record is found,
     // and a ResponseEntity<String> when an error occurs (e.g., vinyl not found).
     @GetMapping("{id}")
-    public ResponseEntity<?> getVinyl(@PathVariable("id") int id) {
+    public ResponseEntity<VinylDTO> getVinyl(@PathVariable("id") int id) {
 
         Vinyl v = vinylService.getVinylById(id);
 

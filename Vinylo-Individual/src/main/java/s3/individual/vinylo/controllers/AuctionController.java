@@ -37,7 +37,7 @@ public class AuctionController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<?> getAuction(@PathVariable("id") int id) {
+    public ResponseEntity<AuctionDTO> getAuction(@PathVariable("id") int id) {
         Auction a = auctionService.getAuctionsById(id);
 
         if (a == null) {

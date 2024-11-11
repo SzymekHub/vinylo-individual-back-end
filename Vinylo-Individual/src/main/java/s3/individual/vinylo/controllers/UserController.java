@@ -35,13 +35,12 @@ public class UserController {
 
         List<User> users = userService.getUsers();
 
-        UsersDTO result = UserMapper.toUsersDTO(users);
+        return UserMapper.toUsersDTO(users);
 
-        return result;
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<?> getUser(@PathVariable("id") int id) {
+    public ResponseEntity<UserDTO> getUser(@PathVariable("id") int id) {
 
         User u = userService.getUserById(id);
 
