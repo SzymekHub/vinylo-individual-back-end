@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
-import s3.individual.vinylo.domain.Mappers.ArtistMapper;
+import s3.individual.vinylo.domain.mappers.ArtistMapper;
 import s3.individual.vinylo.domain.dtos.ArtistDTO;
 import s3.individual.vinylo.domain.dtos.ArtistsDTO;
 import s3.individual.vinylo.services.ArtistService;

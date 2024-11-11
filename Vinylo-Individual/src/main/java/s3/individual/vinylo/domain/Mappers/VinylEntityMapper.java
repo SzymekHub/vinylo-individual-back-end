@@ -1,9 +1,13 @@
-package s3.individual.vinylo.domain.Mappers;
+package s3.individual.vinylo.domain.mappers;
 
 import s3.individual.vinylo.domain.Vinyl;
 import s3.individual.vinylo.persistence.entity.VinylEntity;
 
 public class VinylEntityMapper {
+
+    private VinylEntityMapper() {
+        throw new UnsupportedOperationException("Utility class");
+    }
 
     // Converts Vinyl domain object to VinylEntity
     public static VinylEntity toEntity(Vinyl vinyl) {

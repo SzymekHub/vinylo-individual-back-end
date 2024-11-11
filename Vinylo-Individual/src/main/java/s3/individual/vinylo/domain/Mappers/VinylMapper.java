@@ -1,4 +1,4 @@
-package s3.individual.vinylo.domain.Mappers;
+package s3.individual.vinylo.domain.mappers;
 
 import java.util.*;
 
@@ -7,6 +7,10 @@ import s3.individual.vinylo.domain.dtos.VinylsDTO;
 import s3.individual.vinylo.domain.Vinyl;
 
 public class VinylMapper {
+
+    private VinylMapper() {
+        throw new UnsupportedOperationException("Utility class");
+    }
 
     public static Vinyl toVinyl(VinylDTO vinylDTO) {
         if (vinylDTO == null) {

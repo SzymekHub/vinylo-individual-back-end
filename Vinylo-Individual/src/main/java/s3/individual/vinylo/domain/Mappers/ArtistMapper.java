@@ -1,4 +1,4 @@
-package s3.individual.vinylo.domain.Mappers;
+package s3.individual.vinylo.domain.mappers;
 
 import java.util.*;
 
@@ -7,6 +7,10 @@ import s3.individual.vinylo.domain.dtos.ArtistsDTO;
 import s3.individual.vinylo.domain.Artist;
 
 public class ArtistMapper {
+
+    private ArtistMapper() {
+        throw new UnsupportedOperationException("Utility class");
+    }
 
     public static Artist toArtist(ArtistDTO artistDTO) {
         if (artistDTO == null) {

@@ -1,9 +1,13 @@
-package s3.individual.vinylo.domain.Mappers;
+package s3.individual.vinylo.domain.mappers;
 
 import s3.individual.vinylo.domain.Artist;
 import s3.individual.vinylo.persistence.entity.ArtistEntity;
 
 public class ArtistEntityMapper {
+
+    private ArtistEntityMapper() {
+        throw new UnsupportedOperationException("Utility class");
+    }
 
     // Converts Artist domain object to ArtistEntity
     public static ArtistEntity toEntity(Artist artist) {

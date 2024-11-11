@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import s3.individual.vinylo.exceptions.CustomNotFoundException;
-import s3.individual.vinylo.domain.Mappers.VinylMapper;
+import s3.individual.vinylo.domain.mappers.VinylMapper;
 import s3.individual.vinylo.domain.dtos.VinylDTO;
 import s3.individual.vinylo.domain.dtos.VinylsDTO;
 import s3.individual.vinylo.services.ArtistService;

@@ -1,4 +1,4 @@
-package s3.individual.vinylo.domain.Mappers;
+package s3.individual.vinylo.domain.mappers;
 
 import java.util.*;
 import s3.individual.vinylo.domain.dtos.UserDTO;
@@ -6,6 +6,11 @@ import s3.individual.vinylo.domain.dtos.UsersDTO;
 import s3.individual.vinylo.domain.User;
 
 public class UserMapper {
+
+    private UserMapper() {
+        throw new UnsupportedOperationException("Utility class");
+    }
+
     public static User toUser(UserDTO userDTO) {
         if (userDTO == null) {
             return null;

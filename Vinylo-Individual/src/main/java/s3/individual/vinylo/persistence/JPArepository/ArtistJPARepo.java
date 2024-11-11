@@ -1,4 +1,4 @@
-package s3.individual.vinylo.persistence.JPArepository;
+package s3.individual.vinylo.persistence.jPArepository;
 
 import java.util.Optional;
 

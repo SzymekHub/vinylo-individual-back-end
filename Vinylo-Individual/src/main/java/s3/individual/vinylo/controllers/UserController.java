@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import s3.individual.vinylo.exceptions.CustomNotFoundException;
-import s3.individual.vinylo.domain.Mappers.UserMapper;
+import s3.individual.vinylo.domain.mappers.UserMapper;
 import s3.individual.vinylo.domain.dtos.UserDTO;
 import s3.individual.vinylo.domain.dtos.UsersDTO;
 import s3.individual.vinylo.services.UserService;

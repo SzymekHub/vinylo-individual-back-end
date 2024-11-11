@@ -11,10 +11,10 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 import java.util.Optional;
 
-import s3.individual.vinylo.persistence.JPArepository.ArtistJPARepo;
-import s3.individual.vinylo.persistence.JPArepository.VinylJPARepo;
 import s3.individual.vinylo.persistence.entity.ArtistEntity;
 import s3.individual.vinylo.persistence.entity.VinylEntity;
+import s3.individual.vinylo.persistence.jPArepository.ArtistJPARepo;
+import s3.individual.vinylo.persistence.jPArepository.VinylJPARepo;
 
 @DataJpaTest
 @ActiveProfiles("test")

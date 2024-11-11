@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import s3.individual.vinylo.exceptions.CustomNotFoundException;
-import s3.individual.vinylo.domain.Mappers.AuctionMapper;
+import s3.individual.vinylo.domain.mappers.AuctionMapper;
 import s3.individual.vinylo.domain.dtos.AuctionDTO;
 import s3.individual.vinylo.domain.dtos.AuctionsDTO;
 import s3.individual.vinylo.services.AuctionService;

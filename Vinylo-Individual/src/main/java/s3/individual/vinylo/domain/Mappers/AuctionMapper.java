@@ -1,4 +1,4 @@
-package s3.individual.vinylo.domain.Mappers;
+package s3.individual.vinylo.domain.mappers;
 
 import java.util.*;
 import s3.individual.vinylo.domain.dtos.AuctionDTO;
@@ -6,6 +6,10 @@ import s3.individual.vinylo.domain.dtos.AuctionsDTO;
 import s3.individual.vinylo.domain.Auction;
 
 public class AuctionMapper {
+
+    private AuctionMapper() {
+        throw new UnsupportedOperationException("Utility class");
+    }
 
     public static Auction toAuction(AuctionDTO auctionDTO) {
         if (auctionDTO == null) {

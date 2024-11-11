@@ -1,4 +1,4 @@
-package s3.individual.vinylo.persistence.JPArepositoryIMPL;
+package s3.individual.vinylo.persistence.jPArepositoryIMPL;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -6,9 +6,9 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Repository;
 
 import s3.individual.vinylo.domain.Vinyl;
-import s3.individual.vinylo.domain.Mappers.VinylEntityMapper;
+import s3.individual.vinylo.domain.mappers.VinylEntityMapper;
 import s3.individual.vinylo.persistence.VinylRepo;
-import s3.individual.vinylo.persistence.JPArepository.VinylJPARepo;
+import s3.individual.vinylo.persistence.jPArepository.VinylJPARepo;
 
 @Repository
 public class VinylJPARepoIMPL implements VinylRepo {
