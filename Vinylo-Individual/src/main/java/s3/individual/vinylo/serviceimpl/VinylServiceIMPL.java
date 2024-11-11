@@ -48,7 +48,6 @@ public class VinylServiceIMPL implements VinylService {
                 return vinylRepo.saveVinyl(newVinyl);
             }
         } catch (Exception e) {
-            e.printStackTrace(); // Log the error
             throw new CustomInternalServerErrorException("Failed to save the vinyl.");
         }
     }
