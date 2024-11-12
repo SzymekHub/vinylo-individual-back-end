@@ -16,12 +16,12 @@ import s3.individual.vinylo.services.VinylService;
 
 import java.util.List;
 
-// import static org.mockito.ArgumentMatchers.any;
-// import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-// import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -53,114 +53,84 @@ class VinylControllerTest {
         private ArtistService artistService;
 
         // !! TO BE FIXED
-        // @Test
-        // void testCreateNewVinyl_shouldCreateAndReturn201_WhenRequestValid() throws
-        // Exception {
-        // Vinyl createdVinyl = Vinyl.builder()
-        // .id(100)
-        // .vinylType("LP")
-        // .title("Abbey Road")
-        // .description("A legendary Beatles album")
-        // .isReleased(true)
-        // .artist(new Artist(1, "The Beatles", "Famous British rock band"))
-        // .build();
+        @Test
+        void testCreateNewVinyl_shouldCreateAndReturn201_WhenRequestValid() throws Exception {
+                Vinyl createdVinyl = Vinyl.builder()
+                                .id(100)
+                                .vinylType("LP")
+                                .title("Abbey Road")
+                                .description("A legendary Beatles album")
+                                .isReleased(true)
+                                .artist(new Artist(1, "The Beatles", "Famous British rock band"))
+                                .build();
 
-        // // Use eq(null) for the first argument to match the null value
-        // when(vinylService.saveVinyl(eq(null),
-        // any(Vinyl.class))).thenReturn(createdVinyl);
+                // Use eq(null) to match the null id value as per the addVinyl logic
+                when(vinylService.saveVinyl(eq(null), any(Vinyl.class))).thenReturn(createdVinyl);
+                when(artistService.getArtistById(1))
+                                .thenReturn(new Artist(1, "The Beatles", "Famous British rock band"));
 
-        // mockMvc.perform(post("/vinyls")
-        // .contentType(APPLICATION_JSON_VALUE)
-        // .content("""
-        // {
-        // "vinylType": "LP",
-        // "title": "Abbey Road",
-        // "description": "A legendary Beatles album",
-        // "isReleased": true,
-        // "artist": {"id": 1, "name": "The Beatles", "bio": "Famous British rock band"}
+                mockMvc.perform(post("/vinyls")
+                                .contentType(APPLICATION_JSON_VALUE)
+                                .content("""
+                                                {
+                                                    "title": "Abbey Road",
+                                                    "description": "A legendary Beatles album",
+                                                    "vinylType": "LP",
+                                                    "isReleased": true,
+                                                    "artist_id": 1
+                                                }
+                                                """))
+                                .andDo(print())
+                                .andExpect(status().isCreated())
+                                .andExpect(content().string("Vinyl created successfully"));
 
-        // }
-        // """))
-        // .andDo(print())
-        // .andExpect(status().isCreated())
-        // .andExpect(header().string("Content-Type", APPLICATION_JSON_VALUE))
-        // .andExpect(content()
-        // .json("""
-        // {
-        // "id": 100,
-        // "vinylType": "LP",
-        // "title": "Abbey Road",
-        // "description": "A legendary Beatles album",
-        // "isReleased": true,
-        // "artist": {"id": 1, "name": "The Beatles", "bio": "Famous British rock band"}
-        // }
-        // """));
+                verify(vinylService).saveVinyl(eq(null), any(Vinyl.class));
+        }
 
-        // verify(vinylService).saveVinyl(eq(null), any(Vinyl.class));
-        // }
+        @Test
+        void testCreateNewVinyl_shouldCreateAndReturn400_WhenMissingFields() throws Exception {
+                mockMvc.perform(post("/vinyls")
+                                .contentType(APPLICATION_JSON_VALUE)
+                                .content("""
+                                                {
+                                                    "vinylType": "LP",
+                                                    "title": "Abbey Road",
+                                                    "description": "",
+                                                    "isReleased": true,
+                                                    "artist_id": 1
+                                                }
+                                                """))
+                                .andDo(print())
+                                .andExpect(status().isBadRequest());
 
-        // @Test
-        // void testCreateNewVinyl_shouldCreateAndReturn400_WhenMissingFields() throws
-        // Exception {
-        // mockMvc.perform(post("/vinyls")
-        // .contentType(APPLICATION_JSON_VALUE)
-        // .content("""
-        // {
-        // "vinylType": "LP",
-        // "title": "Abbey Road",
-        // "description": "",
-        // "isReleased": true,
-        // "artist": {"id": 1, "name": "The Beatles", "bio": "Famous British rock band"}
-        // }
-        // """))
-        // .andDo(print())
-        // .andExpect(status().isCreated())
-        // .andExpect(header().string("Content-Type", APPLICATION_JSON_VALUE))
-        // .andExpect(content()
-        // .json("""
-        // {
-        // "id": 100,
-        // "vinylType": "LP",
-        // "title": "Abbey Road",
-        // {"field":"description","error":"must not be blank"},
-        // "isReleased": true,
-        // "artist": {"id": 1, "name": "The Beatles", "bio": "Famous British rock band"}
-        // }
-        // """));
-        // verifyNoInteractions(vinylService);
-        // }
+                verifyNoInteractions(vinylService);
+        }
 
-        // @Test
-        // void testGetVinyls_shouldReturn200RespondWithVinylsArray() throws Exception {
-        // List<Vinyl> vinyls = List.of(
-        // Vinyl.builder().id(1).vinylType("LP").title("Dark Side of the Moon")
-        // .description("A classic album")
-        // .isReleased(true).artist(new Artist(1, "Pink Floyd", "I am so Pink"))
-        // .build(),
-        // Vinyl.builder().id(2).vinylType("Single").title("Imagine")
-        // .description("A legendary song")
-        // .isReleased(true)
-        // .artist(new Artist(2, "John Lennon", "I love my wife. lol jk"))
-        // .build());
+        @Test
+        void testGetVinyls_shouldReturn200RespondWithVinylsArray() throws Exception {
+                List<Vinyl> vinyls = List.of(
+                                Vinyl.builder().id(1).vinylType("LP").title("Dark Side of the Moon")
+                                                .description("A classic album")
+                                                .isReleased(true).artist(new Artist(1, "Pink Floyd", "I am so Pink"))
+                                                .build(),
+                                Vinyl.builder().id(2).vinylType("Single").title("Imagine")
+                                                .description("A legendary song")
+                                                .isReleased(true)
+                                                .artist(new Artist(2, "John Lennon", "I love my wife. lol jk"))
+                                                .build());
 
-        // when(vinylService.getVinyls()).thenReturn(vinyls);
+                when(vinylService.getVinyls()).thenReturn(vinyls);
 
-        // mockMvc.perform(get("/vinyls"))
-        // .andDo(print())
-        // .andExpect(status().isOk())
-        // .andExpect(header().string("Content-Type", APPLICATION_JSON_VALUE))
-        // .andExpect(content()
-        // .json("""
-        // {"vinyls":[
-        // {"id":1,"vinylType":"LP","title":"Dark Side of the Moon","description":"A
-        // classic album","isReleased":true,"artist":{"id":1,"name":"Pink Floyd", "bio":
-        // "I am so Pink"}},
-        // {"id":2,"vinylType":"Single","title":"Imagine","description":"A legendary
-        // song","isReleased":true,"artist":{"id":2,"name":"John Lennon", "bio": "I love
-        // my wife. lol jk"}}
-        // ]}
-        // """));
+                mockMvc.perform(get("/vinyls"))
+                                .andDo(print())
+                                .andExpect(status().isOk())
+                                .andExpect(content().contentType(APPLICATION_JSON_VALUE))
+                                .andExpect(jsonPath("$.vinyls[0].id").value(1))
+                                .andExpect(jsonPath("$.vinyls[0].title").value("Dark Side of the Moon"))
+                                .andExpect(jsonPath("$.vinyls[1].id").value(2))
+                                .andExpect(jsonPath("$.vinyls[1].title").value("Imagine"));
 
-        // verify(vinylService).getVinyls();
-        // }
+                verify(vinylService).getVinyls();
+        }
+
 }

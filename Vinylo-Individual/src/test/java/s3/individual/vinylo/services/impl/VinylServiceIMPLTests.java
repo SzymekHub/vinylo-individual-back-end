@@ -9,10 +9,10 @@ import s3.individual.vinylo.persistence.VinylRepo;
 import s3.individual.vinylo.serviceimpl.VinylServiceIMPL;
 import s3.individual.vinylo.domain.Artist;
 import s3.individual.vinylo.domain.Vinyl;
-// import s3.individual.vinylo.exceptions.CustomNotFoundException;
+import s3.individual.vinylo.exceptions.CustomInternalServerErrorException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-// import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 import java.util.List;
@@ -102,21 +102,21 @@ class VinylServiceIMPLTests {
                 verify(vinylRepoMock).getVinylById(vinylId);
         }
 
-        // @Test
-        // void testSaveVinyl_ShouldThrowExceptionWhenVinylNotFoundForUpdate() {
-        // // Arrange
-        // int vinylId = 2;
-        // Vinyl updatedVinyl = createVinyl(vinylId, "Soul Rubber", "LP", "ROLL&ROCK",
-        // false,
-        // createArtist(2, "The Beatles", "yeah yeah"));
+        @Test
+        void testSaveVinyl_ShouldThrowExceptionWhenVinylNotFoundForUpdate() {
+                // Arrange
+                int vinylId = 2;
+                Vinyl updatedVinyl = createVinyl(vinylId, "Soul Rubber", "LP", "ROLL&ROCK",
+                                false,
+                                createArtist(2, "The Beatles", "yeah yeah"));
 
-        // when(vinylRepoMock.getVinylById(vinylId)).thenReturn(null);
+                when(vinylRepoMock.getVinylById(vinylId)).thenReturn(null);
 
-        // // Act & Assert
-        // assertThrows(CustomNotFoundException.class, () -> {
-        // vinylService.saveVinyl(vinylId, updatedVinyl);
-        // });
-        // }
+                // Act & Assert
+                assertThrows(CustomInternalServerErrorException.class, () -> {
+                        vinylService.saveVinyl(vinylId, updatedVinyl);
+                });
+        }
 
         @Test
         void testGetVinylById_ShouldReturnVinylWithGivenId() {
