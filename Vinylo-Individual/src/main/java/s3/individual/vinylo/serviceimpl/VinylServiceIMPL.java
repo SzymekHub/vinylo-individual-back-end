@@ -29,26 +29,26 @@ public class VinylServiceIMPL implements VinylService {
                 // Check if the vinyl exists
                 Vinyl existingVinyl = vinylRepo.getVinylById(id);
                 if (existingVinyl == null) {
-                    // Throw an exception if the vinyl doesn't exist
                     throw new CustomNotFoundException(
-                            "Vinyl with ID " + id + " was not found.  A new vinyl will be created");
+                            "Vinyl with ID " + id + " was not found. A new vinyl will be created");
                 }
                 // Update the existing vinyl with the new details
                 existingVinyl.setTitle(newVinyl.getTitle());
                 existingVinyl.setDescription(newVinyl.getDescription());
                 existingVinyl.setIsReleased(newVinyl.getisReleased());
-                existingVinyl.setArtist(newVinyl.getArtist());
                 existingVinyl.setVinylType(newVinyl.getvinylType());
+                existingVinyl.setArtist(newVinyl.getArtist());
 
                 // Save the updated vinyl to the database
                 return vinylRepo.saveVinyl(existingVinyl);
 
             } else {
-                // If no ID is provided or vinyl doesn't exist, create a new one
+                // Save the new vinyl to the database
                 return vinylRepo.saveVinyl(newVinyl);
+
             }
         } catch (Exception e) {
-            throw new CustomInternalServerErrorException("Failed to save the vinyl.");
+            throw new CustomInternalServerErrorException("Failed to save the vinyl." + e.toString());
         }
     }
 

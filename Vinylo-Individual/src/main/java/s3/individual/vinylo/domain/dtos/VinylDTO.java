@@ -21,5 +21,5 @@ public class VinylDTO {
     private String title;
     private String description;
     private Boolean isReleased;
-    private ArtistDTO artist;
+    private int artist_id;
 }

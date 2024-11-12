@@ -38,7 +38,7 @@ public class ArtistController {
 
     @GetMapping("{id}")
     public ResponseEntity<ArtistDTO> getArtistById(@PathVariable("id") int id) {
-        Artist a = artistService.geArtistById(id);
+        Artist a = artistService.getArtistById(id);
 
         if (a == null) {
             throw new CustomNotFoundException("Artist record not found");

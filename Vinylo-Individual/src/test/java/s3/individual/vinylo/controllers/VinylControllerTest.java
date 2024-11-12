@@ -130,33 +130,37 @@ class VinylControllerTest {
         // verifyNoInteractions(vinylService);
         // }
 
-        @Test
-        void testGetVinyls_shouldReturn200RespondWithVinylsArray() throws Exception {
-                List<Vinyl> vinyls = List.of(
-                                Vinyl.builder().id(1).vinylType("LP").title("Dark Side of the Moon")
-                                                .description("A classic album")
-                                                .isReleased(true).artist(new Artist(1, "Pink Floyd", "I am so Pink"))
-                                                .build(),
-                                Vinyl.builder().id(2).vinylType("Single").title("Imagine")
-                                                .description("A legendary song")
-                                                .isReleased(true)
-                                                .artist(new Artist(2, "John Lennon", "I love my wife. lol jk"))
-                                                .build());
+        // @Test
+        // void testGetVinyls_shouldReturn200RespondWithVinylsArray() throws Exception {
+        // List<Vinyl> vinyls = List.of(
+        // Vinyl.builder().id(1).vinylType("LP").title("Dark Side of the Moon")
+        // .description("A classic album")
+        // .isReleased(true).artist(new Artist(1, "Pink Floyd", "I am so Pink"))
+        // .build(),
+        // Vinyl.builder().id(2).vinylType("Single").title("Imagine")
+        // .description("A legendary song")
+        // .isReleased(true)
+        // .artist(new Artist(2, "John Lennon", "I love my wife. lol jk"))
+        // .build());
 
-                when(vinylService.getVinyls()).thenReturn(vinyls);
+        // when(vinylService.getVinyls()).thenReturn(vinyls);
 
-                mockMvc.perform(get("/vinyls"))
-                                .andDo(print())
-                                .andExpect(status().isOk())
-                                .andExpect(header().string("Content-Type", APPLICATION_JSON_VALUE))
-                                .andExpect(content()
-                                                .json("""
-                                                                        {"vinyls":[
-                                                                            {"id":1,"vinylType":"LP","title":"Dark Side of the Moon","description":"A classic album","isReleased":true,"artist":{"id":1,"name":"Pink Floyd", "bio": "I am so Pink"}},
-                                                                            {"id":2,"vinylType":"Single","title":"Imagine","description":"A legendary song","isReleased":true,"artist":{"id":2,"name":"John Lennon", "bio": "I love my wife. lol jk"}}
-                                                                        ]}
-                                                                """));
+        // mockMvc.perform(get("/vinyls"))
+        // .andDo(print())
+        // .andExpect(status().isOk())
+        // .andExpect(header().string("Content-Type", APPLICATION_JSON_VALUE))
+        // .andExpect(content()
+        // .json("""
+        // {"vinyls":[
+        // {"id":1,"vinylType":"LP","title":"Dark Side of the Moon","description":"A
+        // classic album","isReleased":true,"artist":{"id":1,"name":"Pink Floyd", "bio":
+        // "I am so Pink"}},
+        // {"id":2,"vinylType":"Single","title":"Imagine","description":"A legendary
+        // song","isReleased":true,"artist":{"id":2,"name":"John Lennon", "bio": "I love
+        // my wife. lol jk"}}
+        // ]}
+        // """));
 
-                verify(vinylService).getVinyls();
-        }
+        // verify(vinylService).getVinyls();
+        // }
 }

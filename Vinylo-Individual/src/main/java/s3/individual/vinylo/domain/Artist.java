@@ -12,14 +12,18 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Artist {
     @NotNull
-    private int id;
+    private Integer id;
     private String name;
     private String bio;
 
-    public Artist(int id, String name, String bio) {
+    public Artist(Integer id, String name, String bio) {
         this.id = id;
         this.name = name;
         this.bio = bio;
+    }
+
+    public String toString() {
+        return "Id: " + id + " name: " + name + " bio: " + bio;
     }
 
 }

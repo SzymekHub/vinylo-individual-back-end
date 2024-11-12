@@ -1,19 +1,27 @@
-package s3.individual.vinylo.persistence.jparepositoryimpl;
+package s3.individual.vinylo.persistence.jparepositoryIMPL;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import s3.individual.vinylo.domain.Vinyl;
 import s3.individual.vinylo.domain.mappers.VinylEntityMapper;
 import s3.individual.vinylo.persistence.VinylRepo;
+import s3.individual.vinylo.persistence.entity.ArtistEntity;
+import s3.individual.vinylo.persistence.entity.VinylEntity;
 import s3.individual.vinylo.persistence.jparepository.VinylJPARepo;
 
 @Repository
 public class VinylJPARepoIMPL implements VinylRepo {
 
     private final VinylJPARepo vinylJPARepo;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     public VinylJPARepoIMPL(VinylJPARepo vinylJPARepo) {
         this.vinylJPARepo = vinylJPARepo;
@@ -38,9 +46,13 @@ public class VinylJPARepoIMPL implements VinylRepo {
     }
 
     @Override
+    @Transactional
     public Vinyl saveVinyl(Vinyl vinyl) {
-        vinylJPARepo.save(VinylEntityMapper.toEntity(vinyl));
-        return vinyl;
+        VinylEntity entity = VinylEntityMapper.toEntity(vinyl, vinylJPARepo);
+        ArtistEntity managedArtist = entityManager.merge(entity.getArtist());
+        entity.setArtist(managedArtist);
+        VinylEntity savedEntity = vinylJPARepo.save(entity);
+        return VinylEntityMapper.fromEntity(savedEntity);
     }
 
     @Override

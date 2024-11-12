@@ -53,4 +53,9 @@ public class Vinyl {
         return artist;
     }
 
+    public String toString() {
+        return "Id: " + id + " vinylType: " + vinylType + " title: " + title + " description: " + description
+                + " isReleased: " + isReleased + " artist: " + artist;
+    }
+
 }

@@ -53,8 +53,8 @@ public class VinylController {
         Vinyl v = vinylService.getVinylById(id);
 
         if (v == null) {
-            // If the vinyl record is not found, throw this specific exception
             throw new CustomNotFoundException("Vinyl record not found");
+            // If the vinyl record is not found, throw this specific exception
         }
 
         VinylDTO vd = VinylMapper.toVinylDTO(v);
@@ -62,22 +62,26 @@ public class VinylController {
         return ResponseEntity.ok(vd);
     }
 
-    @PostMapping()
-    public ResponseEntity<VinylDTO> createNewVinyl(@RequestBody @Valid VinylDTO newVinylDTO) {
-        // Fetch the artist by ID from the database
-        Artist artist = artistService.geArtistById(newVinylDTO.getArtist().getId());
+    @PostMapping
+    public ResponseEntity<?> addVinyl(@Valid @RequestBody VinylDTO vinylDTO) {
+        Artist artist = artistService.getArtistById(vinylDTO.getArtist_id());
+
+        // If the artist is not found, return an error response
         if (artist == null) {
-            throw new CustomNotFoundException("Artist not found.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Artist with ID " + vinylDTO.getArtist_id() + " not found.");
         }
-        System.out.println("Artist Found: " + artist); // Simple log, use a logging framework for production
 
-        // Set the artist in the new Vinyl entity
-        Vinyl newVinyl = VinylMapper.toVinyl(newVinylDTO);
-        newVinyl.setArtist(artist);
+        // Create the Vinyl object from the DTO
+        Vinyl vinyl = VinylMapper.toVinyl(vinylDTO);
 
-        // Save and return the new Vinyl
-        Vinyl savedVinyl = vinylService.saveVinyl(null, newVinyl);
-        return ResponseEntity.status(HttpStatus.CREATED).body(VinylMapper.toVinylDTO(savedVinyl));
+        // Set the existing artist in the Vinyl object
+        vinyl.setArtist(artist);
+
+        // Save the Vinyl object (without saving the Artist)
+        vinylService.saveVinyl(null, vinyl);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body("Vinyl created successfully");
     }
 
     @PutMapping("{id}")

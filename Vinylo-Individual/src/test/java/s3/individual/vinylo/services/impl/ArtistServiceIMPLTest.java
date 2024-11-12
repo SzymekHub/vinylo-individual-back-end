@@ -105,7 +105,7 @@ public class ArtistServiceIMPLTest {
         when(artistRepoMock.getArtistById(artistId)).thenReturn(expectedArtist);
 
         // Act
-        Artist actualArtist = artistService.geArtistById(artistId);
+        Artist actualArtist = artistService.getArtistById(artistId);
 
         // Assert
         assertEquals(expectedArtist, actualArtist);

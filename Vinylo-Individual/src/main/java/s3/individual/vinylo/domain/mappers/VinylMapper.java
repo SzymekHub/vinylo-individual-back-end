@@ -1,21 +1,40 @@
 package s3.individual.vinylo.domain.mappers;
 
 import java.util.*;
-
+import org.springframework.stereotype.Component;
 import s3.individual.vinylo.domain.dtos.VinylDTO;
 import s3.individual.vinylo.domain.dtos.VinylsDTO;
+import s3.individual.vinylo.exceptions.CustomNotFoundException;
+import s3.individual.vinylo.services.ArtistService;
+import s3.individual.vinylo.domain.Artist;
 import s3.individual.vinylo.domain.Vinyl;
 
+@Component // Make this class a Spring-managed bean
 public class VinylMapper {
 
-    private VinylMapper() {
-        throw new UnsupportedOperationException("Utility class");
+    private static ArtistService artistService;
+
+    // Constructor-based injection for ArtistService
+    public VinylMapper(ArtistService artistService) {
+        VinylMapper.artistService = artistService; // Set the ArtistService for static methods
     }
+
+    // private VinylMapper() {
+    // throw new UnsupportedOperationException("Utility class");
+    // }
 
     public static Vinyl toVinyl(VinylDTO vinylDTO) {
         if (vinylDTO == null) {
             return null;
         }
+
+        // Ensure that artistService is not null before accessing
+        if (artistService == null) {
+            throw new CustomNotFoundException("ArtistService not set in VinylMapper");
+        }
+
+        // Retrieve the artist if not already set in the DTO
+        Artist artist = artistService.getArtistById(vinylDTO.getArtist_id());
 
         return new Vinyl(
                 vinylDTO.getId(),
@@ -23,7 +42,7 @@ public class VinylMapper {
                 vinylDTO.getTitle(),
                 vinylDTO.getDescription(),
                 vinylDTO.getIsReleased(),
-                ArtistMapper.toArtist(vinylDTO.getArtist()));
+                artist);
     }
 
     public static VinylDTO toVinylDTO(Vinyl vinyl) {
@@ -39,10 +58,9 @@ public class VinylMapper {
         vinylDTO.setTitle(vinyl.getTitle());
         vinylDTO.setDescription(vinyl.getDescription());
         vinylDTO.setIsReleased(vinyl.getisReleased());
-        vinylDTO.setArtist(ArtistMapper.toArtistDTO(vinyl.getArtist()));
+        vinylDTO.setArtist_id(vinyl.getArtist().getId());
 
         return vinylDTO;
-
     }
 
     public static VinylsDTO toVinylsDTO(List<Vinyl> vinyls) {
@@ -60,5 +78,4 @@ public class VinylMapper {
         }
         return vinyls;
     }
-
 }

@@ -40,7 +40,7 @@ public class ArtistServiceIMPL implements ArtistService {
     }
 
     @Override
-    public Artist geArtistById(int id) {
+    public Artist getArtistById(int id) {
         return artistRepo.getArtistById(id);
     }
 

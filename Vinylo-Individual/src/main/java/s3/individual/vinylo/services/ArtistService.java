@@ -8,7 +8,7 @@ public interface ArtistService {
 
     Artist saveArtist(Integer id, Artist newArtist);
 
-    Artist geArtistById(int id);
+    Artist getArtistById(int id);
 
     List<Artist> getArtists();
 
