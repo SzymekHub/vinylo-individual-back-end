@@ -40,14 +40,14 @@ public class VinylController {
     public VinylsDTO getVinyls() {
         List<Vinyl> vinyls = vinylService.getVinyls();
 
-        return VinylMapper.toVinylsDTO(vinyls);
+        return VinylMapper.toVinylSummaryDTO(vinyls);
     }
 
     // I changed return type to ResponseEntity<?> to handle HTTP responses.
     // This allows the method to return both a ResponseEntity<VinylDTO> when a valid
     // vinyl record is found,
     // and a ResponseEntity<String> when an error occurs (e.g., vinyl not found).
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<VinylDTO> getVinyl(@PathVariable("id") int id) {
 
         Vinyl v = vinylService.getVinylById(id);
@@ -84,7 +84,7 @@ public class VinylController {
         return ResponseEntity.status(HttpStatus.CREATED).body("Vinyl created successfully");
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     public VinylDTO replaceVinyl(@RequestBody VinylDTO newVinylDTO, @PathVariable("id") int id) {
         Vinyl newVinyl = VinylMapper.toVinyl(newVinylDTO);
         Vinyl replacedVinyl = vinylService.saveVinyl(id, newVinyl); // Correctly passing both id and newVinyl
@@ -92,7 +92,7 @@ public class VinylController {
     }
 
     // I changed return type to ResponseEntity<String> to handle HTTP responses.
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteVinyl(@PathVariable("id") int id) {
         boolean isDeleted = vinylService.deleteVinylById(id);
         if (isDeleted) {

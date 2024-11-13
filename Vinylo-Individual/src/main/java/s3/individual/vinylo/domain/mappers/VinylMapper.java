@@ -63,6 +63,30 @@ public class VinylMapper {
         return vinylDTO;
     }
 
+    public static VinylDTO toVinylDTOSummary(Vinyl vinyl) {
+
+        if (vinyl == null) {
+            return null;
+        }
+
+        VinylDTO vinylDTO = new VinylDTO();
+
+        vinylDTO.setId(vinyl.getId());
+        vinylDTO.setVinylType(vinyl.getvinylType());
+        vinylDTO.setTitle(vinyl.getTitle());
+
+        return vinylDTO;
+    }
+
+    public static VinylsDTO toVinylSummaryDTO(List<Vinyl> vinyl) {
+        VinylsDTO dtos = new VinylsDTO();
+        for (Vinyl v : vinyl) {
+            dtos.getVinyls().add(toVinylDTOSummary(v));
+        }
+
+        return dtos;
+    }
+
     public static VinylsDTO toVinylsDTO(List<Vinyl> vinyls) {
         VinylsDTO vinylsDTO = new VinylsDTO();
         for (Vinyl v : vinyls) {

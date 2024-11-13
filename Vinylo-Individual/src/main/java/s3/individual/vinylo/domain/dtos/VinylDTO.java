@@ -36,4 +36,10 @@ public class VinylDTO {
     private Boolean isReleased;
 
     private int artist_id;
+
+    public VinylDTO(int id, String title, String vinylType) {
+        this.id = id;
+        this.title = title;
+        this.vinylType = vinylType;
+    }
 }
