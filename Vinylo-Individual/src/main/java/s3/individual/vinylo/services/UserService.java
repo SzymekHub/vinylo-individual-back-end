@@ -6,7 +6,7 @@ import s3.individual.vinylo.domain.User;
 
 public interface UserService {
 
-    User createNewUser(User user);
+    User saveUser(Integer id, User user);
 
     User getUserById(int id);
 

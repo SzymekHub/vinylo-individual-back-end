@@ -1,4 +1,4 @@
-package s3.individual.vinylo.domain.mappers;
+package s3.individual.vinylo.domain.mappers.entities;
 
 import org.springframework.stereotype.Component;
 

@@ -22,6 +22,7 @@ import s3.individual.vinylo.domain.User;
 
 @RestController
 @RequestMapping("/users")
+
 public class UserController {
 
     private final UserService userService;
@@ -32,9 +33,7 @@ public class UserController {
 
     @GetMapping()
     public UsersDTO getUsers() {
-
         List<User> users = userService.getUsers();
-
         return UserMapper.toUsersDTO(users);
 
     }
@@ -55,10 +54,14 @@ public class UserController {
     }
 
     @PostMapping()
-    public UserDTO createNewUser(@RequestBody @Valid UserDTO newUserDTO) {
-        User newUser = UserMapper.toUser(newUserDTO);
-        User createdUser = userService.createNewUser(newUser);
-        return UserMapper.toUserDTO(createdUser);
+    public ResponseEntity<?> addUser(@Valid @RequestBody UserDTO newUserDTO) {
+
+        User user = UserMapper.toUser(newUserDTO);
+
+        // Save the user object
+        userService.saveUser(null, user);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body("Vinyl created successfully");
     }
 
     @DeleteMapping("{id}")

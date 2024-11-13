@@ -1,6 +1,6 @@
 package s3.individual.vinylo.persistence;
 
-import java.util.*;
+import java.util.List;
 
 import s3.individual.vinylo.domain.User;
 
@@ -10,7 +10,7 @@ public interface UserRepo {
 
     User getUserById(int id);
 
-    User createNewUser(User user);
+    User saveUser(User user);
 
     User findByUsername(String username);
 

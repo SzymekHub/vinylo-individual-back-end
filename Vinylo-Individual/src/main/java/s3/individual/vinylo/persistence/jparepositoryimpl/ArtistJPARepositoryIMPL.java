@@ -6,9 +6,9 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Repository;
 
 import s3.individual.vinylo.domain.Artist;
+import s3.individual.vinylo.domain.mappers.entities.ArtistEntityMapper;
 import s3.individual.vinylo.persistence.ArtistRepo;
 import s3.individual.vinylo.persistence.jparepository.ArtistJPARepo;
-import s3.individual.vinylo.domain.mappers.ArtistEntityMapper;
 
 @Repository
 public class ArtistJPARepositoryIMPL implements ArtistRepo {

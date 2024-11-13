@@ -1,15 +1,15 @@
 package s3.individual.vinylo.domain.mappers;
 
 import java.util.*;
+
+import org.springframework.stereotype.Component;
+
 import s3.individual.vinylo.domain.dtos.UserDTO;
 import s3.individual.vinylo.domain.dtos.UsersDTO;
 import s3.individual.vinylo.domain.User;
 
+@Component // Make this class a Spring-managed bean
 public class UserMapper {
-
-    private UserMapper() {
-        throw new UnsupportedOperationException("Utility class");
-    }
 
     public static User toUser(UserDTO userDTO) {
         if (userDTO == null) {
@@ -30,10 +30,12 @@ public class UserMapper {
         }
 
         UserDTO userDTO = new UserDTO();
+
         userDTO.setId(user.getId());
         userDTO.setUsername(user.getUsername());
         userDTO.setEmail(user.getEmail());
         userDTO.setIsPremium(user.getIsPremium());
+
         return userDTO;
     }
 
