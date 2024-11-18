@@ -8,10 +8,10 @@ import org.springframework.stereotype.Repository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
-import s3.individual.vinylo.domain.mappers.entities.UserEntityMapper;
 import s3.individual.vinylo.persistence.UserRepo;
 import s3.individual.vinylo.persistence.entity.UserEntity;
 import s3.individual.vinylo.domain.User;
+import s3.individual.vinylo.domain.mappers.UserEntityMapper;
 import s3.individual.vinylo.persistence.jparepository.UserJPARepo;
 
 @Repository

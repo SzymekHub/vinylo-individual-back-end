@@ -1,4 +1,4 @@
-package s3.individual.vinylo.domain.mappers.entities;
+package s3.individual.vinylo.domain.mappers;
 
 import s3.individual.vinylo.domain.Artist;
 import s3.individual.vinylo.persistence.entity.ArtistEntity;

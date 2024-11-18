@@ -9,7 +9,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import s3.individual.vinylo.domain.Vinyl;
-import s3.individual.vinylo.domain.mappers.entities.VinylEntityMapper;
+import s3.individual.vinylo.domain.mappers.VinylEntityMapper;
 import s3.individual.vinylo.persistence.VinylRepo;
 import s3.individual.vinylo.persistence.entity.ArtistEntity;
 import s3.individual.vinylo.persistence.entity.VinylEntity;
