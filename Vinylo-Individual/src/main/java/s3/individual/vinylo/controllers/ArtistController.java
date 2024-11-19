@@ -2,6 +2,7 @@ package s3.individual.vinylo.controllers;
 
 import java.util.*;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import s3.individual.vinylo.exceptions.CustomNotFoundException;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,7 +42,7 @@ public class ArtistController {
         Artist a = artistService.getArtistById(id);
 
         if (a == null) {
-            throw new CustomNotFoundException("Artist record not found");
+            throw new CustomNotFoundException("Artist not found");
         }
 
         ArtistDTO ad = ArtistMapper.toArtistDTO(a);
@@ -50,11 +51,12 @@ public class ArtistController {
     }
 
     @PostMapping()
-    public ArtistDTO createArtist(@RequestBody @Valid ArtistDTO newArtistDTO) {
+    public ResponseEntity<?> createArtist(@Valid @RequestBody ArtistDTO newArtistDTO) {
         Artist newArtist = ArtistMapper.toArtist(newArtistDTO);
-        Artist createArtist = artistService.saveArtist(null, newArtist);
 
-        return ArtistMapper.toArtistDTO(createArtist);
+        artistService.saveArtist(null, newArtist);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body("Artist created successfully");
     }
 
     @PutMapping("{id}")
