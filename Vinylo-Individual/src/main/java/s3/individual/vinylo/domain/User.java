@@ -13,13 +13,13 @@ import lombok.Setter;
 public class User {
 
     @NotNull
-    private int id;
+    private Integer id;
     private String username;
     private String email;
     private String password;
     private Boolean isPremium;
 
-    public User(int id, String username, String email, String password, Boolean isPremium) {
+    public User(Integer id, String username, String email, String password, Boolean isPremium) {
         this.id = id;
         this.username = username;
         this.email = email;

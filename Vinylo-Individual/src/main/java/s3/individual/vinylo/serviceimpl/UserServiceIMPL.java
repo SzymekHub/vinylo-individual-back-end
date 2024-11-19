@@ -42,7 +42,7 @@ public class UserServiceIMPL implements UserService {
                 return userRepo.saveUser(newuser);
             }
         } catch (Exception ex) {
-            throw new CustomInternalServerErrorException("Failed to save the user " + ex.toString());
+            throw new CustomInternalServerErrorException("Failed to save the user " + ex.getMessage());
         }
     }
 

@@ -4,24 +4,46 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import s3.individual.vinylo.persistence.AuctionRepo;
 import s3.individual.vinylo.services.AuctionService;
 import s3.individual.vinylo.domain.Auction;
+import s3.individual.vinylo.exceptions.CustomInternalServerErrorException;
+import s3.individual.vinylo.exceptions.CustomNotFoundException;
 
 @Service
+@RequiredArgsConstructor
 public class AuctionServiceIMPL implements AuctionService {
 
     private final AuctionRepo auctionRepo;
 
-    public AuctionServiceIMPL(AuctionRepo auctionRepo) {
-
-        this.auctionRepo = auctionRepo;
-    }
-
     @Override
-    public Auction createAuction(Auction auction) {
+    @Transactional
+    public Auction saveAuction(Integer id, Auction newAuction) {
+        try {
+            if (id != null) {
+                Auction existingAuction = auctionRepo.getAuctionById(id);
+                if (existingAuction == null) {
+                    throw new CustomNotFoundException(
+                            "Auction with ID " + id + " was not found. A new Auction will be created");
+                }
+                // Update the existing auction with the new details
+                existingAuction.setDescription(newAuction.getDescription());
+                existingAuction.setCurrentPrice(newAuction.getCurrentPrice());
+                existingAuction.setEndTime(existingAuction.getEndTime());
 
-        return auctionRepo.createNewAuction(auction);
+                System.out.println("Saving updated auction: " + existingAuction);
+                return auctionRepo.saveAuction(existingAuction);
+            } else {
+                System.out.println("Saving new auction: " + newAuction);
+                return auctionRepo.saveAuction(newAuction);
+            }
+        } catch (Exception ex) {
+            System.out.println("Error occurred while saving auction: " + ex.getMessage());
+            ex.printStackTrace(); // Log the stack trace for better visibility
+            throw new CustomInternalServerErrorException("Failed to save the auction " + ex.getMessage());
+        }
     }
 
     @Override
@@ -41,9 +63,14 @@ public class AuctionServiceIMPL implements AuctionService {
         Auction auction = auctionRepo.getAuctionById(auctionId);
         if (auction != null && bidAmount > auction.getCurrentPrice()) {
             auction.setCurrentPrice(bidAmount);
-            auctionRepo.createNewAuction(auction);
+            auctionRepo.saveAuction(auction);
             return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean deativateAuctionById(int id) {
+        return auctionRepo.deativateAuctionById(id);
     }
 }

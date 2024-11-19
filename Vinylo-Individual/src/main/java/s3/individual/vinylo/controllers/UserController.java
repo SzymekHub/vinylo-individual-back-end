@@ -61,7 +61,7 @@ public class UserController {
         // Save the user object
         userService.saveUser(null, user);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body("Vinyl created successfully");
+        return ResponseEntity.status(HttpStatus.CREATED).body("User created successfully");
     }
 
     @DeleteMapping("{id}")

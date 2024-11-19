@@ -1,5 +1,7 @@
 package s3.individual.vinylo.domain;
 
+import java.time.LocalDate;
+
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,11 +22,11 @@ public class Auction {
     private String description;
     private double startingPrice;
     private double currentPrice;
-    private String startTime;
-    private String endTime;
+    private LocalDate startTime;
+    private LocalDate endTime;
 
     public Auction(int id, String title, Vinyl vinyl, User seller, String description, double startingPrice,
-            double currentPrice, String startTime, String endTime) {
+            double currentPrice, LocalDate startTime, LocalDate endTime) {
         this.id = id;
         this.title = title;
         this.vinyl = vinyl;

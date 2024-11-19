@@ -6,12 +6,14 @@ import s3.individual.vinylo.domain.Auction;
 
 public interface AuctionService {
 
-    Auction createAuction(Auction auction);
+    Auction saveAuction(Integer id, Auction newAuction);
 
     Auction getAuctionsById(int id);
 
     List<Auction> getAuctions();
 
     boolean placeBid(int auctionId, double bidAmount);
+
+    boolean deativateAuctionById(int id);
 
 }

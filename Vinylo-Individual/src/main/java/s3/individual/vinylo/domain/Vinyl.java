@@ -11,14 +11,14 @@ import lombok.Setter;
 public class Vinyl {
 
     @NotNull
-    private int id;
+    private Integer id;
     private String vinylType;
     private String title;
     private String description;
     private Boolean isReleased;
     private Artist artist;
 
-    public Vinyl(int id, String vinylType, String title, String description, Boolean isReleased, Artist artist) {
+    public Vinyl(Integer id, String vinylType, String title, String description, Boolean isReleased, Artist artist) {
         this.id = id;
         this.vinylType = vinylType;
         this.title = title;
@@ -29,7 +29,7 @@ public class Vinyl {
 
     // I can also just use @Getters but i wanted to do it manually so that i know i
     // can chose which one to use.
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
