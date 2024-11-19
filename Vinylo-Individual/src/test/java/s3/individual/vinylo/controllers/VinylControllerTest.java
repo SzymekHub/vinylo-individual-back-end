@@ -54,6 +54,8 @@ class VinylControllerTest {
 
         @Test
         void testCreateNewVinyl_shouldCreateAndReturn201_WhenRequestValid() throws Exception {
+
+                // Arrange
                 Vinyl createdVinyl = Vinyl.builder()
                                 .id(100)
                                 .vinylType("LP")
@@ -69,6 +71,7 @@ class VinylControllerTest {
                 when(artistService.getArtistById(1))
                                 .thenReturn(new Artist(1, "The Beatles", "Famous British rock band"));
 
+                // Act
                 mockMvc.perform(post("/vinyls")
                                 .contentType(APPLICATION_JSON_VALUE)
                                 .content("""
@@ -84,11 +87,13 @@ class VinylControllerTest {
                                 .andExpect(status().isCreated())
                                 .andExpect(content().string("Vinyl created successfully"));
 
+                // Assert
                 verify(vinylService).saveVinyl(eq(null), any(Vinyl.class));
         }
 
         @Test
         void testCreateNewVinyl_shouldCreateAndReturn400_WhenMissingFields() throws Exception {
+                // Assert
                 mockMvc.perform(post("/vinyls")
                                 .contentType(APPLICATION_JSON_VALUE)
                                 .content("""
@@ -108,6 +113,8 @@ class VinylControllerTest {
 
         @Test
         void testGetVinyls_shouldReturn200RespondWithVinylsArray() throws Exception {
+
+                // Arrange
                 List<Vinyl> vinyls = List.of(
                                 Vinyl.builder().id(1).vinylType("LP").title("Dark Side of the Moon")
                                                 .description("A classic album")
@@ -121,6 +128,7 @@ class VinylControllerTest {
 
                 when(vinylService.getVinyls()).thenReturn(vinyls);
 
+                // Act and Assert
                 mockMvc.perform(get("/vinyls"))
                                 .andDo(print())
                                 .andExpect(status().isOk())
