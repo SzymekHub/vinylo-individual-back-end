@@ -33,14 +33,11 @@ public class AuctionServiceIMPL implements AuctionService {
                 existingAuction.setCurrentPrice(newAuction.getCurrentPrice());
                 existingAuction.setEndTime(existingAuction.getEndTime());
 
-                System.out.println("Saving updated auction: " + existingAuction);
                 return auctionRepo.saveAuction(existingAuction);
             } else {
-                System.out.println("Saving new auction: " + newAuction);
                 return auctionRepo.saveAuction(newAuction);
             }
         } catch (Exception ex) {
-            System.out.println("Error occurred while saving auction: " + ex.getMessage());
             ex.printStackTrace(); // Log the stack trace for better visibility
             throw new CustomInternalServerErrorException("Failed to save the auction " + ex.getMessage());
         }

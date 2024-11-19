@@ -76,7 +76,6 @@ public class AuctionController {
                     .body("Seller with ID " + newAuctionDTO.getSeller_id() + " not found.");
         }
 
-        System.out.println("Received auction: " + newAuctionDTO);
         Auction auction = AuctionMapper.toAuction(newAuctionDTO);
 
         auction.setVinyl(vinyl);
