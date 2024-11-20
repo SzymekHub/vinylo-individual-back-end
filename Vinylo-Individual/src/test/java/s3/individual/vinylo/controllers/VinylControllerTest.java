@@ -141,6 +141,52 @@ class VinylControllerTest {
         }
 
         @Test
+        void testGetVinylById_shouldReturn200RespondWithVinylByID() throws Exception {
+                // Arrange
+                int vinylId = 1;
+                Vinyl vinyl = Vinyl.builder()
+                                .id(vinylId)
+                                .vinylType("LP")
+                                .title("Abbey Road")
+                                .description("A legendary Beatles album")
+                                .isReleased(true)
+                                .artist(new Artist(1, "The Beatles", "Famous British rock band"))
+                                .build();
+
+                when(vinylService.getVinylById(vinylId)).thenReturn(vinyl);
+
+                // Act and Assert
+                mockMvc.perform(get("/vinyls/{id}", vinylId))
+                                .andDo(print())
+                                .andExpect(status().isOk())
+                                .andExpect(content().contentType(APPLICATION_JSON_VALUE))
+                                .andExpect(jsonPath("$.id").value(vinylId))
+                                .andExpect(jsonPath("$.vinylType").value("LP"))
+                                .andExpect(jsonPath("$.title").value("Abbey Road"))
+                                .andExpect(jsonPath("$.description").value("A legendary Beatles album"))
+                                .andExpect(jsonPath("$.isReleased").value(true))
+                                .andExpect(jsonPath("$.artist_id").value(1));
+
+                verify(vinylService).getVinylById(vinylId);
+        }
+
+        @Test
+        void testGetVinylById_shouldReturn404_WhenVinylNotFound() throws Exception {
+                // Arrange
+                int vinylId = 999;
+
+                when(vinylService.getVinylById(vinylId)).thenReturn(null);
+
+                // Act and Assert
+                mockMvc.perform(get("/vinyls/{id}", vinylId))
+                                .andDo(print())
+                                .andExpect(status().isNotFound())
+                                .andExpect(content().string("Vinyl record not found"));
+
+                verify(vinylService).getVinylById(vinylId);
+        }
+
+        @Test
         void testReplaceVinyl_shouldReturn200_WhenSuccessful() throws Exception {
                 // Arrange
                 int vinylId = 1;
@@ -186,9 +232,26 @@ class VinylControllerTest {
         }
 
         @Test
-        void testDeleteVinyl_shouldReturn200_WhenDeleted() throws Exception {
+        void testDeleteVinylById_shouldReturn201_WhenRequestValid() throws Exception {
                 // Arrange
                 int vinylId = 150;
+                when(vinylService.deleteVinylById(vinylId)).thenReturn(true);
+
+                // Act and Assert
+                mockMvc.perform(delete("/vinyls/{id}", vinylId))
+                                .andDo(print())
+                                .andExpect(status().isOk())
+                                .andExpect(content().string(
+                                                "Vinyl record with id " + vinylId + " was successfully deleted."));
+
+                verify(vinylService).deleteVinylById(vinylId);
+
+        }
+
+        @Test
+        void testDeleteVinylById_shouldReturn404_WhenVinylNotFound() throws Exception {
+                // Arrange
+                int vinylId = 179;
                 when(vinylService.deleteVinylById(vinylId)).thenReturn(false);
 
                 // Act and Assert
