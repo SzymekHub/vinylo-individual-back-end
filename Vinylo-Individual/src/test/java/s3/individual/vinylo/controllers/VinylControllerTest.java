@@ -20,8 +20,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -53,7 +52,7 @@ class VinylControllerTest {
         private ArtistService artistService;
 
         @Test
-        void testCreateNewVinyl_shouldCreateAndReturn201_WhenRequestValid() throws Exception {
+        void testAddVinyl_shouldCreateAndReturn201_WhenRequestValid() throws Exception {
 
                 // Arrange
                 Vinyl createdVinyl = Vinyl.builder()
@@ -92,7 +91,7 @@ class VinylControllerTest {
         }
 
         @Test
-        void testCreateNewVinyl_shouldCreateAndReturn400_WhenMissingFields() throws Exception {
+        void testAddVinyl_shouldCreateAndReturn400_WhenMissingFields() throws Exception {
                 // Assert
                 mockMvc.perform(post("/vinyls")
                                 .contentType(APPLICATION_JSON_VALUE)
@@ -139,6 +138,67 @@ class VinylControllerTest {
                                 .andExpect(jsonPath("$.vinyls[1].title").value("Imagine"));
 
                 verify(vinylService).getVinyls();
+        }
+
+        @Test
+        void testReplaceVinyl_shouldReturn200_WhenSuccessful() throws Exception {
+                // Arrange
+                int vinylId = 1;
+                Vinyl existingVinyl = Vinyl.builder()
+                                .id(vinylId)
+                                .vinylType("LP")
+                                .title("Abbey Road")
+                                .description("A legendary Beatles album")
+                                .isReleased(true)
+                                .artist(new Artist(1, "The Beatles", "Famous British rock band"))
+                                .build();
+
+                Vinyl updatedVinyl = Vinyl.builder()
+                                .id(vinylId)
+                                .vinylType(existingVinyl.getvinylType())
+                                .title(existingVinyl.getTitle())
+                                .description("A HYPER legendary Beatles album")
+                                .isReleased(existingVinyl.getisReleased())
+                                .artist(existingVinyl.getArtist())
+                                .build();
+
+                when(vinylService.saveVinyl(eq(vinylId), any(Vinyl.class))).thenReturn(updatedVinyl);
+
+                String jsonContent = """
+                                {
+                                        "vinylType": "LP",
+                                        "title": "Abbey Road",
+                                        "description": "A HYPER legendary Beatles album",
+                                        "isReleased": true,
+                                        "artist_id": 1
+                                }
+                                """;
+
+                mockMvc.perform(put("/vinyls/{id}", vinylId)
+                                .contentType(APPLICATION_JSON_VALUE)
+                                .content(jsonContent))
+                                .andDo(print())
+                                .andExpect(status().isOk())
+                                .andExpect(jsonPath("$.description").value("A HYPER legendary Beatles album"));
+
+                verify(vinylService).saveVinyl(eq(vinylId), any(Vinyl.class));
+
+        }
+
+        @Test
+        void testDeleteVinyl_shouldReturn200_WhenDeleted() throws Exception {
+                // Arrange
+                int vinylId = 150;
+                when(vinylService.deleteVinylById(vinylId)).thenReturn(false);
+
+                // Act and Assert
+                mockMvc.perform(delete("/vinyls/{id}", vinylId))
+                                .andDo(print())
+                                .andExpect(status().isNotFound())
+                                .andExpect(content().string("Vinyl record with id " + vinylId + " was not found."));
+
+                verify(vinylService).deleteVinylById(vinylId);
+
         }
 
 }
