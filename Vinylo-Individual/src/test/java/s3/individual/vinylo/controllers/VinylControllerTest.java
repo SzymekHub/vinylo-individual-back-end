@@ -111,6 +111,32 @@ class VinylControllerTest {
         }
 
         @Test
+        void testAddVinyl_shouldReturn404_WhenArtistNotFound() throws Exception {
+                // Arrange
+                int nonExistentArtistId = 999;
+                when(artistService.getArtistById(nonExistentArtistId)).thenReturn(null);
+
+                // Act and Assert
+                mockMvc.perform(post("/vinyls")
+                                .contentType(APPLICATION_JSON_VALUE)
+                                .content("""
+                                                {
+                                                    "title": "Abbey Road",
+                                                    "description": "A legendary Beatles album",
+                                                    "vinylType": "LP",
+                                                    "isReleased": true,
+                                                    "artist_id": 999
+                                                }
+                                                """))
+                                .andDo(print())
+                                .andExpect(status().isNotFound())
+                                .andExpect(content().string("Artist with ID " + nonExistentArtistId + " not found."));
+
+                verify(artistService).getArtistById(nonExistentArtistId);
+                verifyNoInteractions(vinylService);
+        }
+
+        @Test
         void testGetVinyls_shouldReturn200RespondWithVinylsArray() throws Exception {
 
                 // Arrange
