@@ -38,7 +38,6 @@ public class AuctionServiceIMPL implements AuctionService {
                 return auctionRepo.saveAuction(newAuction);
             }
         } catch (Exception ex) {
-            ex.printStackTrace(); // Log the stack trace for better visibility
             throw new CustomInternalServerErrorException("Failed to save the auction " + ex.getMessage());
         }
     }
