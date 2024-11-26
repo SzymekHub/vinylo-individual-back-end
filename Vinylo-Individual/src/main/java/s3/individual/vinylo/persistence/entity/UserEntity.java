@@ -36,7 +36,7 @@ public class UserEntity {
     private String password;
 
     @NotNull
-    @Column(name = "isPremium")
-    private Boolean isPremium;
+    @Column(name = "role")
+    private String role;
 
 }

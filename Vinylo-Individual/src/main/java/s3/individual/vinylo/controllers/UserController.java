@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import s3.individual.vinylo.exceptions.CustomNotFoundException;
 import s3.individual.vinylo.domain.mappers.UserMapper;
@@ -39,6 +40,7 @@ public class UserController {
     }
 
     @GetMapping("{id}")
+    @RolesAllowed({ "ADMIN" })
     public ResponseEntity<UserDTO> getUser(@PathVariable("id") int id) {
 
         User u = userService.getUserById(id);
@@ -65,6 +67,7 @@ public class UserController {
     }
 
     @DeleteMapping("{id}")
+    @RolesAllowed({ "ADMIN" })
     public ResponseEntity<String> deativateUserById(@PathVariable("id") int id) {
         boolean isDeleted = userService.deativateUserById(id);
         if (isDeleted) {

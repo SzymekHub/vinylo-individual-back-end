@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -52,6 +53,7 @@ class VinylControllerTest {
         private ArtistService artistService;
 
         @Test
+        @WithMockUser(roles = "ADMIN")
         void testAddVinyl_shouldCreateAndReturn201_WhenRequestValid() throws Exception {
 
                 // Arrange
@@ -91,6 +93,7 @@ class VinylControllerTest {
         }
 
         @Test
+        @WithMockUser(roles = "ADMIN")
         void testAddVinyl_shouldCreateAndReturn400_WhenMissingFields() throws Exception {
                 // Assert
                 mockMvc.perform(post("/vinyls")
@@ -111,6 +114,7 @@ class VinylControllerTest {
         }
 
         @Test
+        @WithMockUser(roles = "ADMIN")
         void testAddVinyl_shouldReturn404_WhenArtistNotFound() throws Exception {
                 // Arrange
                 int nonExistentArtistId = 999;
@@ -167,6 +171,7 @@ class VinylControllerTest {
         }
 
         @Test
+        @WithMockUser
         void testGetVinylById_shouldReturn200RespondWithVinylByID() throws Exception {
                 // Arrange
                 int vinylId = 1;
@@ -197,6 +202,7 @@ class VinylControllerTest {
         }
 
         @Test
+        @WithMockUser
         void testGetVinylById_shouldReturn404_WhenVinylNotFound() throws Exception {
                 // Arrange
                 int vinylId = 999;
@@ -213,6 +219,7 @@ class VinylControllerTest {
         }
 
         @Test
+        @WithMockUser(roles = "ADMIN")
         void testReplaceVinyl_shouldReturn200_WhenSuccessful() throws Exception {
                 // Arrange
                 int vinylId = 1;
@@ -258,6 +265,7 @@ class VinylControllerTest {
         }
 
         @Test
+        @WithMockUser(roles = "ADMIN")
         void testDeleteVinylById_shouldReturn201_WhenRequestValid() throws Exception {
                 // Arrange
                 int vinylId = 150;
@@ -275,6 +283,7 @@ class VinylControllerTest {
         }
 
         @Test
+        @WithMockUser(roles = "ADMIN")
         void testDeleteVinylById_shouldReturn404_WhenVinylNotFound() throws Exception {
                 // Arrange
                 int vinylId = 179;

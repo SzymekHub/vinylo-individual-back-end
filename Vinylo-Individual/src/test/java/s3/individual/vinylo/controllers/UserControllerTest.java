@@ -6,10 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithAnonymousUser;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import s3.individual.vinylo.domain.User;
+import s3.individual.vinylo.persistence.entity.RoleEnum;
 import s3.individual.vinylo.services.UserService;
 
 import java.util.List;
@@ -43,7 +46,7 @@ class UserControllerTest {
                                 .username("Username Test")
                                 .email("UserTest@gmail.com")
                                 .password("UserTestPass")
-                                .isPremium(false)
+                                .role(RoleEnum.REGULAR)
                                 .build();
                 // Act
                 when(userService.saveUser(eq(null), any(User.class))).thenReturn(createdUser);
@@ -56,7 +59,7 @@ class UserControllerTest {
                                                 "username": "Username Test",
                                                 "email" : "UserTest@gmail.com",
                                                 "password" : "UserTestPass",
-                                                "isPremium" : true
+                                                "role" : "REGULAR"
 
                                                             }
                                                         """))
@@ -78,7 +81,7 @@ class UserControllerTest {
                                                 "username": "Username Test",
                                                 "email" : "",
                                                 "password" : "UserTestPass",
-                                                "isPremium" : true
+                                                "role" : "REGULAR"
 
                                                             }
                                                         """))
@@ -89,6 +92,7 @@ class UserControllerTest {
         }
 
         @Test
+        @WithMockUser(roles = "ADMIN")
         void testDeactivateUserById_shouldReturn201_WhenRequestValid() throws Exception {
                 // Arrange
                 int userId = 100;
@@ -104,6 +108,7 @@ class UserControllerTest {
         }
 
         @Test
+        @WithMockUser(roles = "ADMIN")
         void testDeativateUserById_ShouldReturn404_WhenUserNotFound() throws Exception {
                 // Arrange
                 int userId = 200;
@@ -127,14 +132,14 @@ class UserControllerTest {
                                                 .username("UserName1")
                                                 .email("Email1@gmail.com")
                                                 .password("Password1")
-                                                .isPremium(false)
+                                                .role(RoleEnum.REGULAR)
                                                 .build(),
                                 User.builder()
                                                 .id(2)
                                                 .username("UserName2")
                                                 .email("Email2@gmail.com")
                                                 .password("Password2")
-                                                .isPremium(true)
+                                                .role(RoleEnum.PREMIUM)
                                                 .build());
 
                 // Act
@@ -154,6 +159,7 @@ class UserControllerTest {
         }
 
         @Test
+        @WithMockUser(roles = "ADMIN")
         void testGetUser_shouldReturn200RespondWithUserByID() throws Exception {
                 // Arrange
                 int userId = 1;
@@ -162,7 +168,7 @@ class UserControllerTest {
                                 .username("UserName1")
                                 .email("Email1@gmail.com")
                                 .password("Password1")
-                                .isPremium(false)
+                                .role(RoleEnum.REGULAR)
                                 .build();
 
                 when(userService.getUserById(userId)).thenReturn(user);
@@ -175,12 +181,13 @@ class UserControllerTest {
                                 .andExpect(jsonPath("$.id").value(userId))
                                 .andExpect(jsonPath("$.username").value("UserName1"))
                                 .andExpect(jsonPath("$.email").value("Email1@gmail.com"))
-                                .andExpect(jsonPath("$.isPremium").value(false));
+                                .andExpect(jsonPath("$.role").value(RoleEnum.REGULAR.toString()));
 
                 verify(userService).getUserById(userId);
         }
 
         @Test
+        @WithMockUser(roles = "ADMIN")
         void testGetUser_shouldReturn404_WhenUserNotFound() throws Exception {
                 // Arrange
                 int userId = 999;

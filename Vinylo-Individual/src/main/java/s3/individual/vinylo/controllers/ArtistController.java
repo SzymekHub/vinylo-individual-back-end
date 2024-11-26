@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import s3.individual.vinylo.domain.mappers.ArtistMapper;
 import s3.individual.vinylo.domain.dtos.ArtistDTO;
@@ -51,6 +52,7 @@ public class ArtistController {
     }
 
     @PostMapping()
+    @RolesAllowed({ "ADMIN" })
     public ResponseEntity<?> createArtist(@Valid @RequestBody ArtistDTO newArtistDTO) {
         Artist newArtist = ArtistMapper.toArtist(newArtistDTO);
 
@@ -60,6 +62,7 @@ public class ArtistController {
     }
 
     @PutMapping("{id}")
+    @RolesAllowed({ "ADMIN" })
     public ArtistDTO replaceArtistBio(@RequestBody ArtistDTO newArtistDTO, @PathVariable("id") int id) {
         Artist newArtist = ArtistMapper.toArtist(newArtistDTO);
         Artist replaceArtist = artistService.saveArtist(id, newArtist);

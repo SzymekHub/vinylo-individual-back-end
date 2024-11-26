@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import s3.individual.vinylo.exceptions.CustomNotFoundException;
 import s3.individual.vinylo.domain.mappers.VinylMapper;
@@ -63,6 +64,7 @@ public class VinylController {
     }
 
     @PostMapping
+    @RolesAllowed({ "ADMIN" })
     public ResponseEntity<?> addVinyl(@Valid @RequestBody VinylDTO vinylDTO) {
         Artist artist = artistService.getArtistById(vinylDTO.getArtist_id());
 
@@ -85,6 +87,7 @@ public class VinylController {
     }
 
     @PutMapping("/{id}")
+    @RolesAllowed({ "ADMIN" })
     public VinylDTO replaceVinyl(@RequestBody VinylDTO newVinylDTO, @PathVariable("id") int id) {
         Vinyl newVinyl = VinylMapper.toVinyl(newVinylDTO);
         Vinyl replacedVinyl = vinylService.saveVinyl(id, newVinyl); // Correctly passing both id and newVinyl
@@ -93,6 +96,7 @@ public class VinylController {
 
     // I changed return type to ResponseEntity<String> to handle HTTP responses.
     @DeleteMapping("/{id}")
+    @RolesAllowed({ "ADMIN" })
     public ResponseEntity<String> deleteVinyl(@PathVariable("id") int id) {
         boolean isDeleted = vinylService.deleteVinylById(id);
         if (isDeleted) {

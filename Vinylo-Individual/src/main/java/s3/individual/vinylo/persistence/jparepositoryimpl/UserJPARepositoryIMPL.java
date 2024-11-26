@@ -5,8 +5,6 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import s3.individual.vinylo.persistence.UserRepo;
 import s3.individual.vinylo.persistence.entity.UserEntity;
@@ -18,9 +16,6 @@ import s3.individual.vinylo.persistence.jparepository.UserJPARepo;
 public class UserJPARepositoryIMPL implements UserRepo {
 
     private final UserJPARepo userJPARepo;
-
-    @PersistenceContext
-    private EntityManager entityManager;
 
     public UserJPARepositoryIMPL(UserJPARepo userJPARepo) {
         this.userJPARepo = userJPARepo;
@@ -46,9 +41,8 @@ public class UserJPARepositoryIMPL implements UserRepo {
 
     @Override
     public User findByUsername(String username) {
-        // Look for a UserEntity in the database by its ID
-        return userJPARepo.findByUsername(username).stream()
-                .findFirst()
+        // Look for a UserEntity in the database by its username
+        return userJPARepo.findByUsername(username)
                 // If found, map the UserEntity to a User domain object using
                 // UserEntityMapper
                 .map(UserEntityMapper::fromEntity)

@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import s3.individual.vinylo.persistence.AuctionRepo;
+import s3.individual.vinylo.persistence.entity.RoleEnum;
 import s3.individual.vinylo.serviceimpl.AuctionServiceIMPL;
 import s3.individual.vinylo.domain.Artist;
 import s3.individual.vinylo.domain.Vinyl;
@@ -50,13 +51,13 @@ public class AuctionServiceIMPLTest {
                                 .build();
         }
 
-        private User createSeller(Integer id, String username, String email, String password, Boolean isPremium) {
+        private User createSeller(Integer id, String username, String email, String password, RoleEnum role) {
                 return User.builder()
                                 .id(id)
                                 .username(username)
                                 .email(email)
                                 .password(password)
-                                .isPremium(isPremium)
+                                .role(RoleEnum.PREMIUM)
                                 .build();
         }
 
@@ -91,7 +92,7 @@ public class AuctionServiceIMPLTest {
                                                 "Username1",
                                                 "UseerName1@gmail.com",
                                                 "User1Password",
-                                                false),
+                                                RoleEnum.REGULAR),
                                 "Fresh Rubber Soul vinyl!!",
                                 35.00,
                                 45.50,
@@ -126,7 +127,7 @@ public class AuctionServiceIMPLTest {
                                                 "Username1",
                                                 "UseerName1@gmail.com",
                                                 "User1Password",
-                                                false),
+                                                RoleEnum.REGULAR),
                                 "Fresh Rubber Soul vinyl!!",
                                 35.00,
                                 45.50,
@@ -145,7 +146,7 @@ public class AuctionServiceIMPLTest {
                                                 "Username1",
                                                 "UseerName1@gmail.com",
                                                 "User1Password",
-                                                false),
+                                                RoleEnum.REGULAR),
                                 "Used and bad Rubber Soul vinyl!!",
                                 35.00,
                                 25.50,
@@ -184,7 +185,7 @@ public class AuctionServiceIMPLTest {
                                                 "Username1",
                                                 "UseerName1@gmail.com",
                                                 "User1Password",
-                                                false),
+                                                RoleEnum.REGULAR),
                                 "Used and bad Rubber Soul vinyl!!",
                                 35.00,
                                 25.50,
@@ -214,7 +215,7 @@ public class AuctionServiceIMPLTest {
                                                 "Username1",
                                                 "UseerName1@gmail.com",
                                                 "User1Password",
-                                                false),
+                                                RoleEnum.REGULAR),
                                 "Fresh Rubber Soul vinyl!!",
                                 35.00,
                                 45.50,
@@ -232,7 +233,7 @@ public class AuctionServiceIMPLTest {
                                                 "Username3",
                                                 "UseerName3@gmail.com",
                                                 "User3Password",
-                                                true),
+                                                RoleEnum.PREMIUM),
                                 "OPIUM AUCTION!!",
                                 666.00,
                                 888.00,
@@ -266,7 +267,7 @@ public class AuctionServiceIMPLTest {
                                                 "Username1",
                                                 "UseerName1@gmail.com",
                                                 "User1Password",
-                                                false),
+                                                RoleEnum.REGULAR),
                                 "Fresh Rubber Soul vinyl!!",
                                 35.00,
                                 45.50,
@@ -308,7 +309,7 @@ public class AuctionServiceIMPLTest {
                                 "Rubber Soul vinyl auction!!",
                                 createVinyl(2, "Rubber Soul", "LP", "ROCK&ROLL", true,
                                                 createArtist(2, "The Beatles", "Yeah yeah yeah")),
-                                createSeller(2, "Username1", "UseerName1@gmail.com", "User1Password", false),
+                                createSeller(2, "Username1", "UseerName1@gmail.com", "User1Password", RoleEnum.REGULAR),
                                 "Fresh Rubber Soul vinyl!!",
                                 35.00,
                                 initialPrice,
@@ -339,7 +340,7 @@ public class AuctionServiceIMPLTest {
                                 "Rubber Soul vinyl auction!!",
                                 createVinyl(2, "Rubber Soul", "LP", "ROCK&ROLL", true,
                                                 createArtist(2, "The Beatles", "Yeah yeah yeah")),
-                                createSeller(2, "Username1", "UseerName1@gmail.com", "User1Password", false),
+                                createSeller(2, "Username1", "UseerName1@gmail.com", "User1Password", RoleEnum.REGULAR),
                                 "Fresh Rubber Soul vinyl!!",
                                 35.00,
                                 initialPrice,

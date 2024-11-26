@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -36,6 +37,7 @@ class ArtistControllerTest {
         private ArtistService artistService;
 
         @Test
+        @WithMockUser(roles = "ADMIN")
         void testCreateArtist_ShouldCreateAndReturn201_WhenRequestValid() throws Exception {
 
                 // Arrange
@@ -67,6 +69,7 @@ class ArtistControllerTest {
         }
 
         @Test
+        @WithMockUser(roles = "ADMIN")
         void testCreateArtist_ShouldCreateAndReturn400_WhenMIssingFields() throws Exception {
 
                 // Assert
@@ -86,6 +89,7 @@ class ArtistControllerTest {
         }
 
         @Test
+        @WithMockUser
         void testGetArtistById_shouldReturn200RespondWithArtistByID() throws Exception {
 
                 // Arrange
@@ -111,6 +115,7 @@ class ArtistControllerTest {
         }
 
         @Test
+        @WithMockUser
         void testGetArtistById_shouldReturn404_WhenArtistNotFound() throws Exception {
 
                 // Arrange
@@ -128,6 +133,7 @@ class ArtistControllerTest {
         }
 
         @Test
+        @WithMockUser
         void testGetArtists_ShouldReturn200RespondWithArtistArray() throws Exception {
 
                 // Arrange
@@ -159,6 +165,7 @@ class ArtistControllerTest {
         }
 
         @Test
+        @WithMockUser(roles = "ADMIN")
         void testReplaceArtistBio_shouldReturn200_whenSuccessful() throws Exception {
 
                 // Arrange

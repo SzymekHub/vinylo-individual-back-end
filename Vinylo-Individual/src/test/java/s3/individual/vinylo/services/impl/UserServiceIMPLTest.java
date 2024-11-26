@@ -6,13 +6,17 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import s3.individual.vinylo.persistence.UserRepo;
+import s3.individual.vinylo.persistence.entity.RoleEnum;
 import s3.individual.vinylo.serviceimpl.UserServiceIMPL;
 import s3.individual.vinylo.domain.User;
 import s3.individual.vinylo.exceptions.CustomInternalServerErrorException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import java.util.List;
@@ -23,37 +27,38 @@ public class UserServiceIMPLTest {
     @Mock
     private UserRepo userRepoMock;
 
+    @Mock
+    private PasswordEncoder passwordEncoderMock;
+
     @InjectMocks
     private UserServiceIMPL userService;
 
-    private User createUser(Integer id, String username, String email, String password, Boolean isPremium) {
+    private User createUser(Integer id, String username, String email, String password, RoleEnum role) {
         return User.builder()
                 .id(id)
                 .username(username)
                 .email(email)
                 .password(password)
-                .isPremium(isPremium)
+                .role(role)
                 .build();
     }
 
     @Test
     void testSaveUser_shouldSaveAndReturnNewUser() {
         // Arrange
-        User newUser = createUser(2,
-                "Username1",
-                "UseerName1@gmail.com",
-                "User1Password",
-                false);
+        User newUser = createUser(null, "Username1", "UseerName1@gmail.com", "User1Password", RoleEnum.REGULAR);
+        User savedUser = createUser(2, "Username1", "UseerName1@gmail.com", "EncodedPassword", RoleEnum.REGULAR);
 
-        when(userRepoMock.saveUser(newUser)).thenReturn(newUser);
+        when(passwordEncoderMock.encode("User1Password")).thenReturn("EncodedPassword");
+        when(userRepoMock.saveUser(any(User.class))).thenReturn(savedUser);
 
         // Act
-        User savedUser = userService.saveUser(null, newUser);
+        User result = userService.saveUser(null, newUser);
 
         // Assert
-        assertEquals(newUser, savedUser);
-        verify(userRepoMock).saveUser(savedUser);
-
+        assertEquals(savedUser, result);
+        verify(passwordEncoderMock).encode("User1Password");
+        verify(userRepoMock).saveUser(any(User.class));
     }
 
     @Test
@@ -65,13 +70,13 @@ public class UserServiceIMPLTest {
                 "Username1",
                 "UseerName1@gmail.com",
                 "User1Password",
-                false);
+                RoleEnum.REGULAR);
 
         User updatedUser = createUser(userId,
                 "Crazy Username",
                 "UseerName2@gmail.com",
                 "User2Password",
-                false);
+                RoleEnum.REGULAR);
 
         when(userRepoMock.getUserById(userId)).thenReturn(existingUser);
         when(userRepoMock.saveUser(existingUser)).thenReturn(updatedUser);
@@ -96,7 +101,7 @@ public class UserServiceIMPLTest {
                 "Crazy Username",
                 "UseerName2@gmail.com",
                 "User2Password",
-                false);
+                RoleEnum.REGULAR);
 
         when(userRepoMock.getUserById(userId)).thenReturn(null);
 
@@ -116,7 +121,7 @@ public class UserServiceIMPLTest {
                 "RubyDaCherry",
                 "RubyDaCherry@gmail.com",
                 "YoungPlaque666",
-                true);
+                RoleEnum.PREMIUM);
 
         when(userRepoMock.findByUsername(username)).thenReturn(expectedUser);
 
@@ -137,7 +142,7 @@ public class UserServiceIMPLTest {
                 "Johnny",
                 "JohnnyTheBoss@gmail.com",
                 "JOhnny1234",
-                true);
+                RoleEnum.PREMIUM);
 
         when(userRepoMock.getUserById(userId)).thenReturn(expectedUser);
 
@@ -157,13 +162,13 @@ public class UserServiceIMPLTest {
                 "Johnny",
                 "JohnnyTheBoss@gmail.com",
                 "JOhnny1234",
-                true);
+                RoleEnum.PREMIUM);
 
         User user2 = createUser(888,
                 "Pablo",
                 "PabloTheBoss@gmail.com",
                 "Pablo69",
-                false);
+                RoleEnum.REGULAR);
 
         when(userRepoMock.getUsers()).thenReturn(List.of(user, user2));
 

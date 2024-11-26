@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import s3.individual.vinylo.domain.dtos.UserDTO;
 import s3.individual.vinylo.domain.dtos.UsersDTO;
+import s3.individual.vinylo.persistence.entity.RoleEnum;
 import s3.individual.vinylo.domain.User;
 
 @Component // Make this class a Spring-managed bean
@@ -21,7 +22,7 @@ public class UserMapper {
                 userDTO.getUsername(),
                 userDTO.getEmail(),
                 userDTO.getPassword(),
-                userDTO.getIsPremium());
+                RoleEnum.valueOf(userDTO.getRole()));
     }
 
     public static UserDTO toUserDTO(User user) {
@@ -33,8 +34,9 @@ public class UserMapper {
 
         userDTO.setId(user.getId());
         userDTO.setUsername(user.getUsername());
+        userDTO.setPassword(user.getPassword());
         userDTO.setEmail(user.getEmail());
-        userDTO.setIsPremium(user.getIsPremium());
+        userDTO.setRole(user.getRole().name());
 
         return userDTO;
     }

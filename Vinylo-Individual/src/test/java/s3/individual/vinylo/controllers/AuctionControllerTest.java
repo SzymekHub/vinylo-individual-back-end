@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -12,6 +13,7 @@ import s3.individual.vinylo.domain.Artist;
 import s3.individual.vinylo.domain.Auction;
 import s3.individual.vinylo.domain.User;
 import s3.individual.vinylo.domain.Vinyl;
+import s3.individual.vinylo.persistence.entity.RoleEnum;
 import s3.individual.vinylo.services.AuctionService;
 import s3.individual.vinylo.services.UserService;
 import s3.individual.vinylo.services.VinylService;
@@ -45,6 +47,7 @@ class AuctionControllerTest {
         private UserService userService;
 
         @Test
+        @WithMockUser
         void testAddAuction_shouldReturn201_whenValidRequest() throws Exception {
 
                 // Arrange
@@ -53,7 +56,7 @@ class AuctionControllerTest {
                                 .title("Auction Title")
                                 .vinyl(new Vinyl(1, "LP", "testVinyl", "This is a desc for a test", false,
                                                 new Artist(1, "The Beatles", "Famous British rock band")))
-                                .seller(new User(1, "userName", "User@gmail.com", "Password", false))
+                                .seller(new User(1, "userName", "User@gmail.com", "Password", RoleEnum.REGULAR))
                                 .description("Description")
                                 .startingPrice(100.00)
                                 .currentPrice(100.00)
@@ -69,7 +72,7 @@ class AuctionControllerTest {
                                                 new Artist(1, "The Beatles", "Famous British rock band")));
 
                 when(userService.getUserById(1))
-                                .thenReturn(new User(1, "userName", "User@gmail.com", "Password", false));
+                                .thenReturn(new User(1, "userName", "User@gmail.com", "Password", RoleEnum.REGULAR));
 
                 // Act
                 String startTime = LocalDate.now().toString();
@@ -100,6 +103,7 @@ class AuctionControllerTest {
         }
 
         @Test
+        @WithMockUser
         void testAddAuction_shouldReturn404_whenVinylNotFound() throws Exception {
 
                 // Arrange
@@ -133,6 +137,7 @@ class AuctionControllerTest {
         }
 
         @Test
+        @WithMockUser
         void testAddAuction_shouldReturn404_whenSellerNotFound() throws Exception {
 
                 // Arrange
@@ -183,7 +188,8 @@ class AuctionControllerTest {
                                                                 false,
                                                                 new Artist(1, "The Beatles",
                                                                                 "Famous British rock band")))
-                                                .seller(new User(1, "userName", "User@gmail.com", "Password", false))
+                                                .seller(new User(1, "userName", "User@gmail.com", "Password",
+                                                                RoleEnum.REGULAR))
                                                 .description("Auction1 Description")
                                                 .startingPrice(69.00)
                                                 .currentPrice(90.00)
@@ -198,7 +204,8 @@ class AuctionControllerTest {
                                                                 true,
                                                                 new Artist(2, "The CockRoaches",
                                                                                 "Famous American techno band")))
-                                                .seller(new User(1, "userName", "User@gmail.com", "Password", false))
+                                                .seller(new User(1, "userName", "User@gmail.com", "Password",
+                                                                RoleEnum.REGULAR))
                                                 .description("Auction2 Description")
                                                 .startingPrice(54.00)
                                                 .currentPrice(72.00)
@@ -222,6 +229,7 @@ class AuctionControllerTest {
         }
 
         @Test
+        @WithMockUser
         void testGetAuction_shouldReturn200_whenAuctionExists() throws Exception {
                 // Arrange
                 int auctionId = 1;
@@ -230,7 +238,7 @@ class AuctionControllerTest {
                                 .title("Auction1")
                                 .vinyl(new Vinyl(1, "LP", "testVinyl", "This is a desc for a test", false,
                                                 new Artist(1, "The Beatles", "Famous British rock band")))
-                                .seller(new User(1, "userName", "User@gmail.com", "Password", false))
+                                .seller(new User(1, "userName", "User@gmail.com", "Password", RoleEnum.REGULAR))
                                 .description("Auction1 Description")
                                 .startingPrice(69.00)
                                 .currentPrice(90.00)
@@ -253,6 +261,7 @@ class AuctionControllerTest {
         }
 
         @Test
+        @WithMockUser
         void testGetAuction_shouldReturn404_whenAuctionNotFound() throws Exception {
                 // Arrange
                 int auctionId = 666;
@@ -268,6 +277,7 @@ class AuctionControllerTest {
         }
 
         @Test
+        @WithMockUser
         void testReplaceAuctionDescription_shouldReturn200_whenSuccessful() throws Exception {
                 // Arrange
                 int auctionId = 1;
@@ -277,7 +287,7 @@ class AuctionControllerTest {
                                 .description("Original Description")
                                 .vinyl(new Vinyl(1, "LP", "testVinyl", "This is a desc for a test", false,
                                                 new Artist(1, "The Beatles", "Famous British rock band")))
-                                .seller(new User(1, "userName", "User@gmail.com", "Password", false))
+                                .seller(new User(1, "userName", "User@gmail.com", "Password", RoleEnum.REGULAR))
                                 .startingPrice(10.0)
                                 .currentPrice(15.0)
                                 .startTime(LocalDate.now())
@@ -319,6 +329,7 @@ class AuctionControllerTest {
         }
 
         @Test
+        @WithMockUser
         void testDeactivateAuctionById_shouldReturn200_whenDeleted() throws Exception {
                 // Arrange
                 int auctionId = 100;
@@ -335,6 +346,7 @@ class AuctionControllerTest {
         }
 
         @Test
+        @WithMockUser
         void testDeactivateAuctionById_shouldReturn404_whenNotFound() throws Exception {
                 // Arrange
                 int auctionId = 100;

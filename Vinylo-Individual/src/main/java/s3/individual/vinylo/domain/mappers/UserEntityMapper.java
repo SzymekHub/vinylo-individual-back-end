@@ -3,6 +3,7 @@ package s3.individual.vinylo.domain.mappers;
 import org.springframework.stereotype.Component;
 
 import s3.individual.vinylo.domain.User;
+import s3.individual.vinylo.persistence.entity.RoleEnum;
 import s3.individual.vinylo.persistence.entity.UserEntity;
 
 @Component // Make this class a Spring-managed bean
@@ -20,7 +21,7 @@ public class UserEntityMapper {
         userEntity.setUsername(user.getUsername());
         userEntity.setEmail(user.getEmail());
         userEntity.setPassword(user.getPassword());
-        userEntity.setIsPremium(user.getIsPremium());
+        userEntity.setRole(user.getRole().name());
 
         return userEntity;
     }
@@ -35,7 +36,7 @@ public class UserEntityMapper {
         user.setUsername(userEntity.getUsername());
         user.setEmail(userEntity.getEmail());
         user.setPassword(userEntity.getPassword());
-        user.setIsPremium(userEntity.getIsPremium());
+        user.setRole(RoleEnum.valueOf(userEntity.getRole()));
 
         return user;
     }

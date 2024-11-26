@@ -20,7 +20,7 @@ public class UserDTO {
     @NotBlank(message = "password must not be blank")
     private String password;
 
-    @NotNull(message = "Premium status is required")
-    private Boolean isPremium;
+    @NotNull(message = "Role status is required")
+    private String role;
 
 }

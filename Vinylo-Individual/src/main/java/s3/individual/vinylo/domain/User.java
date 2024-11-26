@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import s3.individual.vinylo.persistence.entity.RoleEnum;
 
 @Setter
 @Getter
@@ -17,13 +18,13 @@ public class User {
     private String username;
     private String email;
     private String password;
-    private Boolean isPremium;
+    private RoleEnum role;
 
-    public User(Integer id, String username, String email, String password, Boolean isPremium) {
+    public User(Integer id, String username, String email, String password, RoleEnum role) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
-        this.isPremium = isPremium;
+        this.role = role;
     }
 }
