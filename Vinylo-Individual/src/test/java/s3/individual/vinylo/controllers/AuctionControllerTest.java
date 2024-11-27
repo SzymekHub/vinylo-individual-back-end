@@ -47,7 +47,7 @@ class AuctionControllerTest {
         private UserService userService;
 
         @Test
-        @WithMockUser
+        @WithMockUser(roles = { "ADMIN", "REGULAR", "PREMIUM" })
         void testAddAuction_shouldReturn201_whenValidRequest() throws Exception {
 
                 // Arrange
@@ -103,7 +103,7 @@ class AuctionControllerTest {
         }
 
         @Test
-        @WithMockUser
+        @WithMockUser(roles = { "ADMIN", "REGULAR", "PREMIUM" })
         void testAddAuction_shouldReturn404_whenVinylNotFound() throws Exception {
 
                 // Arrange
@@ -137,7 +137,7 @@ class AuctionControllerTest {
         }
 
         @Test
-        @WithMockUser
+        @WithMockUser(roles = { "ADMIN", "REGULAR", "PREMIUM" })
         void testAddAuction_shouldReturn404_whenSellerNotFound() throws Exception {
 
                 // Arrange
@@ -177,6 +177,7 @@ class AuctionControllerTest {
         }
 
         @Test
+        @WithMockUser(roles = { "ADMIN", "REGULAR", "PREMIUM" })
         void testGetAuctions_shouldReturn200AndAuctions() throws Exception {
 
                 // Arrange
@@ -229,7 +230,7 @@ class AuctionControllerTest {
         }
 
         @Test
-        @WithMockUser
+        @WithMockUser(roles = { "ADMIN", "REGULAR", "PREMIUM" })
         void testGetAuction_shouldReturn200_whenAuctionExists() throws Exception {
                 // Arrange
                 int auctionId = 1;
@@ -261,7 +262,7 @@ class AuctionControllerTest {
         }
 
         @Test
-        @WithMockUser
+        @WithMockUser(roles = { "ADMIN", "REGULAR", "PREMIUM" })
         void testGetAuction_shouldReturn404_whenAuctionNotFound() throws Exception {
                 // Arrange
                 int auctionId = 666;
@@ -277,7 +278,7 @@ class AuctionControllerTest {
         }
 
         @Test
-        @WithMockUser
+        @WithMockUser(roles = { "ADMIN", "REGULAR", "PREMIUM" })
         void testReplaceAuctionDescription_shouldReturn200_whenSuccessful() throws Exception {
                 // Arrange
                 int auctionId = 1;
@@ -329,7 +330,7 @@ class AuctionControllerTest {
         }
 
         @Test
-        @WithMockUser
+        @WithMockUser(roles = { "ADMIN", "REGULAR", "PREMIUM" })
         void testDeactivateAuctionById_shouldReturn200_whenDeleted() throws Exception {
                 // Arrange
                 int auctionId = 100;
@@ -346,7 +347,7 @@ class AuctionControllerTest {
         }
 
         @Test
-        @WithMockUser
+        @WithMockUser(roles = { "ADMIN", "REGULAR", "PREMIUM" })
         void testDeactivateAuctionById_shouldReturn404_whenNotFound() throws Exception {
                 // Arrange
                 int auctionId = 100;

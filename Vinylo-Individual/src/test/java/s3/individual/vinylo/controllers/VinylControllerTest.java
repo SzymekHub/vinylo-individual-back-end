@@ -141,6 +141,7 @@ class VinylControllerTest {
         }
 
         @Test
+        @WithMockUser(roles = { "ADMIN", "REGULAR", "PREMIUM" })
         void testGetVinyls_shouldReturn200RespondWithVinylsArray() throws Exception {
 
                 // Arrange
@@ -171,7 +172,7 @@ class VinylControllerTest {
         }
 
         @Test
-        @WithMockUser
+        @WithMockUser(roles = { "ADMIN", "REGULAR", "PREMIUM" })
         void testGetVinylById_shouldReturn200RespondWithVinylByID() throws Exception {
                 // Arrange
                 int vinylId = 1;
@@ -202,7 +203,7 @@ class VinylControllerTest {
         }
 
         @Test
-        @WithMockUser
+        @WithMockUser(roles = { "ADMIN", "REGULAR", "PREMIUM" })
         void testGetVinylById_shouldReturn404_WhenVinylNotFound() throws Exception {
                 // Arrange
                 int vinylId = 999;

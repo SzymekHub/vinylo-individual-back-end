@@ -89,7 +89,7 @@ class ArtistControllerTest {
         }
 
         @Test
-        @WithMockUser
+        @WithMockUser(roles = { "ADMIN", "REGULAR", "PREMIUM" })
         void testGetArtistById_shouldReturn200RespondWithArtistByID() throws Exception {
 
                 // Arrange
@@ -115,7 +115,7 @@ class ArtistControllerTest {
         }
 
         @Test
-        @WithMockUser
+        @WithMockUser(roles = { "ADMIN", "REGULAR", "PREMIUM" })
         void testGetArtistById_shouldReturn404_WhenArtistNotFound() throws Exception {
 
                 // Arrange
@@ -133,7 +133,7 @@ class ArtistControllerTest {
         }
 
         @Test
-        @WithMockUser
+        @WithMockUser(roles = { "ADMIN", "REGULAR", "PREMIUM" })
         void testGetArtists_ShouldReturn200RespondWithArtistArray() throws Exception {
 
                 // Arrange
