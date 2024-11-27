@@ -38,6 +38,7 @@ public class VinylController {
     }
 
     @GetMapping()
+    @RolesAllowed({ "REGULAR", "ADMIN", "PREMIUM" })
     public VinylsDTO getVinyls() {
         List<Vinyl> vinyls = vinylService.getVinyls();
 
@@ -49,6 +50,7 @@ public class VinylController {
     // vinyl record is found,
     // and a ResponseEntity<String> when an error occurs (e.g., vinyl not found).
     @GetMapping("/{id}")
+    @RolesAllowed({ "REGULAR", "ADMIN", "PREMIUM" })
     public ResponseEntity<VinylDTO> getVinyl(@PathVariable("id") int id) {
 
         Vinyl v = vinylService.getVinylById(id);

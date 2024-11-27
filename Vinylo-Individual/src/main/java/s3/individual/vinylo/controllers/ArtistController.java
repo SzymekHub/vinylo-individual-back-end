@@ -32,6 +32,7 @@ public class ArtistController {
     }
 
     @GetMapping()
+    @RolesAllowed({ "REGULAR", "ADMIN", "PREMIUM" })
     public ArtistsDTO getArtists() {
         List<Artist> artists = artistService.getArtists();
 
@@ -39,6 +40,7 @@ public class ArtistController {
     }
 
     @GetMapping("{id}")
+    @RolesAllowed({ "REGULAR", "ADMIN", "PREMIUM" })
     public ResponseEntity<ArtistDTO> getArtistById(@PathVariable("id") int id) {
         Artist a = artistService.getArtistById(id);
 

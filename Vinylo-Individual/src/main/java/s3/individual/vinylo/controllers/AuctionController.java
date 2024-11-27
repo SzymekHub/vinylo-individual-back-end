@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import s3.individual.vinylo.exceptions.CustomNotFoundException;
 import s3.individual.vinylo.domain.mappers.AuctionMapper;
@@ -40,6 +41,7 @@ public class AuctionController {
     }
 
     @GetMapping()
+    @RolesAllowed({ "REGULAR", "ADMIN", "PREMIUM" })
     public AuctionsDTO geAuctions() {
         List<Auction> auctions = auctionService.getAuctions();
 
@@ -47,6 +49,7 @@ public class AuctionController {
     }
 
     @GetMapping("{id}")
+    @RolesAllowed({ "REGULAR", "ADMIN", "PREMIUM" })
     public ResponseEntity<AuctionDTO> getAuction(@PathVariable("id") int id) {
 
         Auction auction = auctionService.getAuctionsById(id);
@@ -62,6 +65,7 @@ public class AuctionController {
     }
 
     @PostMapping()
+    @RolesAllowed({ "REGULAR", "ADMIN", "PREMIUM" })
     public ResponseEntity<?> addAuction(@Valid @RequestBody AuctionDTO newAuctionDTO) {
         Vinyl vinyl = vinylService.getVinylById(newAuctionDTO.getVinyl_id());
         User seller = userService.getUserById(newAuctionDTO.getSeller_id());
@@ -87,6 +91,7 @@ public class AuctionController {
     }
 
     @PutMapping("{id}")
+    @RolesAllowed({ "REGULAR", "ADMIN", "PREMIUM" })
     public AuctionDTO replaceAuctionDescription(@RequestBody AuctionDTO newAuction, @PathVariable("id") int id) {
         Auction newAuctions = AuctionMapper.toAuction(newAuction);
         Auction createdAuction = auctionService.saveAuction(id, newAuctions);
@@ -94,6 +99,7 @@ public class AuctionController {
     }
 
     @DeleteMapping("{id}")
+    @RolesAllowed({ "REGULAR", "ADMIN", "PREMIUM" })
     public ResponseEntity<String> deativateAuctionById(@PathVariable("id") int id) {
         boolean isDeleted = auctionService.deativateAuctionById(id);
         if (isDeleted) {
