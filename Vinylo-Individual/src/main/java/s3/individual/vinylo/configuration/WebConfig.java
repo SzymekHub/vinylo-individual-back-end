@@ -31,8 +31,10 @@ public class WebConfig implements WebMvcConfigurer {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .sessionManagement(configurer -> configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(registry -> registry.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/users", "/login").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/users", "/vinyls", "/auctions").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/users", "/users/{id}", "/artist", "/vinyls", "/vinyls/{id}",
+                                "/auctions")
+                        .permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling(configure -> configure.authenticationEntryPoint(authenticationEntryPoint))
                 .addFilterBefore(authenticationRequestFilter, UsernamePasswordAuthenticationFilter.class);

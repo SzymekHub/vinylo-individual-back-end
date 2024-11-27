@@ -40,7 +40,6 @@ public class UserController {
     }
 
     @GetMapping("{id}")
-    @RolesAllowed({ "ADMIN" })
     public ResponseEntity<UserDTO> getUser(@PathVariable("id") int id) {
 
         User u = userService.getUserById(id);

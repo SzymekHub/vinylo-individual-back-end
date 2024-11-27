@@ -45,10 +45,10 @@ public class LoginServiceIMPL implements LoginService {
     }
 
     private String generateAccessToken(UserEntity user) {
-        Integer userId = user.getId();
+        int id = user.getId();
         String role = user.getRole().toString(); // Convert the single RoleEnum to a string
 
         return accessTokenEncoder.encode(
-                new AccessTokenImpl(user.getUsername(), userId, List.of(role)));
+                new AccessTokenImpl(user.getUsername(), id, List.of(role)));
     }
 }

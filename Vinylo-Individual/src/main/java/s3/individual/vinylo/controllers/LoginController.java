@@ -21,10 +21,10 @@ public class LoginController {
     private final LoginService loginService;
 
     @PostMapping
-    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
 
         LoginResponse loginResponse = loginService.login(loginRequest);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body("Successfully logged in " + loginResponse);
+        return ResponseEntity.status(HttpStatus.CREATED).body(loginResponse);
     }
 }
