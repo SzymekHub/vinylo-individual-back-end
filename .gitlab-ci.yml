@@ -7,7 +7,6 @@ variables:
   # The Gradle daemon improves build speed by keeping the JVM alive between builds,
   # but it can cause issues in CI environments where isolated, clean builds are preferred.
   GRADLE_OPTS: "-Dorg.gradle.daemon=false"
-  SPRING_PROFILES_ACTIVE: "test"
 
 # Default settings for the entire pipeline.
 default:
@@ -77,7 +76,7 @@ test:
   # Again, ensure that the Gradle wrapper script has execution permissions.
   - chmod +x gradlew 
   # Execute the Gradle 'test' task, which runs all unit and integration tests.
-  - ./gradlew test -Dspring.profiles.active=test
+  - ./gradlew test
 
 # Sonar scan job.
 sonar:
