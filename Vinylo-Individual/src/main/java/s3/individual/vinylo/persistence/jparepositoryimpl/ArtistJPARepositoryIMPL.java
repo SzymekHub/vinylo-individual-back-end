@@ -40,11 +40,11 @@ public class ArtistJPARepositoryIMPL implements ArtistRepo {
     @Override
     public Artist getArtistById(int id) {
         // Look for a ArtistEntity in the database by its ID
-        var temp = artistJPARepo.findById(id);
-        return temp
+        return artistJPARepo.findById(id)
                 // If found, map the ArtistEntity to a Artist domain object using
                 // ArtistEntityMapper
-                .map(ArtistEntityMapper::fromEntity).get();
+                .map(ArtistEntityMapper::fromEntity)
+                .orElse(null);
     }
 
     @Override
