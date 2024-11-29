@@ -1,4 +1,4 @@
-CREATE TABLE artist
+CREATE TABLE IF NOT EXISTS artist
 (
     id   int         NOT NULL AUTO_INCREMENT,
     name varchar(50) NOT NULL,
@@ -7,7 +7,7 @@ CREATE TABLE artist
     UNIQUE (bio)
 );
 
-CREATE TABLE vinyl
+CREATE TABLE IF NOT EXISTS vinyl
 (
     id          int     NOT NULL AUTO_INCREMENT,
     vinylType   varchar(50) NOT NULL,
