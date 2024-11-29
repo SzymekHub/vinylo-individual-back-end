@@ -75,6 +75,7 @@ test:
   - cd Vinylo-Individual
   # Again, ensure that the Gradle wrapper script has execution permissions.
   - chmod +x gradlew 
+  - export SPRING_PROFILES_ACTIVE=test
   # Execute the Gradle 'test' task, which runs all unit and integration tests.
   - ./gradlew test
 
