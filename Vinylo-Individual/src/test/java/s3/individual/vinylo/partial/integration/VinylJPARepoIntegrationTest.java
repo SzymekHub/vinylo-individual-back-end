@@ -1,4 +1,4 @@
-package s3.individual.vinylo.integration;
+package s3.individual.vinylo.partial.integration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
