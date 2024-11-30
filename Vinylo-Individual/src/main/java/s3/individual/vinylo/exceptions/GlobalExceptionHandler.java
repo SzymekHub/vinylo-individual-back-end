@@ -41,4 +41,9 @@ public class GlobalExceptionHandler {
         // Handles other exceptions as needed
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error");
     }
+
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ResponseEntity<String> handleInvalidCredentials(InvalidCredentialsException ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getReason());
+    }
 }
