@@ -22,8 +22,4 @@ public class Artist {
         this.bio = bio;
     }
 
-    public String toString() {
-        return "Id: " + id + " name: " + name + " bio: " + bio;
-    }
-
 }
