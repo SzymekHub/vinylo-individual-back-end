@@ -6,6 +6,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import s3.individual.vinylo.persistence.VinylRepo;
+import s3.individual.vinylo.persistence.entity.SpeedEnum;
+import s3.individual.vinylo.persistence.entity.StateEnum;
+import s3.individual.vinylo.persistence.entity.VinylColorEnum;
+import s3.individual.vinylo.persistence.entity.VinylTypeEnum;
 import s3.individual.vinylo.serviceimpl.VinylServiceIMPL;
 import s3.individual.vinylo.domain.Artist;
 import s3.individual.vinylo.domain.Vinyl;
@@ -34,13 +38,19 @@ class VinylServiceIMPLTests {
                                 .build();
         }
 
-        private Vinyl createVinyl(int id, String title, String vinylType, String description, boolean isReleased,
+        private Vinyl createVinyl(int id, VinylTypeEnum vinylType, SpeedEnum speed, String title, String description,
+                        StateEnum state,
+                        VinylColorEnum color,
+                        boolean isReleased,
                         Artist artist) {
                 return Vinyl.builder()
                                 .id(id)
-                                .title(title)
                                 .vinylType(vinylType)
+                                .speed(speed)
+                                .title(title)
                                 .description(description)
+                                .state(state)
+                                .color(color)
                                 .isReleased(isReleased)
                                 .artist(artist)
                                 .build();
@@ -50,9 +60,12 @@ class VinylServiceIMPLTests {
         void testSaveVinyl_ShouldSaveAndReturnNewVinyl() {
                 // Arrange
                 Vinyl newVinyl = createVinyl(2,
+                                VinylTypeEnum.EP,
+                                SpeedEnum.RPM_45,
                                 "Rubber Soul",
-                                "LP",
                                 "ROCK&ROLL",
+                                StateEnum.NEW,
+                                VinylColorEnum.COLORED,
                                 true,
                                 createArtist(2, "The Beatles", "Yeah yeah yeah"));
 
@@ -73,14 +86,18 @@ class VinylServiceIMPLTests {
 
                 // Set up an existing vinyl in the mock repo
                 Vinyl existingVinyl = createVinyl(vinylId,
+                                VinylTypeEnum.EP,
+                                SpeedEnum.RPM_45,
                                 "Rubber Soul",
-                                "LP",
                                 "ROCK&ROLL",
+                                StateEnum.NEW,
+                                VinylColorEnum.COLORED,
                                 true,
                                 createArtist(2, "The Beatles", "Yeah yeah yeah"));
 
                 // Updated details for the vinyl
-                Vinyl updatedVinyl = createVinyl(vinylId, "Soul Rubber", "LP", "ROLL&ROCK", false,
+                Vinyl updatedVinyl = createVinyl(vinylId, VinylTypeEnum.LP_12_INCH, SpeedEnum.RPM_78, "Soul Rubber",
+                                "ROLL&ROCK", StateEnum.BROKEN, VinylColorEnum.BLACK, false,
                                 createArtist(2, "The Beatles", "yeah Yeah yeah"));
 
                 // Mock the repository behavior
@@ -93,8 +110,8 @@ class VinylServiceIMPLTests {
                 // Assert
                 assertEquals("Soul Rubber", result.getTitle());
                 assertEquals("ROLL&ROCK", result.getDescription());
-                assertEquals("LP", result.getvinylType());
-                assertEquals(false, result.getisReleased());
+                assertEquals(VinylTypeEnum.LP_12_INCH, result.getVinylType());
+                assertEquals(false, result.getIsReleased());
                 assertEquals("The Beatles", result.getArtist().getName());
 
                 // Verify that the repository's save method was called with the updated vinyl
@@ -106,8 +123,13 @@ class VinylServiceIMPLTests {
         void testSaveVinyl_ShouldThrowExceptionWhenVinylNotFoundForUpdate() {
                 // Arrange
                 int vinylId = 2;
-                Vinyl updatedVinyl = createVinyl(vinylId, "Soul Rubber", "LP", "ROLL&ROCK",
-                                false,
+                Vinyl updatedVinyl = createVinyl(vinylId, VinylTypeEnum.EP,
+                                SpeedEnum.RPM_45,
+                                "Rubber Soul",
+                                "ROCK&ROLL",
+                                StateEnum.NEW,
+                                VinylColorEnum.COLORED,
+                                true,
                                 createArtist(2, "The Beatles", "yeah yeah"));
 
                 when(vinylRepoMock.getVinylById(vinylId)).thenReturn(null);
@@ -123,9 +145,12 @@ class VinylServiceIMPLTests {
                 // Arrange
                 int vinylId = 1;
                 Vinyl expectedVinyl = createVinyl(vinylId,
+                                VinylTypeEnum.EP,
+                                SpeedEnum.RPM_45,
                                 "ALL RED",
-                                "EP",
                                 "I AM MUSIC",
+                                StateEnum.LIMITED_EDITION,
+                                VinylColorEnum.COLORED,
                                 true,
                                 createArtist(1, "PLAYBOI CARTI", "syrup"));
 
@@ -143,16 +168,22 @@ class VinylServiceIMPLTests {
         void getVinyls_ShouldReturnAllVinylRecords() {
                 // Arrange
                 Vinyl vinyl1 = createVinyl(3,
+                                VinylTypeEnum.LP_12_INCH,
+                                SpeedEnum.RPM_45,
                                 "Abbey Road",
-                                "LP",
                                 "Classic Beatles album",
+                                StateEnum.ORIGINAL,
+                                VinylColorEnum.BLACK,
                                 true,
                                 createArtist(2, "The Beatles", "Legendary rock band"));
 
                 Vinyl vinyl2 = createVinyl(4,
+                                VinylTypeEnum.EP,
+                                SpeedEnum.RPM_45,
                                 "Purple Rain",
-                                "EP",
-                                "Iconic Prince single",
+                                "Iconic Prince Single",
+                                StateEnum.ORIGINAL,
+                                VinylColorEnum.BLACK,
                                 true,
                                 createArtist(3, "Prince", "The Purple One"));
 

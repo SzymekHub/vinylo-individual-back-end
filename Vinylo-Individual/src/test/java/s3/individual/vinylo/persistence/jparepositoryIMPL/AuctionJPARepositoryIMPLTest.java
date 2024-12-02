@@ -14,11 +14,9 @@ import s3.individual.vinylo.persistence.entity.VinylEntity;
 import s3.individual.vinylo.persistence.jparepository.AuctionJPARepo;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)

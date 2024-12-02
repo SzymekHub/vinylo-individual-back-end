@@ -12,6 +12,7 @@ import s3.individual.vinylo.domain.Vinyl;
 import s3.individual.vinylo.domain.mappers.VinylEntityMapper;
 import s3.individual.vinylo.persistence.VinylRepo;
 import s3.individual.vinylo.persistence.entity.ArtistEntity;
+import s3.individual.vinylo.persistence.entity.StateEnum;
 import s3.individual.vinylo.persistence.entity.VinylEntity;
 import s3.individual.vinylo.persistence.jparepository.VinylJPARepo;
 
@@ -42,6 +43,14 @@ public class VinylJPARepoIMPL implements VinylRepo {
                 // VinylEntityMapper
                 .map(VinylEntityMapper::fromEntity)
                 // If not found, return null
+                .orElse(null);
+    }
+
+    @Override
+    public Vinyl getByState(StateEnum state) {
+        // Fetch vinyls by state using the updated repository method
+        return vinylJPARepo.getByState(state)
+                .map(VinylEntityMapper::fromEntity)
                 .orElse(null);
     }
 

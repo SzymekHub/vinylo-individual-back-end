@@ -5,6 +5,10 @@ import org.springframework.stereotype.Component;
 import s3.individual.vinylo.domain.dtos.VinylDTO;
 import s3.individual.vinylo.domain.dtos.VinylsDTO;
 import s3.individual.vinylo.exceptions.CustomNotFoundException;
+import s3.individual.vinylo.persistence.entity.SpeedEnum;
+import s3.individual.vinylo.persistence.entity.StateEnum;
+import s3.individual.vinylo.persistence.entity.VinylColorEnum;
+import s3.individual.vinylo.persistence.entity.VinylTypeEnum;
 import s3.individual.vinylo.services.ArtistService;
 import s3.individual.vinylo.domain.Artist;
 import s3.individual.vinylo.domain.Vinyl;
@@ -38,9 +42,12 @@ public class VinylMapper {
 
         return new Vinyl(
                 vinylDTO.getId(),
-                vinylDTO.getVinylType(),
+                VinylTypeEnum.valueOf(vinylDTO.getVinylType()),
+                SpeedEnum.valueOf(vinylDTO.getSpeed()),
                 vinylDTO.getTitle(),
                 vinylDTO.getDescription(),
+                StateEnum.valueOf(vinylDTO.getState()),
+                VinylColorEnum.valueOf(vinylDTO.getColor()),
                 vinylDTO.getIsReleased(),
                 artist);
     }
@@ -54,10 +61,13 @@ public class VinylMapper {
         VinylDTO vinylDTO = new VinylDTO();
 
         vinylDTO.setId(vinyl.getId());
-        vinylDTO.setVinylType(vinyl.getvinylType());
+        vinylDTO.setVinylType(vinyl.getVinylType().name());
+        vinylDTO.setSpeed(vinyl.getSpeed().name());
         vinylDTO.setTitle(vinyl.getTitle());
         vinylDTO.setDescription(vinyl.getDescription());
-        vinylDTO.setIsReleased(vinyl.getisReleased());
+        vinylDTO.setState(vinyl.getState().name());
+        vinylDTO.setColor(vinyl.getColor().name());
+        vinylDTO.setIsReleased(vinyl.getIsReleased());
         vinylDTO.setArtist_id(vinyl.getArtist().getId());
 
         return vinylDTO;
@@ -72,8 +82,9 @@ public class VinylMapper {
         VinylDTO vinylDTO = new VinylDTO();
 
         vinylDTO.setId(vinyl.getId());
-        vinylDTO.setVinylType(vinyl.getvinylType());
+        vinylDTO.setVinylType(vinyl.getVinylType().name());
         vinylDTO.setTitle(vinyl.getTitle());
+        vinylDTO.setState(vinyl.getState().name());
 
         return vinylDTO;
     }

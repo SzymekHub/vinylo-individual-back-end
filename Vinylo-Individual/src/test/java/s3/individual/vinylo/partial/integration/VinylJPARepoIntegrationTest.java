@@ -37,8 +37,11 @@ class VinylJPARepoIntegrationTest {
 
         testVinyl = VinylEntity.builder()
                 .vinylType("EP")
+                .speed("RPM_45")
                 .title("Test")
                 .description("Test")
+                .state("NEW")
+                .color("COLORED")
                 .isReleased(false)
                 .artist(artist)
                 .build();

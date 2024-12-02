@@ -11,7 +11,11 @@ import jakarta.persistence.EntityManager;
 import s3.individual.vinylo.domain.Artist;
 import s3.individual.vinylo.domain.Vinyl;
 import s3.individual.vinylo.persistence.entity.ArtistEntity;
+import s3.individual.vinylo.persistence.entity.SpeedEnum;
+import s3.individual.vinylo.persistence.entity.StateEnum;
+import s3.individual.vinylo.persistence.entity.VinylColorEnum;
 import s3.individual.vinylo.persistence.entity.VinylEntity;
+import s3.individual.vinylo.persistence.entity.VinylTypeEnum;
 import s3.individual.vinylo.persistence.jparepository.ArtistJPARepo;
 import s3.individual.vinylo.persistence.jparepository.VinylJPARepo;
 
@@ -61,17 +65,23 @@ public class VinylJPARepoIMPLTest {
         vinylEntity = VinylEntity.builder()
                 .id(1)
                 .vinylType("EP")
+                .speed("RPM_45")
                 .title("Test Vinyl")
                 .description("Test Desc")
+                .state("NEW")
+                .color("COLORED")
                 .isReleased(false)
                 .artist(artistEntity)
                 .build();
 
         vinyl = Vinyl.builder()
                 .id(1)
-                .vinylType("EP")
+                .vinylType(VinylTypeEnum.EP)
+                .speed(SpeedEnum.RPM_45)
                 .title("Test Vinyl")
                 .description("Test Description")
+                .state(StateEnum.SCRATCHED)
+                .color(VinylColorEnum.COLORED)
                 .isReleased(false)
                 .artist(artist)
                 .build();

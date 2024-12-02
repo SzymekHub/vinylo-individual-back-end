@@ -7,6 +7,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import s3.individual.vinylo.persistence.AuctionRepo;
 import s3.individual.vinylo.persistence.entity.RoleEnum;
+import s3.individual.vinylo.persistence.entity.SpeedEnum;
+import s3.individual.vinylo.persistence.entity.StateEnum;
+import s3.individual.vinylo.persistence.entity.VinylColorEnum;
+import s3.individual.vinylo.persistence.entity.VinylTypeEnum;
 import s3.individual.vinylo.serviceimpl.AuctionServiceIMPL;
 import s3.individual.vinylo.domain.Artist;
 import s3.individual.vinylo.domain.Vinyl;
@@ -39,13 +43,17 @@ public class AuctionServiceIMPLTest {
                                 .build();
         }
 
-        private Vinyl createVinyl(int id, String title, String vinylType, String description, boolean isReleased,
+        private Vinyl createVinyl(int id, VinylTypeEnum vinylType, SpeedEnum speed, String title, String description,
+                        StateEnum state, VinylColorEnum color, boolean isReleased,
                         Artist artist) {
                 return Vinyl.builder()
                                 .id(id)
-                                .title(title)
                                 .vinylType(vinylType)
+                                .speed(speed)
+                                .title(title)
                                 .description(description)
+                                .state(state)
+                                .color(color)
                                 .isReleased(isReleased)
                                 .artist(artist)
                                 .build();
@@ -83,9 +91,12 @@ public class AuctionServiceIMPLTest {
                 Auction newAuction = createAuction(34,
                                 "Rubber Soul vinyl auction!!",
                                 createVinyl(2,
+                                                VinylTypeEnum.EP,
+                                                SpeedEnum.RPM_45,
                                                 "Rubber Soul",
-                                                "LP",
                                                 "ROCK&ROLL",
+                                                StateEnum.NEW,
+                                                VinylColorEnum.COLORED,
                                                 true,
                                                 createArtist(2, "The Beatles", "Yeah yeah yeah")),
                                 createSeller(2,
@@ -118,9 +129,12 @@ public class AuctionServiceIMPLTest {
                 Auction existingAuction = createAuction(auctionId,
                                 "Rubber Soul vinyl auction!!",
                                 createVinyl(2,
+                                                VinylTypeEnum.EP,
+                                                SpeedEnum.RPM_45,
                                                 "Rubber Soul",
-                                                "LP",
                                                 "ROCK&ROLL",
+                                                StateEnum.NEW,
+                                                VinylColorEnum.COLORED,
                                                 true,
                                                 createArtist(2, "The Beatles", "Yeah yeah yeah")),
                                 createSeller(2,
@@ -137,9 +151,12 @@ public class AuctionServiceIMPLTest {
                 Auction updatedAuction = createAuction(auctionId,
                                 "Rubber Soul vinyl auction!!",
                                 createVinyl(2,
+                                                VinylTypeEnum.EP,
+                                                SpeedEnum.RPM_45,
                                                 "Rubber Soul",
-                                                "LP",
                                                 "ROCK&ROLL",
+                                                StateEnum.USED,
+                                                VinylColorEnum.COLORED,
                                                 true,
                                                 createArtist(2, "The Beatles", "Yeah yeah yeah")),
                                 createSeller(2,
@@ -176,9 +193,12 @@ public class AuctionServiceIMPLTest {
                 Auction updatedAuction = createAuction(auctionId,
                                 "Rubber Soul vinyl auction!!",
                                 createVinyl(2,
+                                                VinylTypeEnum.EP,
+                                                SpeedEnum.RPM_45,
                                                 "Rubber Soul",
-                                                "LP",
                                                 "ROCK&ROLL",
+                                                StateEnum.NEW,
+                                                VinylColorEnum.COLORED,
                                                 true,
                                                 createArtist(2, "The Beatles", "Yeah yeah yeah")),
                                 createSeller(2,
@@ -206,9 +226,12 @@ public class AuctionServiceIMPLTest {
                 Auction auction = createAuction(69,
                                 "Rubber Soul vinyl auction!!",
                                 createVinyl(2,
+                                                VinylTypeEnum.EP,
+                                                SpeedEnum.RPM_45,
                                                 "Rubber Soul",
-                                                "LP",
                                                 "ROCK&ROLL",
+                                                StateEnum.NEW,
+                                                VinylColorEnum.COLORED,
                                                 true,
                                                 createArtist(2, "The Beatles", "Yeah yeah yeah")),
                                 createSeller(2,
@@ -224,9 +247,12 @@ public class AuctionServiceIMPLTest {
                 Auction auction2 = createAuction(70,
                                 "ALL RED vinyl auction!!",
                                 createVinyl(2,
+                                                VinylTypeEnum.SINGLE_7_INCH,
+                                                SpeedEnum.RPM_45,
                                                 "ALL RED",
-                                                "Single",
                                                 "Syrup",
+                                                StateEnum.NEW,
+                                                VinylColorEnum.COLORED,
                                                 true,
                                                 createArtist(1, "PLAYBOY CARTI", "syrup")),
                                 createSeller(3,
@@ -258,9 +284,12 @@ public class AuctionServiceIMPLTest {
                 Auction expectedAuction = createAuction(auctionId,
                                 "Rubber Soul vinyl auction!!",
                                 createVinyl(2,
+                                                VinylTypeEnum.EP,
+                                                SpeedEnum.RPM_45,
                                                 "Rubber Soul",
-                                                "LP",
                                                 "ROCK&ROLL",
+                                                StateEnum.NEW,
+                                                VinylColorEnum.COLORED,
                                                 true,
                                                 createArtist(2, "The Beatles", "Yeah yeah yeah")),
                                 createSeller(2,
@@ -307,7 +336,14 @@ public class AuctionServiceIMPLTest {
 
                 Auction auction = createAuction(auctionId,
                                 "Rubber Soul vinyl auction!!",
-                                createVinyl(2, "Rubber Soul", "LP", "ROCK&ROLL", true,
+                                createVinyl(2,
+                                                VinylTypeEnum.EP,
+                                                SpeedEnum.RPM_45,
+                                                "Rubber Soul",
+                                                "ROCK&ROLL",
+                                                StateEnum.NEW,
+                                                VinylColorEnum.COLORED,
+                                                true,
                                                 createArtist(2, "The Beatles", "Yeah yeah yeah")),
                                 createSeller(2, "Username1", "UseerName1@gmail.com", "User1Password", RoleEnum.REGULAR),
                                 "Fresh Rubber Soul vinyl!!",
@@ -338,7 +374,14 @@ public class AuctionServiceIMPLTest {
 
                 Auction auction = createAuction(auctionId,
                                 "Rubber Soul vinyl auction!!",
-                                createVinyl(2, "Rubber Soul", "LP", "ROCK&ROLL", true,
+                                createVinyl(2,
+                                                VinylTypeEnum.EP,
+                                                SpeedEnum.RPM_45,
+                                                "Rubber Soul",
+                                                "ROCK&ROLL",
+                                                StateEnum.NEW,
+                                                VinylColorEnum.COLORED,
+                                                true,
                                                 createArtist(2, "The Beatles", "Yeah yeah yeah")),
                                 createSeller(2, "Username1", "UseerName1@gmail.com", "User1Password", RoleEnum.REGULAR),
                                 "Fresh Rubber Soul vinyl!!",

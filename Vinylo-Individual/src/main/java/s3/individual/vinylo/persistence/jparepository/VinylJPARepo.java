@@ -1,11 +1,17 @@
 package s3.individual.vinylo.persistence.jparepository;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import s3.individual.vinylo.persistence.entity.StateEnum;
 import s3.individual.vinylo.persistence.entity.VinylEntity;
 
 public interface VinylJPARepo extends JpaRepository<VinylEntity, Integer> {
 
     boolean existsById(int id);
+
+    Optional<VinylEntity> getByState(StateEnum state);
 
     // // Find all vinyls by a specific artist's ID
     // List<VinylEntity> findByArtistId(int artistId);

@@ -12,6 +12,10 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import s3.individual.vinylo.domain.Artist;
 import s3.individual.vinylo.domain.Vinyl;
+import s3.individual.vinylo.persistence.entity.SpeedEnum;
+import s3.individual.vinylo.persistence.entity.StateEnum;
+import s3.individual.vinylo.persistence.entity.VinylColorEnum;
+import s3.individual.vinylo.persistence.entity.VinylTypeEnum;
 import s3.individual.vinylo.services.ArtistService;
 import s3.individual.vinylo.services.VinylService;
 
@@ -59,9 +63,12 @@ class VinylControllerTest {
                 // Arrange
                 Vinyl createdVinyl = Vinyl.builder()
                                 .id(100)
-                                .vinylType("LP")
+                                .vinylType(VinylTypeEnum.LP_12_INCH)
+                                .speed(SpeedEnum.RPM_33_1_3)
                                 .title("Abbey Road")
                                 .description("A legendary Beatles album")
+                                .state(StateEnum.REMASTERED)
+                                .color(VinylColorEnum.WHITE)
                                 .isReleased(true)
                                 .artist(new Artist(1, "The Beatles", "Famous British rock band"))
                                 .build();
@@ -76,13 +83,16 @@ class VinylControllerTest {
                 mockMvc.perform(post("/vinyls")
                                 .contentType(APPLICATION_JSON_VALUE)
                                 .content("""
-                                                {
-                                                "title": "Abbey Road",
-                                                "description": "A legendary Beatles album",
-                                                "vinylType": "LP",
-                                                "isReleased": true,
-                                                "artist_id": 1
-                                                }
+                                                        {
+                                                                "vinylType": "LP_12_INCH",
+                                                                "speed": "RPM_33_1_3",
+                                                                "title": "Abbey Road",
+                                                                "description": "A legendary Beatles album",
+                                                                "state": "REMASTERED",
+                                                                "color": "WHITE",
+                                                                "isReleased": true,
+                                                                "artist_id": 1
+                                                        }
                                                 """))
                                 .andDo(print())
                                 .andExpect(status().isCreated())
@@ -100,9 +110,12 @@ class VinylControllerTest {
                                 .contentType(APPLICATION_JSON_VALUE)
                                 .content("""
                                                 {
-                                                "vinylType": "LP",
+                                                "vinylType": "LP_12_INCH",
+                                                "speed": "RPM_33_1_3",
                                                 "title": "Abbey Road",
                                                 "description": "",
+                                                "state": "REMASTERED",
+                                                "color": "WHITE",
                                                 "isReleased": true,
                                                 "artist_id": 1
                                                 }
@@ -125,11 +138,14 @@ class VinylControllerTest {
                                 .contentType(APPLICATION_JSON_VALUE)
                                 .content("""
                                                 {
-                                                    "title": "Abbey Road",
-                                                    "description": "A legendary Beatles album",
-                                                    "vinylType": "LP",
-                                                    "isReleased": true,
-                                                    "artist_id": 999
+                                                        "vinylType": "LP_12_INCH",
+                                                        "speed": "RPM_33_1_3",
+                                                        "title": "Abbey Road",
+                                                        "description": "A legendary Beatles album",
+                                                        "state": "REMASTERED",
+                                                        "color": "WHITE",
+                                                        "isReleased": true,
+                                                        "artist_id": 999
                                                 }
                                                 """))
                                 .andDo(print())
@@ -146,12 +162,21 @@ class VinylControllerTest {
 
                 // Arrange
                 List<Vinyl> vinyls = List.of(
-                                Vinyl.builder().id(1).vinylType("LP").title("Dark Side of the Moon")
+
+                                Vinyl.builder().id(1).vinylType(VinylTypeEnum.LP_12_INCH)
+                                                .speed(SpeedEnum.RPM_33_1_3)
+                                                .title("Dark Side of the Moon")
                                                 .description("A classic album")
+                                                .state(StateEnum.REMASTERED)
+                                                .color(VinylColorEnum.WHITE)
                                                 .isReleased(true).artist(new Artist(1, "Pink Floyd", "I am so Pink"))
                                                 .build(),
-                                Vinyl.builder().id(2).vinylType("Single").title("Imagine")
+                                Vinyl.builder().id(2).vinylType(VinylTypeEnum.SINGLE_7_INCH)
+                                                .speed(SpeedEnum.RPM_33_1_3)
+                                                .title("Imagine")
                                                 .description("A legendary song")
+                                                .state(StateEnum.REMASTERED)
+                                                .color(VinylColorEnum.WHITE)
                                                 .isReleased(true)
                                                 .artist(new Artist(2, "John Lennon", "I love my wife. lol jk"))
                                                 .build());
@@ -178,9 +203,12 @@ class VinylControllerTest {
                 int vinylId = 1;
                 Vinyl vinyl = Vinyl.builder()
                                 .id(vinylId)
-                                .vinylType("LP")
+                                .vinylType(VinylTypeEnum.LP_12_INCH)
+                                .speed(SpeedEnum.RPM_33_1_3)
                                 .title("Abbey Road")
                                 .description("A legendary Beatles album")
+                                .state(StateEnum.REMASTERED)
+                                .color(VinylColorEnum.WHITE)
                                 .isReleased(true)
                                 .artist(new Artist(1, "The Beatles", "Famous British rock band"))
                                 .build();
@@ -193,7 +221,7 @@ class VinylControllerTest {
                                 .andExpect(status().isOk())
                                 .andExpect(content().contentType(APPLICATION_JSON_VALUE))
                                 .andExpect(jsonPath("$.id").value(vinylId))
-                                .andExpect(jsonPath("$.vinylType").value("LP"))
+                                .andExpect(jsonPath("$.vinylType").value("LP_12_INCH"))
                                 .andExpect(jsonPath("$.title").value("Abbey Road"))
                                 .andExpect(jsonPath("$.description").value("A legendary Beatles album"))
                                 .andExpect(jsonPath("$.isReleased").value(true))
@@ -226,19 +254,25 @@ class VinylControllerTest {
                 int vinylId = 1;
                 Vinyl existingVinyl = Vinyl.builder()
                                 .id(vinylId)
-                                .vinylType("LP")
+                                .vinylType(VinylTypeEnum.LP_12_INCH)
+                                .speed(SpeedEnum.RPM_33_1_3)
                                 .title("Abbey Road")
                                 .description("A legendary Beatles album")
+                                .state(StateEnum.REMASTERED)
+                                .color(VinylColorEnum.WHITE)
                                 .isReleased(true)
                                 .artist(new Artist(1, "The Beatles", "Famous British rock band"))
                                 .build();
 
                 Vinyl updatedVinyl = Vinyl.builder()
                                 .id(vinylId)
-                                .vinylType(existingVinyl.getvinylType())
+                                .vinylType(existingVinyl.getVinylType())
+                                .speed(existingVinyl.getSpeed())
                                 .title(existingVinyl.getTitle())
                                 .description("A HYPER legendary Beatles album")
-                                .isReleased(existingVinyl.getisReleased())
+                                .state(existingVinyl.getState())
+                                .color(existingVinyl.getColor())
+                                .isReleased(existingVinyl.getIsReleased())
                                 .artist(existingVinyl.getArtist())
                                 .build();
 
@@ -246,9 +280,12 @@ class VinylControllerTest {
 
                 String jsonContent = """
                                 {
-                                        "vinylType": "LP",
+                                        "vinylType": "LP_12_INCH",
+                                        "speed": "RPM_33_1_3",
                                         "title": "Abbey Road",
                                         "description": "A HYPER legendary Beatles album",
+                                        "state": "REMASTERED",
+                                        "color": "WHITE",
                                         "isReleased": true,
                                         "artist_id": 1
                                 }

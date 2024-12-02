@@ -27,6 +27,10 @@ public class VinylEntity {
     private String vinylType;
 
     @NotNull
+    @Column(name = "speed")
+    private String speed;
+
+    @NotNull
     @Column(name = "title")
     private String title;
 
@@ -34,6 +38,14 @@ public class VinylEntity {
     @Length(max = 150)
     @Column(name = "description")
     private String description;
+
+    @NotNull
+    @Column(name = "state")
+    private String state;
+
+    @NotNull
+    @Column(name = "color")
+    private String color;
 
     @NotNull
     @Column(name = "isReleased")
