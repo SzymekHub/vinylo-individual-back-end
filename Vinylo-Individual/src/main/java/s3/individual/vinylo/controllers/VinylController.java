@@ -14,6 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import s3.individual.vinylo.exceptions.CustomNotFoundException;
+import s3.individual.vinylo.persistence.entity.SpeedEnum;
+import s3.individual.vinylo.persistence.entity.StateEnum;
+import s3.individual.vinylo.persistence.entity.VinylColorEnum;
+import s3.individual.vinylo.persistence.entity.VinylTypeEnum;
 import s3.individual.vinylo.domain.mappers.VinylMapper;
 import s3.individual.vinylo.domain.dtos.VinylDTO;
 import s3.individual.vinylo.domain.dtos.VinylsDTO;
@@ -22,7 +26,11 @@ import s3.individual.vinylo.services.VinylService;
 import s3.individual.vinylo.domain.Artist;
 import s3.individual.vinylo.domain.Vinyl;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/vinyls")
@@ -35,6 +43,17 @@ public class VinylController {
     public VinylController(VinylService vinylService, ArtistService artistService) {
         this.vinylService = vinylService;
         this.artistService = artistService;
+    }
+
+    @GetMapping("/enums")
+    @RolesAllowed({ "REGULAR", "ADMIN", "PREMIUM" })
+    public Map<String, List<String>> getVinylEnums() {
+        Map<String, List<String>> enums = new HashMap<>();
+        enums.put("vinylTypes", Arrays.stream(VinylTypeEnum.values()).map(Enum::name).collect(Collectors.toList()));
+        enums.put("speeds", Arrays.stream(SpeedEnum.values()).map(Enum::name).collect(Collectors.toList()));
+        enums.put("states", Arrays.stream(StateEnum.values()).map(Enum::name).collect(Collectors.toList()));
+        enums.put("colors", Arrays.stream(VinylColorEnum.values()).map(Enum::name).collect(Collectors.toList()));
+        return enums;
     }
 
     @GetMapping()
