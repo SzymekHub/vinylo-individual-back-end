@@ -49,7 +49,8 @@ public class VinylMapper {
                 StateEnum.valueOf(vinylDTO.getState()),
                 VinylColorEnum.valueOf(vinylDTO.getColor()),
                 vinylDTO.getIsReleased(),
-                artist);
+                artist,
+                vinylDTO.getSpotifyAlbumId());
     }
 
     public static VinylDTO toVinylDTO(Vinyl vinyl) {
@@ -69,6 +70,7 @@ public class VinylMapper {
         vinylDTO.setColor(vinyl.getColor().name());
         vinylDTO.setIsReleased(vinyl.getIsReleased());
         vinylDTO.setArtist_id(vinyl.getArtist().getId());
+        vinylDTO.setSpotifyAlbumId(vinyl.getSpotifyAlbumId());
 
         return vinylDTO;
     }

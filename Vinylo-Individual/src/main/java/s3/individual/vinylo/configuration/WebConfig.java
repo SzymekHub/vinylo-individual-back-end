@@ -31,8 +31,9 @@ public class WebConfig implements WebMvcConfigurer {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .sessionManagement(configurer -> configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(registry -> registry.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/users", "/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/users", "/login", "/spotify-embed").permitAll()
                         .requestMatchers(HttpMethod.GET, "/users", "/users/{id}", "/artist", "/vinyls", "/vinyls/{id}",
+                                "/spotify-embed",
                                 "/auctions")
                         .permitAll()
                         .anyRequest().authenticated())

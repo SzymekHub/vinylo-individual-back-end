@@ -46,6 +46,8 @@ public class VinylDTO {
 
     private int artist_id;
 
+    private String spotifyAlbumId;
+
     public VinylDTO(int id, String title, String vinylType) {
         this.id = id;
         this.title = title;

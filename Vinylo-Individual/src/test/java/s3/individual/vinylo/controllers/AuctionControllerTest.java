@@ -61,7 +61,8 @@ class AuctionControllerTest {
                                 .vinyl(new Vinyl(1, VinylTypeEnum.LP_12_INCH, SpeedEnum.RPM_45, "testVinyl",
                                                 "This is a desc for a test", StateEnum.ORIGINAL, VinylColorEnum.BLACK,
                                                 false,
-                                                new Artist(1, "The Beatles", "Famous British rock band")))
+                                                new Artist(1, "The Beatles", "Famous British rock band"),
+                                                "0ETFjACtuP2ADo6LFhL6HN"))
                                 .seller(new User(1, "userName", "User@gmail.com", "Password", RoleEnum.REGULAR))
                                 .description("Description")
                                 .startingPrice(100.00)
@@ -77,7 +78,8 @@ class AuctionControllerTest {
                                 .thenReturn(new Vinyl(1, VinylTypeEnum.LP_12_INCH, SpeedEnum.RPM_45, "testVinyl",
                                                 "This is a desc for a test", StateEnum.ORIGINAL, VinylColorEnum.BLACK,
                                                 false,
-                                                new Artist(1, "The Beatles", "Famous British rock band")));
+                                                new Artist(1, "The Beatles", "Famous British rock band"),
+                                                "0ETFjACtuP2ADo6LFhL6HN"));
 
                 when(userService.getUserById(1))
                                 .thenReturn(new User(1, "userName", "User@gmail.com", "Password", RoleEnum.REGULAR));
@@ -153,7 +155,8 @@ class AuctionControllerTest {
                                 .thenReturn(new Vinyl(1, VinylTypeEnum.LP_12_INCH, SpeedEnum.RPM_33_1_3, "testVinyl",
                                                 "This is a desc for a test", StateEnum.REMASTERED,
                                                 VinylColorEnum.COLORED, false,
-                                                new Artist(1, "The Beatles", "Famous British rock band")));
+                                                new Artist(1, "The Beatles", "Famous British rock band"),
+                                                "0ETFjACtuP2ADo6LFhL6HN"));
 
                 int nonExistentSellerId = 888;
 
@@ -200,7 +203,8 @@ class AuctionControllerTest {
                                                                 "This is a desc for a test", StateEnum.REMASTERED,
                                                                 VinylColorEnum.COLORED, false,
                                                                 new Artist(1, "The Beatles",
-                                                                                "Famous British rock band")))
+                                                                                "Famous British rock band"),
+                                                                "0ETFjACtuP2ADo6LFhL6HN"))
                                                 .seller(new User(1, "userName", "User@gmail.com", "Password",
                                                                 RoleEnum.REGULAR))
                                                 .description("Auction1 Description")
@@ -218,7 +222,8 @@ class AuctionControllerTest {
                                                                 "This is a desc for a test2", StateEnum.REMASTERED,
                                                                 VinylColorEnum.COLORED, false,
                                                                 new Artist(2, "The CockRoaches",
-                                                                                "Famous American techno band")))
+                                                                                "Famous American techno band"),
+                                                                "0ETFjACtuP2ADo6LFhL6HN"))
                                                 .seller(new User(1, "userName", "User@gmail.com", "Password",
                                                                 RoleEnum.REGULAR))
                                                 .description("Auction2 Description")
@@ -254,7 +259,8 @@ class AuctionControllerTest {
                                 .vinyl(new Vinyl(1, VinylTypeEnum.LP_12_INCH, SpeedEnum.RPM_33_1_3, "testVinyl",
                                                 "This is a desc for a test", StateEnum.REMASTERED,
                                                 VinylColorEnum.COLORED, false,
-                                                new Artist(1, "The Beatles", "Famous British rock band")))
+                                                new Artist(1, "The Beatles", "Famous British rock band"),
+                                                "0ETFjACtuP2ADo6LFhL6HN"))
                                 .seller(new User(1, "userName", "User@gmail.com", "Password", RoleEnum.REGULAR))
                                 .description("Auction1 Description")
                                 .startingPrice(69.00)
@@ -305,7 +311,8 @@ class AuctionControllerTest {
                                 .vinyl(new Vinyl(1, VinylTypeEnum.LP_12_INCH, SpeedEnum.RPM_33_1_3, "testVinyl",
                                                 "This is a desc for a test", StateEnum.REMASTERED,
                                                 VinylColorEnum.COLORED, false,
-                                                new Artist(1, "The Beatles", "Famous British rock band")))
+                                                new Artist(1, "The Beatles", "Famous British rock band"),
+                                                "0ETFjACtuP2ADo6LFhL6HN"))
                                 .seller(new User(1, "userName", "User@gmail.com", "Password", RoleEnum.REGULAR))
                                 .startingPrice(10.0)
                                 .currentPrice(15.0)

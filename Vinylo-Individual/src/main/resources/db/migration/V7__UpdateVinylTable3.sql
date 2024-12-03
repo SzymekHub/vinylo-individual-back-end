@@ -1,0 +1,2 @@
+ALTER TABLE vinyl
+ADD COLUMN spotifyAlbumId VARCHAR(666) NOT NULL;

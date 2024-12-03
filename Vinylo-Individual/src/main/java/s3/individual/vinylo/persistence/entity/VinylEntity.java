@@ -56,4 +56,7 @@ public class VinylEntity {
     @JoinColumn(name = "artist_id")
     private ArtistEntity artist;
 
+    @Column(name = "spotifyAlbumId")
+    private String spotifyAlbumId;
+
 }

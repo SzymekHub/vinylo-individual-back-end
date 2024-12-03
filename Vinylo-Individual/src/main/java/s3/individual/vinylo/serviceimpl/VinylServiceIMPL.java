@@ -51,6 +51,7 @@ public class VinylServiceIMPL implements VinylService {
                 vinylToUpdate.setDescription(newVinyl.getDescription());
                 vinylToUpdate.setIsReleased(newVinyl.getIsReleased());
                 vinylToUpdate.setVinylType(newVinyl.getVinylType());
+                vinylToUpdate.setSpotifyAlbumId(newVinyl.getSpotifyAlbumId());
                 // vinylToUpdate.setArtist(newVinyl.getArtist());
 
                 // Save the updated vinyl to the database

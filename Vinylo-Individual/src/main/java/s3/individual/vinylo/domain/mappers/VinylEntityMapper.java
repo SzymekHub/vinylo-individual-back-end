@@ -48,6 +48,7 @@ public class VinylEntityMapper {
                     () -> new CustomNotFoundException("ArtistEntity not found in VinylMapper"));
             vinylEntity.setArtist(artistEntity);
         }
+        vinylEntity.setSpotifyAlbumId(vinyl.getSpotifyAlbumId());
 
         return vinylEntity;
     }
@@ -68,6 +69,7 @@ public class VinylEntityMapper {
         vinyl.setColor(VinylColorEnum.valueOf(entity.getColor()));
         vinyl.setIsReleased(entity.getIsReleased());
         vinyl.setArtist(ArtistEntityMapper.fromEntity(entity.getArtist()));
+        vinyl.setSpotifyAlbumId(entity.getSpotifyAlbumId());
 
         return vinyl;
     }

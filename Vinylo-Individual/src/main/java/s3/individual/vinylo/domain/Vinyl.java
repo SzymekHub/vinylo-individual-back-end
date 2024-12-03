@@ -26,12 +26,14 @@ public class Vinyl {
     private VinylColorEnum color;
     private Boolean isReleased;
     private Artist artist;
+    private String spotifyAlbumId;
 
     public Vinyl(Integer id, VinylTypeEnum vinylType, SpeedEnum speed, String title, String description,
             StateEnum state,
             VinylColorEnum color,
             Boolean isReleased,
-            Artist artist) {
+            Artist artist,
+            String spotifyAlbumId) {
         this.id = id;
         this.vinylType = vinylType;
         this.speed = speed;
@@ -41,5 +43,6 @@ public class Vinyl {
         this.color = color;
         this.isReleased = isReleased;
         this.artist = artist;
+        this.spotifyAlbumId = spotifyAlbumId;
     }
 }
