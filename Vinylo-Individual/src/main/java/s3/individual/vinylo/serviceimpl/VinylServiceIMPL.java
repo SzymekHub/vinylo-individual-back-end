@@ -28,22 +28,20 @@ public class VinylServiceIMPL implements VinylService {
         try {
             // If the ID is provided, attempt to update the existing vinyl
             if (id != null) {
-
-                // Check if a vinyl with the same title, artist, and description already exists
-                Vinyl existingVinyl = vinylRepo.getByState(
-                        newVinyl.getState());
-
-                // If a vinyl with the same details exists, throw a DuplicateVinylException
-                if (existingVinyl != null) {
-                    throw new DuplicateVinylException(
-                            "Vinyl already exists in this state.");
-                }
-
-                // Check if the vinyl exists in the database
                 Vinyl vinylToUpdate = vinylRepo.getVinylById(id);
                 if (vinylToUpdate == null) {
-                    throw new CustomNotFoundException(
-                            "Vinyl with ID " + id + " was not found. A new vinyl will be created.");
+                    throw new CustomNotFoundException("Vinyl with ID " + id + " was not found.");
+                }
+
+                // Check if a vinyl with the same artist, title, and state exists (excluding the
+                // current ID)
+                Vinyl existingVinyl = vinylRepo.findByArtistAndTitleAndState(
+                        newVinyl.getArtist().getId(),
+                        newVinyl.getTitle(),
+                        newVinyl.getState().name());
+                if (existingVinyl != null && !existingVinyl.getId().equals(id)) {
+                    throw new DuplicateVinylException(
+                            "A vinyl with the same title and state already exists for this artist.");
                 }
 
                 // Existing vinyl logic...
@@ -59,12 +57,26 @@ public class VinylServiceIMPL implements VinylService {
                 return vinylRepo.saveVinyl(vinylToUpdate);
 
             } else {
+                // Check if a vinyl with the same artist, title, and state exists
+                Vinyl existingVinyl = vinylRepo.findByArtistAndTitleAndState(
+                        newVinyl.getArtist().getId(), newVinyl.getTitle(), newVinyl.getState().name());
+                if (existingVinyl != null) {
+                    throw new DuplicateVinylException(
+                            "A vinyl with the same title and state already exists for this artist.");
+                }
                 // If no ID is provided, create a new vinyl
                 return vinylRepo.saveVinyl(newVinyl);
 
             }
+        } catch (DuplicateVinylException e) {
+            // Re-throw the DuplicateVinylException
+            throw e;
+        } catch (CustomNotFoundException e) {
+            // Re-throw the CustomNotFoundException
+            throw e;
         } catch (Exception e) {
-            throw new CustomInternalServerErrorException("Failed to save the vinyl." + e.toString());
+            // Catch other exceptions and wrap them in a CustomInternalServerErrorException
+            throw new CustomInternalServerErrorException("Failed to save the vinyl. " + e.toString());
         }
     }
 

@@ -46,4 +46,10 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleInvalidCredentials(InvalidCredentialsException ex) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getReason());
     }
+
+    @ExceptionHandler(DuplicateVinylException.class)
+    public ResponseEntity<String> handleDuplicateVinylException(DuplicateVinylException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+    }
+
 }

@@ -3,7 +3,6 @@ package s3.individual.vinylo.persistence;
 import java.util.List;
 
 import s3.individual.vinylo.domain.Vinyl;
-import s3.individual.vinylo.persistence.entity.StateEnum;
 
 public interface VinylRepo {
 
@@ -13,7 +12,7 @@ public interface VinylRepo {
 
     Vinyl saveVinyl(Vinyl vinyl);
 
-    Vinyl getByState(StateEnum state);
+    Vinyl findByArtistAndTitleAndState(int artistId, String title, String state);
 
     boolean deleteVinylById(int id);
 }
