@@ -13,7 +13,7 @@ import s3.individual.vinylo.persistence.entity.VinylTypeEnum;
 import s3.individual.vinylo.serviceimpl.VinylServiceIMPL;
 import s3.individual.vinylo.domain.Artist;
 import s3.individual.vinylo.domain.Vinyl;
-import s3.individual.vinylo.exceptions.CustomInternalServerErrorException;
+import s3.individual.vinylo.exceptions.CustomNotFoundException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -135,7 +135,7 @@ class VinylServiceIMPLTests {
                 when(vinylRepoMock.getVinylById(vinylId)).thenReturn(null);
 
                 // Act & Assert
-                assertThrows(CustomInternalServerErrorException.class, () -> {
+                assertThrows(CustomNotFoundException.class, () -> {
                         vinylService.saveVinyl(vinylId, updatedVinyl);
                 });
         }
