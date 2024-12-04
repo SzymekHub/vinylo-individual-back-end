@@ -1,4 +1,3 @@
-# I use the official Gradle image with version 8.10.1 and JDK 17 installed
 FROM gradle:8.10.1-jdk17
 # I Set the working directory inside the container to /opt/app
 WORKDIR /opt/app
@@ -13,11 +12,6 @@ ARG JAVA_OPTS
 
 # And I set the environment variable JAVA_OPTS with the value of the build argument
 ENV JAVA_OPTS=$JAVA_OPTS
-
-# Defined the entrypoint for the Docker container
-# This can be used to run the JAR with additional options via JAVA_OPTS
-# These options can include settings like memory limits, garbage collection strategies, or debugging configurations. 
-#ENTRYPOINT exec java $JAVA_OPTS -jar Vinylo.jar
 
 # For Spring-Boot project, I can use the entrypoint below to reduce Tomcat startup time.
 # The `-Djava.security.egd=file:/dev/./urandom` flag helps to reduce the time it takes for Tomcat to initialize 

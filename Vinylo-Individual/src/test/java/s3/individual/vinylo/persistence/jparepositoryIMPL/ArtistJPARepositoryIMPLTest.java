@@ -57,6 +57,7 @@ public class ArtistJPARepositoryIMPLTest {
         verify(artistJPARepo, times(1)).save(any(ArtistEntity.class));
     }
 
+    @SuppressWarnings("null")
     @Test
     void testSaveArtist_NullArtist() {
         // Arrange

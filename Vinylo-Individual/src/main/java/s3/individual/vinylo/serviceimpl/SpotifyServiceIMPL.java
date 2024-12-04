@@ -17,10 +17,11 @@ public class SpotifyServiceIMPL implements SpotifyService {
 
     @Override
     public String getAlbumEmbedUrl(String albumId) {
-        String accessToken = spotifyTokenService.getAccessToken(); // Fetch the access token from TokenService
+        // Fetch the access token from SpotifyTokenService
+        String accessToken = spotifyTokenService.getAccessToken();
 
         if (accessToken == null) {
-            return null; // If no token is available, return null
+            return null;
         }
 
         String url = "https://api.spotify.com/v1/albums/" + albumId;
@@ -33,7 +34,7 @@ public class SpotifyServiceIMPL implements SpotifyService {
         SpotifyAlbumResponse response = restTemplate.getForObject(url, SpotifyAlbumResponse.class);
 
         if (response != null) {
-            return response.getExternalUrls().get("spotify"); // returns the URL to embed
+            return response.getExternalUrls().get("spotify");
         }
         return null;
     }

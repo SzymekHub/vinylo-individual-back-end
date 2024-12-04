@@ -18,6 +18,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import s3.individual.vinylo.configuration.security.auth.AuthenticationRequestFilter;
 
 @EnableWebSecurity
+// Enables method-level security annotations (e.g., @RolesAllowed)
 @EnableMethodSecurity(jsr250Enabled = true)
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
@@ -27,15 +28,23 @@ public class WebConfig implements WebMvcConfigurer {
             AuthenticationEntryPoint authenticationEntryPoint,
             AuthenticationRequestFilter authenticationRequestFilter) throws Exception {
         httpSecurity
+                // Disables CSRF (Cross-Site Request Forgery) protection, since this is
+                // typically handled by tokens in stateless APIs
                 .csrf(AbstractHttpConfigurer::disable)
+                // Disables default form-based login because I use token login
                 .formLogin(AbstractHttpConfigurer::disable)
+                // Configures session management to use stateless sessions (i.e., no server-side
+                // sessions)
                 .sessionManagement(configurer -> configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(registry -> registry.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                // Configures authorization rules for incoming HTTP requests
+                .authorizeHttpRequests(registry -> registry
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/users", "/login", "/spotify-embed").permitAll()
                         .requestMatchers(HttpMethod.GET, "/users", "/users/{id}", "/artist", "/vinyls", "/vinyls/{id}",
                                 "/spotify-embed",
                                 "/auctions")
                         .permitAll()
+                        // Require authentication for any other request
                         .anyRequest().authenticated())
                 .exceptionHandling(configure -> configure.authenticationEntryPoint(authenticationEntryPoint))
                 .addFilterBefore(authenticationRequestFilter, UsernamePasswordAuthenticationFilter.class);

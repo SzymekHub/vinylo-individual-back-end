@@ -65,6 +65,7 @@ public class UserJPARepositoryIMPLTest {
 
     }
 
+    @SuppressWarnings("null")
     @Test
     void testSaveUser_NullUser() {
         // Arrange

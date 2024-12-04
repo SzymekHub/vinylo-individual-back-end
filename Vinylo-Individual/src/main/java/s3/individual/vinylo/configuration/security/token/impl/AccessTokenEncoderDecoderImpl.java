@@ -23,10 +23,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+//This class implements both `AccessTokenEncoder` and `AccessTokenDecoder`.
 @Service
 public class AccessTokenEncoderDecoderImpl implements AccessTokenEncoder, AccessTokenDecoder {
     private final Key key;
 
+    // It uses a secret key that is injected from application properties for signing
+    // and verifying JWTs.
     public AccessTokenEncoderDecoderImpl(@Value("${jwt.secret}") String secretKey) {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(keyBytes);
@@ -53,6 +56,7 @@ public class AccessTokenEncoderDecoderImpl implements AccessTokenEncoder, Access
     }
 
     @Override
+    // this method parses a JWT and creates an `AccessTokenImpl` from its claims.
     public AccessToken decode(String accessTokenEncoded) {
         try {
             Jwt<?, Claims> jwt = Jwts.parserBuilder().setSigningKey(key).build()

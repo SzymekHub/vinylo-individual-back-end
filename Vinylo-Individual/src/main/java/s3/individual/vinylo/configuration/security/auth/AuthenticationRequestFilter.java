@@ -19,6 +19,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+//This is a filter that intercepts incoming requests to authenticate them.
 @Component
 public class AuthenticationRequestFilter extends OncePerRequestFilter {
 
@@ -31,6 +32,7 @@ public class AuthenticationRequestFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
 
+        // It checks for a "Bearer" token in the Authorization header.
         final String requestTokenHeader = request.getHeader("Authorization");
         // If no Authorization header or it doesn't start with "Bearer ", just pass the
         // request along

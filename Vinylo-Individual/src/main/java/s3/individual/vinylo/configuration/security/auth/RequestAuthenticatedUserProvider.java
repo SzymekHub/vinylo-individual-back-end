@@ -10,12 +10,14 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.context.WebApplicationContext;
 
+//Responsible for providing the authenticated user's info for each request
 @Configuration
 public class RequestAuthenticatedUserProvider {
 
     @Bean
     @Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
     public AccessToken getAuthenticatedUserInRequest() {
+        // It retrieves the authentication details from the `SecurityContextHolder`
         final SecurityContext context = SecurityContextHolder.getContext();
         if (context == null) {
             return null;

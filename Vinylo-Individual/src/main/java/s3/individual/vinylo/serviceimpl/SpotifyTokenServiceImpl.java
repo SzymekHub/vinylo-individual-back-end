@@ -27,7 +27,8 @@ public class SpotifyTokenServiceImpl implements SpotifyTokenService {
     private String accessToken;
     private long tokenExpirationTime;
 
-    private static final int TOKEN_EXPIRATION_BUFFER = 60; // Buffer to refresh a little earlier (in seconds)
+    // Buffer to refresh a little earlier (in seconds)
+    private static final int TOKEN_EXPIRATION_BUFFER = 60;
 
     // This method will fetch the access token from Spotify
     private String fetchAccessToken() {
