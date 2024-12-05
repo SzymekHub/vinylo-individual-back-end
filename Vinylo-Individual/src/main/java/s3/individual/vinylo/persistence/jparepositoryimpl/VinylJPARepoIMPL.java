@@ -55,7 +55,7 @@ public class VinylJPARepoIMPL implements VinylRepo {
     @Override
     @Transactional
     public Vinyl saveVinyl(Vinyl vinyl) {
-        VinylEntity entity = VinylEntityMapper.toEntity(vinyl, vinylJPARepo);
+        VinylEntity entity = VinylEntityMapper.toEntity(vinyl);
         ArtistEntity managedArtist = entityManager.merge(entity.getArtist());
         entity.setArtist(managedArtist);
         VinylEntity savedEntity = vinylJPARepo.save(entity);

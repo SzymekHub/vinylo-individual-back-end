@@ -1,8 +1,12 @@
 package s3.individual.vinylo.domain.mappers;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 import s3.individual.vinylo.domain.Vinyl;
+import s3.individual.vinylo.domain.dtos.VinylDTO;
+import s3.individual.vinylo.domain.dtos.VinylsDTO;
 import s3.individual.vinylo.exceptions.CustomNotFoundException;
 import s3.individual.vinylo.persistence.entity.ArtistEntity;
 import s3.individual.vinylo.persistence.entity.SpeedEnum;
@@ -11,7 +15,6 @@ import s3.individual.vinylo.persistence.entity.VinylColorEnum;
 import s3.individual.vinylo.persistence.entity.VinylEntity;
 import s3.individual.vinylo.persistence.entity.VinylTypeEnum;
 import s3.individual.vinylo.persistence.jparepository.ArtistJPARepo;
-import s3.individual.vinylo.persistence.jparepository.VinylJPARepo;
 
 @Component // Make this class a Spring-managed bean
 public class VinylEntityMapper {
@@ -27,7 +30,7 @@ public class VinylEntityMapper {
     // }
 
     // Converts Vinyl domain object to VinylEntity
-    public static VinylEntity toEntity(Vinyl vinyl, VinylJPARepo vinylJPARepo) {
+    public static VinylEntity toEntity(Vinyl vinyl) {
         if (vinyl == null) {
             return null;
         }
@@ -72,5 +75,51 @@ public class VinylEntityMapper {
         vinyl.setSpotifyAlbumId(entity.getSpotifyAlbumId());
 
         return vinyl;
+    }
+
+    public static VinylDTO toVinylDTO(VinylEntity entity) {
+        if (entity == null) {
+            return null;
+        }
+
+        VinylDTO vinylDTO = new VinylDTO();
+
+        vinylDTO.setId(entity.getId());
+        vinylDTO.setVinylType(entity.getVinylType());
+        vinylDTO.setSpeed(entity.getSpeed());
+        vinylDTO.setTitle(entity.getTitle());
+        vinylDTO.setDescription(entity.getDescription());
+        vinylDTO.setState(entity.getState());
+        vinylDTO.setColor(entity.getColor());
+        vinylDTO.setIsReleased(entity.getIsReleased());
+        vinylDTO.setArtist_id(entity.getArtist().getId());
+        vinylDTO.setSpotifyAlbumId(entity.getSpotifyAlbumId());
+
+        return vinylDTO;
+    }
+
+    public static VinylDTO toVinylDTOSummary(VinylEntity entity) {
+
+        if (entity == null) {
+            return null;
+        }
+
+        VinylDTO vinylDTO = new VinylDTO();
+
+        vinylDTO.setId(entity.getId());
+        vinylDTO.setVinylType(entity.getVinylType().toString());
+        vinylDTO.setTitle(entity.getTitle());
+        vinylDTO.setState(entity.getState().toString());
+
+        return vinylDTO;
+    }
+
+    public static VinylsDTO toVinylSummaryDTO(List<VinylEntity> entity) {
+        VinylsDTO dtos = new VinylsDTO();
+        for (VinylEntity v : entity) {
+            dtos.getVinyls().add(toVinylDTOSummary(v));
+        }
+
+        return dtos;
     }
 }
