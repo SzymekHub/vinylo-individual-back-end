@@ -36,7 +36,7 @@ public class VinylCollectionServiceIMPL implements VinylCollectionService {
                         newvinylCollection.getVinyl().getId());
                 if (existingCollection != null && !existingCollection.getId().equals(id)) {
                     throw new DuplicateVinylException(
-                            "A collection with the same user and vinyl already exists for this user.");
+                            "User already has this vinyl in their collection.");
                 }
 
                 // Existing vinyl logic...
@@ -52,7 +52,7 @@ public class VinylCollectionServiceIMPL implements VinylCollectionService {
                         newvinylCollection.getVinyl().getId());
                 if (existingCollection != null) {
                     throw new DuplicateVinylException(
-                            "A collection with the same user and vinyl already exists for this user.");
+                            "User already has this vinyl in their collection.");
                 }
                 return vinylCollectionRepo.save(newvinylCollection);
             }
