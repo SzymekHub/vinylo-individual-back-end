@@ -43,12 +43,13 @@ public class WebConfig implements WebMvcConfigurer {
                                                 .requestMatchers(HttpMethod.POST, "/users", "/login", "/vinyls",
                                                                 "/vinyls/{id}",
                                                                 "/spotify-embed", "/collections",
+                                                                "/ws/**",
                                                                 "/collections/{id}",
                                                                 "/collections/{userId}",
                                                                 "/collections/{userId}/{vinylId}")
                                                 .permitAll()
                                                 .requestMatchers(HttpMethod.GET, "/users", "/users/{id}", "/artist",
-                                                                "/vinyls", "/vinyls/{id}",
+                                                                "/vinyls", "/vinyls/{id}", "/ws/**",
                                                                 "/spotify-embed", "/collections", "/collections/{id}",
                                                                 "/auctions", "/collections/user/{userId}",
                                                                 "/collections/userVinyl/{userId}/{vinylId}")
