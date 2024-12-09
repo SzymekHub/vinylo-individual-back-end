@@ -4,7 +4,7 @@ import java.util.Set;
 
 //this interface defines the structure of the access token
 public interface AccessToken {
-    String getSubject();
+    String getUsername();
 
     Integer getId();
 
