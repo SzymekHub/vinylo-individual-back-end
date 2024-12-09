@@ -19,10 +19,10 @@ default:
 stages: 
     # The 'build' stage will compile the project.
     - build 
-    - docker
     # The 'test' stage will run tests after the build has been successfully completed.
     - test
     - sonar
+    - docker
 
 # Job to handle the build process.
 build:
@@ -42,28 +42,6 @@ build:
     paths:
     - Vinylo-Individual/build/libs/
     expire_in: 1 hour
-
-# Runs docker in docker
-docker-build:
-  stage: docker
-  image: docker:cli
-  dependencies:
-    - build
-  services:
-    - name: docker:dind
-      alias: thedockerhost
-
-  variables:
-    # Tell docker CLI how to talk to Docker daemon; see
-    # https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#use-docker-in-docker-executor
-    DOCKER_HOST: tcp://thedockerhost:2375/
-    # Use the overlayfs driver for improved performance:
-    DOCKER_DRIVER: overlay2
-    DOCKER_TLS_CERTDIR: ""
-  script:
-  # Change directory into the 'Vinylo-Individual' folder where the project is located.
-  - cd Vinylo-Individual
-  - docker build -t vinylo-individual .
 
 # Job to handle the testing process.
 test: 
@@ -86,3 +64,25 @@ sonar:
     - chmod +x gradlew
     - ./gradlew sonar
   allow_failure: true
+
+# Runs docker in docker
+docker-build:
+  stage: docker
+  image: docker:cli
+  dependencies:
+    - build
+  services:
+    - name: docker:dind
+      alias: thedockerhost
+
+  variables:
+    # Tell docker CLI how to talk to Docker daemon; see
+    # https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#use-docker-in-docker-executor
+    DOCKER_HOST: tcp://thedockerhost:2375/
+    # Use the overlayfs driver for improved performance:
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
+  script:
+  # Change directory into the 'Vinylo-Individual' folder where the project is located.
+  - cd Vinylo-Individual
+  - docker build -t vinylo-individual .
