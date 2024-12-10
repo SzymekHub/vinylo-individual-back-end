@@ -28,10 +28,20 @@ public class VinylJPARepoIMPL implements VinylRepo {
     }
 
     @Override
-    public List<Vinyl> getVinyls() {
-        return vinylJPARepo.findAll().stream()
+    public List<Vinyl> getVinyls(int offset, int limit) {
+        String query = "SELECT v FROM VinylEntity v ORDER BY v.id";
+
+        return entityManager.createQuery(query, VinylEntity.class)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList()
+                .stream()
                 .map(VinylEntityMapper::fromEntity)
                 .collect(Collectors.toList());
+    }
+
+    public int getTotalVinylsCount() {
+        return vinylJPARepo.getTotalVinylsCount();
     }
 
     @Override

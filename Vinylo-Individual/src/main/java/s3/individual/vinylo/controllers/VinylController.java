@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.annotation.security.RolesAllowed;
@@ -20,7 +21,6 @@ import s3.individual.vinylo.persistence.entity.VinylColorEnum;
 import s3.individual.vinylo.persistence.entity.VinylTypeEnum;
 import s3.individual.vinylo.domain.mappers.VinylMapper;
 import s3.individual.vinylo.domain.dtos.VinylDTO;
-import s3.individual.vinylo.domain.dtos.VinylsDTO;
 import s3.individual.vinylo.services.ArtistService;
 import s3.individual.vinylo.services.VinylService;
 import s3.individual.vinylo.domain.Artist;
@@ -48,6 +48,7 @@ public class VinylController {
     @GetMapping("/enums")
     @RolesAllowed({ "REGULAR", "ADMIN", "PREMIUM" })
     public Map<String, List<String>> getVinylEnums() {
+        // Returns a map of Vinyl enums for frontend use
         Map<String, List<String>> enums = new HashMap<>();
         enums.put("vinylTypes", Arrays.stream(VinylTypeEnum.values()).map(Enum::name).collect(Collectors.toList()));
         enums.put("speeds", Arrays.stream(SpeedEnum.values()).map(Enum::name).collect(Collectors.toList()));
@@ -58,10 +59,28 @@ public class VinylController {
 
     @GetMapping()
     @RolesAllowed({ "REGULAR", "ADMIN", "PREMIUM" })
-    public VinylsDTO getVinyls() {
-        List<Vinyl> vinyls = vinylService.getVinyls();
+    public Map<String, Object> getVinyls(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "5") int size) {
 
-        return VinylMapper.toVinylSummaryDTO(vinyls);
+        // Fetch vinyls for the given page and size
+        List<Vinyl> vinyls = vinylService.getVinyls(page, size);
+
+        // Get the total count of vinyl records
+        int totalCount = vinylService.getTotalVinylsCount();
+
+        // Prepare the response with paginated data and metadata
+        Map<String, Object> response = new HashMap<>();
+        // Accesses the list within VinylsDTO
+        response.put("vinyls", VinylMapper.toVinylSummaryDTO(vinyls).getVinyls());
+        // Adds totalCount of vinyls to the response
+        response.put("totalCount", totalCount);
+        // Adds the current page number to response.
+        response.put("currentPage", page);
+        // Calculates and add total pages.
+        response.put("totalPages", (int) Math.ceil((double) totalCount / size));
+
+        return response;
     }
 
     // I changed return type to ResponseEntity<?> to handle HTTP responses.

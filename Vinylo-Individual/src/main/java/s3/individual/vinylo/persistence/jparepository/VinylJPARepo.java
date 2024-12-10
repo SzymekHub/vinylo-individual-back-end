@@ -12,6 +12,9 @@ public interface VinylJPARepo extends JpaRepository<VinylEntity, Integer> {
 
     boolean existsById(int id);
 
+    @Query("SELECT COUNT(v) FROM VinylEntity v")
+    int getTotalVinylsCount();
+
     @Query("SELECT v FROM VinylEntity v WHERE v.artist.id = :artistId AND v.title = :title AND v.state = :state")
     Optional<VinylEntity> findByArtistIdAndTitleAndState(
             @Param("artistId") int artistId,

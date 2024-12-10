@@ -12,7 +12,9 @@ public interface VinylService {
 
     Vinyl getVinylById(int id);
 
-    List<Vinyl> getVinyls();
+    List<Vinyl> getVinyls(int page, int size);
+
+    int getTotalVinylsCount();
 
     boolean deleteVinylById(int id);
 

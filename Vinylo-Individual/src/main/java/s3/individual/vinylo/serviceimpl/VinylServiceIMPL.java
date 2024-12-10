@@ -87,9 +87,16 @@ public class VinylServiceIMPL implements VinylService {
     }
 
     @Override
-    public List<Vinyl> getVinyls() {
+    public List<Vinyl> getVinyls(int page, int size) {
 
-        return vinylRepo.getVinyls();
+        int offset = page * size;
+
+        return vinylRepo.getVinyls(offset, size);
+    }
+
+    @Override
+    public int getTotalVinylsCount() {
+        return vinylRepo.getTotalVinylsCount();
     }
 
     @Override
