@@ -7,7 +7,7 @@ import s3.individual.vinylo.services.VinylService;
 import s3.individual.vinylo.domain.Vinyl;
 import s3.individual.vinylo.exceptions.CustomInternalServerErrorException;
 import s3.individual.vinylo.exceptions.CustomNotFoundException;
-import s3.individual.vinylo.exceptions.DuplicateVinylException;
+import s3.individual.vinylo.exceptions.DuplicateItemException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
@@ -40,7 +40,7 @@ public class VinylServiceIMPL implements VinylService {
                         newVinyl.getTitle(),
                         newVinyl.getState().name());
                 if (existingVinyl != null && !existingVinyl.getId().equals(id)) {
-                    throw new DuplicateVinylException(
+                    throw new DuplicateItemException(
                             "A vinyl with the same title and state already exists for this artist.");
                 }
 
@@ -62,14 +62,14 @@ public class VinylServiceIMPL implements VinylService {
                 Vinyl existingVinyl = vinylRepo.findByArtistAndTitleAndState(
                         newVinyl.getArtist().getId(), newVinyl.getTitle(), newVinyl.getState().name());
                 if (existingVinyl != null) {
-                    throw new DuplicateVinylException(
+                    throw new DuplicateItemException(
                             "A vinyl with the same title and state already exists for this artist.");
                 }
                 // If no ID is provided, create a new vinyl
                 return vinylRepo.saveVinyl(newVinyl);
 
             }
-        } catch (DuplicateVinylException e) {
+        } catch (DuplicateItemException e) {
             // Re-throw the DuplicateVinylException
             throw e;
         } catch (CustomNotFoundException e) {

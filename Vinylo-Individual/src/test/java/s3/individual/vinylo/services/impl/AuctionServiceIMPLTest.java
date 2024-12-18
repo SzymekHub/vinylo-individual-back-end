@@ -16,7 +16,7 @@ import s3.individual.vinylo.domain.Artist;
 import s3.individual.vinylo.domain.Vinyl;
 import s3.individual.vinylo.domain.Auction;
 import s3.individual.vinylo.domain.User;
-import s3.individual.vinylo.exceptions.CustomInternalServerErrorException;
+import s3.individual.vinylo.exceptions.CustomNotFoundException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -215,7 +215,7 @@ public class AuctionServiceIMPLTest {
                 when(auctionRepoMock.getAuctionById(auctionId)).thenReturn(null);
 
                 // Act & Assert
-                assertThrows(CustomInternalServerErrorException.class, () -> {
+                assertThrows(CustomNotFoundException.class, () -> {
                         auctionService.saveAuction(auctionId, updatedAuction);
                 });
         }
@@ -266,14 +266,14 @@ public class AuctionServiceIMPLTest {
                                 LocalDate.now(),
                                 LocalDate.now().plusDays(30));
 
-                when(auctionRepoMock.getAuctions()).thenReturn(List.of(auction, auction2));
+                when(auctionRepoMock.getAuctions(0, 5)).thenReturn(List.of(auction, auction2));
 
                 // Act
-                List<Auction> actualAuctions = auctionService.getAuctions();
+                List<Auction> actualAuctions = auctionService.getAuctions(0, 5);
 
                 // Assert
                 assertEquals(List.of(auction, auction2), actualAuctions);
-                verify(auctionRepoMock).getAuctions();
+                verify(auctionRepoMock).getAuctions(0, 5);
 
         }
 

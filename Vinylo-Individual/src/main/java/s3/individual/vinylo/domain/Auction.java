@@ -15,7 +15,7 @@ import lombok.Setter;
 public class Auction {
 
     @NotNull
-    private int id;
+    private Integer id;
     private String title;
     private Vinyl vinyl;
     private User seller;
@@ -25,7 +25,7 @@ public class Auction {
     private LocalDate startTime;
     private LocalDate endTime;
 
-    public Auction(int id, String title, Vinyl vinyl, User seller, String description, double startingPrice,
+    public Auction(Integer id, String title, Vinyl vinyl, User seller, String description, double startingPrice,
             double currentPrice, LocalDate startTime, LocalDate endTime) {
         this.id = id;
         this.title = title;

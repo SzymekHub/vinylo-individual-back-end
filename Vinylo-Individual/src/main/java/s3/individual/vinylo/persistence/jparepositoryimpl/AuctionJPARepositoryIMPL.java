@@ -29,10 +29,29 @@ public class AuctionJPARepositoryIMPL implements AuctionRepo {
     }
 
     @Override
-    public List<Auction> getAuctions() {
-        return auctionJPARepo.findAll().stream()
+    public List<Auction> getAuctions(int offset, int limit) {
+
+        String query = "SELECT a FROM AuctionEntity a ORDER BY a.id";
+
+        return entityManager.createQuery(query, AuctionEntity.class)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList()
+                .stream()
                 .map(AuctionEntityMapper::fromEntity)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public int getTotalAuctionsCount() {
+        return auctionJPARepo.getTotalAuctionsCount();
+    }
+
+    @Override
+    public Auction findByVinylAndTitle(int vinylId, String Title) {
+        return auctionJPARepo.findByVinylAndTitle(vinylId, Title)
+                .map(AuctionEntityMapper::fromEntity)
+                .orElse(null);
     }
 
     @Override
@@ -52,7 +71,7 @@ public class AuctionJPARepositoryIMPL implements AuctionRepo {
     @Transactional
     public Auction saveAuction(Auction auction) {
 
-        AuctionEntity entity = AuctionEntityMapper.toEntity(auction, auctionJPARepo);
+        AuctionEntity entity = AuctionEntityMapper.toEntity(auction);
         VinylEntity managedVinyl = entityManager.merge(entity.getVinyl());
         UserEntity managedSeller = entityManager.merge(entity.getSeller());
         entity.setVinyl(managedVinyl);

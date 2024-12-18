@@ -4,9 +4,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.BAD_REQUEST)
-public class DuplicateVinylException extends RuntimeException {
+public class DuplicateItemException extends RuntimeException {
 
-    public DuplicateVinylException(String message) {
+    public DuplicateItemException(String message) {
 
         super(message);
     }

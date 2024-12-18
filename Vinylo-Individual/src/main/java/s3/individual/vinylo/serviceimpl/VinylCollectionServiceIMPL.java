@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import s3.individual.vinylo.domain.VinylCollection;
 import s3.individual.vinylo.exceptions.CustomInternalServerErrorException;
 import s3.individual.vinylo.exceptions.CustomNotFoundException;
-import s3.individual.vinylo.exceptions.DuplicateVinylException;
+import s3.individual.vinylo.exceptions.DuplicateItemException;
 import s3.individual.vinylo.persistence.VinylCollectionRepo;
 import s3.individual.vinylo.persistence.entity.VinylEntity;
 import s3.individual.vinylo.services.VinylCollectionService;
@@ -35,7 +35,7 @@ public class VinylCollectionServiceIMPL implements VinylCollectionService {
                         newvinylCollection.getUser().getId(),
                         newvinylCollection.getVinyl().getId());
                 if (existingCollection != null && !existingCollection.getId().equals(id)) {
-                    throw new DuplicateVinylException(
+                    throw new DuplicateItemException(
                             "User already has this vinyl in their collection.");
                 }
 
@@ -51,12 +51,12 @@ public class VinylCollectionServiceIMPL implements VinylCollectionService {
                         newvinylCollection.getUser().getId(),
                         newvinylCollection.getVinyl().getId());
                 if (existingCollection != null) {
-                    throw new DuplicateVinylException(
+                    throw new DuplicateItemException(
                             "User already has this vinyl in their collection.");
                 }
                 return vinylCollectionRepo.save(newvinylCollection);
             }
-        } catch (DuplicateVinylException e) {
+        } catch (DuplicateItemException e) {
             // Re-throw the DuplicateVinylException
             throw e;
         } catch (CustomNotFoundException e) {

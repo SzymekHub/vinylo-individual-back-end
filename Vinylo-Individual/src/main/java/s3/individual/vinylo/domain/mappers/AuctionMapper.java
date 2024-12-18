@@ -75,6 +75,30 @@ public class AuctionMapper {
         return auctionDTO;
     }
 
+    public static AuctionDTO toAuctionDTOSummary(Auction auction) {
+        if (auction == null) {
+            return null;
+        }
+
+        AuctionDTO auctionDTO = new AuctionDTO();
+
+        auctionDTO.setId(auction.getId());
+        auctionDTO.setTitle(auction.getTitle());
+        auctionDTO.setCurrentPrice(auction.getCurrentPrice());
+        auctionDTO.setEndTime(auction.getEndTime());
+
+        return auctionDTO;
+    }
+
+    public static AuctionsDTO toAuctionsSummaryDTO(List<Auction> auction) {
+        AuctionsDTO dtos = new AuctionsDTO();
+        for (Auction a : auction) {
+            dtos.getAuctions().add(toAuctionDTOSummary(a));
+        }
+
+        return dtos;
+    }
+
     public static AuctionsDTO toAuctionsDTO(List<Auction> auctions) {
         AuctionsDTO ad = new AuctionsDTO();
         for (Auction a : auctions) {

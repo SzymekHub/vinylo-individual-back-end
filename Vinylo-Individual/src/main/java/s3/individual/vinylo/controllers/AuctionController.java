@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.annotation.security.RolesAllowed;
@@ -18,7 +19,6 @@ import jakarta.validation.Valid;
 import s3.individual.vinylo.exceptions.CustomNotFoundException;
 import s3.individual.vinylo.domain.mappers.AuctionMapper;
 import s3.individual.vinylo.domain.dtos.AuctionDTO;
-import s3.individual.vinylo.domain.dtos.AuctionsDTO;
 import s3.individual.vinylo.services.AuctionService;
 import s3.individual.vinylo.services.UserService;
 import s3.individual.vinylo.services.VinylService;
@@ -42,10 +42,26 @@ public class AuctionController {
 
     @GetMapping()
     @RolesAllowed({ "REGULAR", "ADMIN", "PREMIUM" })
-    public AuctionsDTO geAuctions() {
-        List<Auction> auctions = auctionService.getAuctions();
+    public Map<String, Object> getAuctions(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "5") int size) {
 
-        return AuctionMapper.toAuctionsDTO(auctions);
+        List<Auction> auctions = auctionService.getAuctions(page, size);
+
+        int totalCount = auctionService.getTotalAuctionsCount();
+
+        // Prepare the response with paginated data and metadata
+        Map<String, Object> response = new HashMap<>();
+        // Accesses the list within VinylsDTO
+        response.put("auctions", AuctionMapper.toAuctionsSummaryDTO(auctions).getAuctions());
+        // Adds totalCount of vinyls to the response
+        response.put("totalCount", totalCount);
+        // Adds the current page number to response.
+        response.put("currentPage", page);
+        // Calculates and add total pages.
+        response.put("totalPages", (int) Math.ceil((double) totalCount / size));
+
+        return response;
     }
 
     @GetMapping("{id}")

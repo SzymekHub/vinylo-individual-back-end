@@ -47,8 +47,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getReason());
     }
 
-    @ExceptionHandler(DuplicateVinylException.class)
-    public ResponseEntity<String> handleDuplicateVinylException(DuplicateVinylException ex) {
+    @ExceptionHandler(DuplicateItemException.class)
+    public ResponseEntity<String> handleDuplicateItemException(DuplicateItemException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
 

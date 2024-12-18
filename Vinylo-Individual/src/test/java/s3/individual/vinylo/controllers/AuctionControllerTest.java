@@ -233,7 +233,7 @@ class AuctionControllerTest {
                                                 .endTime(LocalDate.now().plusDays(3))
                                                 .build());
 
-                when(auctionService.getAuctions()).thenReturn(auctions);
+                when(auctionService.getAuctions(0, 5)).thenReturn(auctions);
 
                 // Act and Assert
                 mockMvc.perform(get("/auctions"))
@@ -241,11 +241,11 @@ class AuctionControllerTest {
                                 .andExpect(status().isOk())
                                 .andExpect(content().contentType(APPLICATION_JSON_VALUE))
                                 .andExpect(jsonPath("$.auctions[0].id").value(1))
-                                .andExpect(jsonPath("$.auctions[0].description").value("Auction1 Description"))
+                                .andExpect(jsonPath("$.auctions[0].title").value("Auction1"))
                                 .andExpect(jsonPath("$.auctions[1].id").value(2))
-                                .andExpect(jsonPath("$.auctions[1].description").value("Auction2 Description"));
+                                .andExpect(jsonPath("$.auctions[1].title").value("Auction2"));
 
-                verify(auctionService).getAuctions();
+                verify(auctionService).getAuctions(0, 5);
         }
 
         @Test

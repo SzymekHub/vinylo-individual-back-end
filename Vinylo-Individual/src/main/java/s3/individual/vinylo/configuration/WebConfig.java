@@ -44,6 +44,7 @@ public class WebConfig implements WebMvcConfigurer {
                                                                 "/vinyls/{id}",
                                                                 "/spotify-embed", "/collections",
                                                                 "/ws/**",
+                                                                "/auctions",
                                                                 "/collections/{id}",
                                                                 "/collections/{userId}",
                                                                 "/collections/{userId}/{vinylId}")
@@ -51,7 +52,8 @@ public class WebConfig implements WebMvcConfigurer {
                                                 .requestMatchers(HttpMethod.GET, "/users", "/users/{id}", "/artist",
                                                                 "/vinyls", "/vinyls/{id}", "/ws/**",
                                                                 "/spotify-embed", "/collections", "/collections/{id}",
-                                                                "/auctions", "/collections/user/{userId}",
+                                                                "/auctions", "/auctions/{id}",
+                                                                "/collections/user/{userId}",
                                                                 "/collections/userVinyl/{userId}/{vinylId}")
                                                 .permitAll()
                                                 // Require authentication for any other request

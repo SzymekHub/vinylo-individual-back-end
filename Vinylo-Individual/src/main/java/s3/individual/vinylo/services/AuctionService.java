@@ -10,7 +10,9 @@ public interface AuctionService {
 
     Auction getAuctionsById(int id);
 
-    List<Auction> getAuctions();
+    List<Auction> getAuctions(int page, int size);
+
+    int getTotalAuctionsCount();
 
     boolean placeBid(int auctionId, double bidAmount);
 
