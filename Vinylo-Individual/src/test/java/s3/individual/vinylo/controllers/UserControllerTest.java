@@ -10,8 +10,10 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
+import s3.individual.vinylo.domain.Profile;
 import s3.individual.vinylo.domain.User;
 import s3.individual.vinylo.persistence.entity.RoleEnum;
+import s3.individual.vinylo.services.ProfileService;
 import s3.individual.vinylo.services.UserService;
 
 import java.util.List;
@@ -37,6 +39,9 @@ class UserControllerTest {
         @MockBean
         private UserService userService;
 
+        @MockBean
+        private ProfileService profileService;
+
         @Test
         void testAddUser_ShouldCreateAndReturn201_WhenRequestValid() throws Exception {
                 // Arrange
@@ -49,6 +54,8 @@ class UserControllerTest {
                                 .build();
                 // Act
                 when(userService.saveUser(eq(null), any(User.class))).thenReturn(createdUser);
+                when(profileService.saveProfile(eq(null), any(Profile.class)))
+                                .thenReturn(new Profile(0, createdUser, "", 0));
 
                 // Assert
                 mockMvc.perform(post("/users")
@@ -67,6 +74,7 @@ class UserControllerTest {
                                 .andExpect(content().string("User created successfully"));
 
                 verify(userService).saveUser(eq(null), any(User.class));
+                verify(profileService).saveProfile(eq(null), any(Profile.class));
         }
 
         @Test
