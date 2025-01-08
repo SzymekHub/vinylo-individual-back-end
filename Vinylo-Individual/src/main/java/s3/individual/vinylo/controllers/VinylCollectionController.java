@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,12 +37,14 @@ public class VinylCollectionController {
     private final VinylCollectionService vinylCollectionService;
     private final VinylService vinylService;
     private final UserService userService;
+    private final SimpMessagingTemplate messagingTemplate;
 
     public VinylCollectionController(VinylCollectionService vinylCollectionService, VinylService vinylService,
-            UserService userService) {
+            UserService userService, SimpMessagingTemplate messagingTemplate) {
         this.vinylCollectionService = vinylCollectionService;
         this.vinylService = vinylService;
         this.userService = userService;
+        this.messagingTemplate = messagingTemplate;
     }
 
     @PostMapping
@@ -121,15 +124,20 @@ public class VinylCollectionController {
         return ResponseEntity.ok(cdto);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{vinylId}/{userId}")
     @RolesAllowed({ "REGULAR", "ADMIN", "PREMIUM" })
-    public ResponseEntity<String> deleteCollection(@PathVariable("id") int id) {
-        boolean isDeleted = vinylCollectionService.deleteCollection(id);
-        if (isDeleted) {
-            return ResponseEntity.ok("Collection with id " + id + " was successfully deleted.");
-        } else {
+    public ResponseEntity<String> deleteCollection(
+            @PathVariable("vinylId") int vinylId,
+            @PathVariable("userId") int userId) {
 
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Collection with id " + id + " was not found.");
+        boolean isDeleted = vinylCollectionService.deleteCollection(vinylId, userId);
+        if (isDeleted) {
+            // Send WebSocket message to update the UI
+            String message = String.format("{\"vinylId\": %d, \"userId\": %d}", vinylId, userId);
+            messagingTemplate.convertAndSend("/topic/collections/" + userId, message);
+            return ResponseEntity.ok("Collection was successfully deleted.");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Collection was not found.");
         }
     }
 }

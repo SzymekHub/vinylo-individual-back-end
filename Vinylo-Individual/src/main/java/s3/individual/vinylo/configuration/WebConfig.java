@@ -56,6 +56,14 @@ public class WebConfig implements WebMvcConfigurer {
                                                                 "/collections/user/{userId}",
                                                                 "/collections/userVinyl/{userId}/{vinylId}")
                                                 .permitAll()
+                                                .requestMatchers(HttpMethod.DELETE, "/users", "/users/{id}", "/artist",
+                                                                "/vinyls", "/vinyls/{id}", "/ws/**",
+                                                                "/spotify-embed", "/collections",
+                                                                "/collections/{vinylId}/{userId}",
+                                                                "/auctions", "/auctions/{id}",
+                                                                "/collections/user/{userId}",
+                                                                "/collections/userVinyl/{userId}/{vinylId}")
+                                                .permitAll()
                                                 // Require authentication for any other request
                                                 .anyRequest().authenticated())
                                 .exceptionHandling(configure -> configure

@@ -72,11 +72,12 @@ public class VinylCollectionJPARepoIMPL implements VinylCollectionRepo {
     }
 
     @Override
-    public boolean deleteById(int id) {
-        if (vinylCollectionJPARepo.existsById(id)) {
-            vinylCollectionJPARepo.deleteById(id);
+    public boolean deleteByVinylIdAndUserId(int vinylId, int userId) {
+        try {
+            vinylCollectionJPARepo.deleteByVinylIdAndUserId(vinylId, userId);
             return true;
+        } catch (Exception e) {
+            return false;
         }
-        return false;
     }
 }

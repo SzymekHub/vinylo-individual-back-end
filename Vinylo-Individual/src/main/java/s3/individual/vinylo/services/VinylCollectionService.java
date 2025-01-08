@@ -16,5 +16,5 @@ public interface VinylCollectionService {
 
     VinylEntity getByUserIdAndVinylId(int userId, int vinylId);
 
-    boolean deleteCollection(int id);
+    boolean deleteCollection(int vinylId, int userId);
 }

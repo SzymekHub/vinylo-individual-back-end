@@ -89,7 +89,7 @@ public class VinylCollectionServiceIMPL implements VinylCollectionService {
     }
 
     @Override
-    public boolean deleteCollection(int id) {
-        return vinylCollectionRepo.deleteById(id);
+    public boolean deleteCollection(int vinylId, int userId) {
+        return vinylCollectionRepo.deleteByVinylIdAndUserId(vinylId, userId);
     }
 }

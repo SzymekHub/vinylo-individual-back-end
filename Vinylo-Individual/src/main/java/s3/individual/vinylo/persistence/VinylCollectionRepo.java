@@ -19,5 +19,5 @@ public interface VinylCollectionRepo {
 
     VinylEntity findByUserIdAndVinylId(int userId, int vinylId);
 
-    boolean deleteById(int id);
+    boolean deleteByVinylIdAndUserId(int vinylId, int userId);
 }
