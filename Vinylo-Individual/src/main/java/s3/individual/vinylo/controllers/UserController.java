@@ -18,7 +18,9 @@ import s3.individual.vinylo.exceptions.CustomNotFoundException;
 import s3.individual.vinylo.domain.mappers.UserMapper;
 import s3.individual.vinylo.domain.dtos.UserDTO;
 import s3.individual.vinylo.domain.dtos.UsersDTO;
+import s3.individual.vinylo.services.ProfileService;
 import s3.individual.vinylo.services.UserService;
+import s3.individual.vinylo.domain.Profile;
 import s3.individual.vinylo.domain.User;
 
 @RestController
@@ -27,9 +29,11 @@ import s3.individual.vinylo.domain.User;
 public class UserController {
 
     private final UserService userService;
+    private final ProfileService profileService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, ProfileService profileService) {
         this.userService = userService;
+        this.profileService = profileService;
     }
 
     @GetMapping()
@@ -57,10 +61,10 @@ public class UserController {
     @PostMapping()
     public ResponseEntity<?> addUser(@Valid @RequestBody UserDTO newUserDTO) {
 
-        User user = UserMapper.toUser(newUserDTO);
-
+        User newuser = UserMapper.toUser(newUserDTO);
         // Save the user object
-        userService.saveUser(null, user);
+        User createdUser = userService.saveUser(null, newuser);
+        profileService.saveProfile(null, new Profile(0, createdUser, "", 0));
 
         return ResponseEntity.status(HttpStatus.CREATED).body("User created successfully");
     }
