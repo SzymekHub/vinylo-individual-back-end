@@ -3,6 +3,7 @@ package s3.individual.vinylo.domain.mappers;
 import org.springframework.stereotype.Component;
 
 import s3.individual.vinylo.domain.User;
+import s3.individual.vinylo.domain.dtos.UserDTO;
 import s3.individual.vinylo.persistence.entity.RoleEnum;
 import s3.individual.vinylo.persistence.entity.UserEntity;
 
@@ -40,4 +41,19 @@ public class UserEntityMapper {
 
         return user;
     }
+
+    public static UserDTO toProfileDTO(UserEntity userEntity) {
+        if (userEntity == null) {
+            return null;
+        }
+
+        UserDTO userDTO = new UserDTO();
+        userDTO.setId(userEntity.getId());
+        userDTO.setUsername(userEntity.getUsername());
+        userDTO.setEmail(userEntity.getEmail());
+        userDTO.setRole(userEntity.getRole());
+
+        return userDTO;
+    }
+
 }

@@ -35,15 +35,20 @@ public class ProfileJPARepoIMPL implements ProfileRepo {
     }
 
     @Override
-    public Profile getProfileById(int id) {
+    public Profile findById(int id) {
         return profileJPARepo.findById(id)
                 .map(ProfileEntityMapper::fromEntity)
                 .orElse(null);
     }
 
     @Override
-    public Profile findByBioAndUser(String bio, int user_id) {
-        return profileJPARepo.findByBioAndUser(bio, user_id)
+    public UserEntity getProfileById(int id) {
+        return profileJPARepo.findByUserId(id).orElse(null);
+    }
+
+    @Override
+    public Profile findByBioAndUser(String bio, int userId) {
+        return profileJPARepo.findByBioAndUser(bio, userId)
                 .map(ProfileEntityMapper::fromEntity)
                 .orElse(null);
     }

@@ -3,10 +3,16 @@ package s3.individual.vinylo.serviceimpl;
 import org.springframework.stereotype.Service;
 
 import s3.individual.vinylo.domain.Profile;
+import s3.individual.vinylo.domain.dtos.ProfileAndUserDTO;
+import s3.individual.vinylo.domain.dtos.ProfileDTO;
+import s3.individual.vinylo.domain.dtos.UserDTO;
+import s3.individual.vinylo.domain.mappers.ProfileMapper;
+import s3.individual.vinylo.domain.mappers.UserEntityMapper;
 import s3.individual.vinylo.exceptions.CustomInternalServerErrorException;
 import s3.individual.vinylo.exceptions.CustomNotFoundException;
 import s3.individual.vinylo.exceptions.DuplicateItemException;
 import s3.individual.vinylo.persistence.ProfileRepo;
+import s3.individual.vinylo.persistence.entity.UserEntity;
 import s3.individual.vinylo.services.ProfileService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +28,7 @@ public class ProfileServiceIMPL implements ProfileService {
     public Profile saveProfile(Integer id, Profile newProfile) {
         try {
             if (id != null) {
-                Profile profileToUpdate = profileRepo.getProfileById(id);
+                Profile profileToUpdate = profileRepo.findById(id);
                 if (profileToUpdate == null) {
                     throw new CustomNotFoundException(
                             "Profile with ID " + id + " was not found.");
@@ -69,7 +75,20 @@ public class ProfileServiceIMPL implements ProfileService {
     }
 
     @Override
-    public Profile getProfileById(int id) {
-        return profileRepo.getProfileById(id);
+    public ProfileAndUserDTO getProfileAndUserById(int profileId) {
+        Profile profile = profileRepo.findById(profileId);
+        if (profile == null) {
+            throw new CustomNotFoundException("Profile not found for ID: " + profileId);
+        }
+
+        UserEntity userEntity = profileRepo.getProfileById(profileId);
+        if (userEntity == null) {
+            throw new CustomNotFoundException("User not found for Profile ID: " + profileId);
+        }
+
+        UserDTO userDTO = UserEntityMapper.toProfileDTO(userEntity);
+        ProfileDTO profileDTO = ProfileMapper.toProfileDTO(profile);
+
+        return new ProfileAndUserDTO(profileDTO, userDTO);
     }
 }

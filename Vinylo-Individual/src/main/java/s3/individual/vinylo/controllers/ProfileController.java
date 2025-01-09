@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import s3.individual.vinylo.domain.Profile;
+import s3.individual.vinylo.domain.dtos.ProfileAndUserDTO;
 import s3.individual.vinylo.domain.dtos.ProfileDTO;
 import s3.individual.vinylo.domain.mappers.ProfileMapper;
 import s3.individual.vinylo.exceptions.CustomNotFoundException;
@@ -28,17 +29,15 @@ public class ProfileController {
 
     @GetMapping("/{id}")
     @RolesAllowed({ "REGULAR", "ADMIN", "PREMIUM" })
-    public ResponseEntity<ProfileDTO> getProfile(@PathVariable("id") int id) {
+    public ResponseEntity<ProfileAndUserDTO> getProfile(@PathVariable("id") int id) {
 
-        Profile p = profileService.getProfileById(id);
+        ProfileAndUserDTO profileAndUser = profileService.getProfileAndUserById(id);
 
-        if (p == null) {
+        if (profileAndUser == null) {
             throw new CustomNotFoundException("Profile record not found");
         }
 
-        ProfileDTO pd = ProfileMapper.toProfileDTO(p);
-
-        return ResponseEntity.ok(pd);
+        return ResponseEntity.ok(profileAndUser);
 
     }
 
