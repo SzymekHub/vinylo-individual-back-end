@@ -75,15 +75,16 @@ public class ProfileServiceIMPL implements ProfileService {
     }
 
     @Override
-    public ProfileAndUserDTO getProfileAndUserById(int profileId) {
-        Profile profile = profileRepo.findById(profileId);
+    public ProfileAndUserDTO getProfileAndUserById(int userId) {
+
+        Profile profile = profileRepo.findByUserId(userId);
         if (profile == null) {
-            throw new CustomNotFoundException("Profile not found for ID: " + profileId);
+            throw new CustomNotFoundException("Profile not found for User ID: " + userId);
         }
 
-        UserEntity userEntity = profileRepo.getProfileById(profileId);
+        UserEntity userEntity = profileRepo.getUserByUserId(userId);
         if (userEntity == null) {
-            throw new CustomNotFoundException("User not found for Profile ID: " + profileId);
+            throw new CustomNotFoundException("User not found for User ID: " + userId);
         }
 
         UserDTO userDTO = UserEntityMapper.toProfileDTO(userEntity);

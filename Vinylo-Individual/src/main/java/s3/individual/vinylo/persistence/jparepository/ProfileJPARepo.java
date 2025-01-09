@@ -12,8 +12,11 @@ import s3.individual.vinylo.persistence.entity.UserEntity;
 public interface ProfileJPARepo extends JpaRepository<ProfileEntity, Integer> {
 
     // Retrieves all user info associated with a specific user
+    @Query("SELECT pf FROM ProfileEntity pf WHERE pf.user.id = :userId")
+    Optional<ProfileEntity> findByUserId(@Param("userId") int userId);
+
     @Query("SELECT pf.user FROM ProfileEntity pf WHERE pf.user.id = :userId")
-    Optional<UserEntity> findByUserId(@Param("userId") int userId);
+    Optional<UserEntity> findUserByUserId(@Param("userId") int userId);
 
     // Find profile by bio and user id
     @Query("SELECT p FROM ProfileEntity p WHERE p.bio = :bio AND p.user.id = :userId")

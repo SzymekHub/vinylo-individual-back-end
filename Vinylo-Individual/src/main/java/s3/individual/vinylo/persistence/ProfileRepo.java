@@ -9,7 +9,9 @@ public interface ProfileRepo {
 
     Profile saveProfile(Profile profile);
 
-    UserEntity getProfileById(int id);
+    Profile findByUserId(int id);
+
+    UserEntity getUserByUserId(int id);
 
     Profile findByBioAndUser(String bio, int user_id);
 }
