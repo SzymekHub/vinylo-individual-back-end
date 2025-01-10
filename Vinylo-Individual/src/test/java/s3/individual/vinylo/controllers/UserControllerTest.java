@@ -54,7 +54,7 @@ class UserControllerTest {
                                 .build();
                 // Act
                 when(userService.saveUser(eq(null), any(User.class))).thenReturn(createdUser);
-                when(profileService.saveProfile(eq(null), any(Profile.class)))
+                when(profileService.createProfile(any(Profile.class)))
                                 .thenReturn(new Profile(0, createdUser, "", 0));
 
                 // Assert
@@ -74,7 +74,7 @@ class UserControllerTest {
                                 .andExpect(content().string("User created successfully"));
 
                 verify(userService).saveUser(eq(null), any(User.class));
-                verify(profileService).saveProfile(eq(null), any(Profile.class));
+                verify(profileService).createProfile(any(Profile.class));
         }
 
         @Test

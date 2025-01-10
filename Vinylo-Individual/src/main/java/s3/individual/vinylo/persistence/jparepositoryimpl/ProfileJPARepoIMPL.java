@@ -30,8 +30,16 @@ public class ProfileJPARepoIMPL implements ProfileRepo {
         ProfileEntity entity = ProfileEntityMapper.toEntity(profile);
         UserEntity managedEntity = entityManager.merge(entity.getUser());
         entity.setUser(managedEntity);
-        ProfileEntity savedProfileEntity = profileJPARepo.save(entity);
-        return ProfileEntityMapper.fromEntity(savedProfileEntity);
+
+        // Check if id is null or 0, then save if it's not then update
+        if (entity.getId() == 0) {
+            ProfileEntity savedProfileEntity = profileJPARepo.save(entity);
+            return ProfileEntityMapper.fromEntity(savedProfileEntity);
+        }
+        ProfileEntity mergedProfileEntity = entityManager.merge(entity);
+
+        return ProfileEntityMapper.fromEntity(mergedProfileEntity);
+
     }
 
     @Override

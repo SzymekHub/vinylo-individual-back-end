@@ -25,52 +25,54 @@ public class ProfileServiceIMPL implements ProfileService {
 
     @Override
     @Transactional
-    public Profile saveProfile(Integer id, Profile newProfile) {
+    public Profile createProfile(Profile newProfile) {
         try {
-            if (id != null) {
-                Profile profileToUpdate = profileRepo.findById(id);
-                if (profileToUpdate == null) {
-                    throw new CustomNotFoundException(
-                            "Profile with ID " + id + " was not found.");
-                }
-
-                // Check if profile with the same bio and user exists
-                Profile existingProfile = profileRepo.findByBioAndUser(
-                        newProfile.getBio(),
-                        newProfile.getUser().getId());
-                if (existingProfile != null && !existingProfile.getId().equals(id)) {
-                    throw new DuplicateItemException(
-                            "A profile with the same bio already exists for this user.");
-                }
-
-                // Update the existing profile with the new data
-                profileToUpdate.setBalance(newProfile.getBalance());
-                profileToUpdate.setBio(newProfile.getBio());
-
-                // Save the updated profile to the database
-                return profileRepo.saveProfile(profileToUpdate);
-
-            } else {
-                // Check if profile with the same bio and user exists
-                Profile existingProfile = profileRepo.findByBioAndUser(
-                        newProfile.getBio(),
-                        newProfile.getUser().getId());
-                if (existingProfile != null && !existingProfile.getId().equals(id)) {
-                    throw new DuplicateItemException(
-                            "A profile with the same bio already exists for this user.");
-                }
-
-                // if no id is provided, create a new profile
-                return profileRepo.saveProfile(newProfile);
+            // Check if profile with the same bio and user exists
+            Profile existingProfile = profileRepo.findByBioAndUser(
+                    newProfile.getBio(),
+                    newProfile.getUser().getId());
+            if (existingProfile != null) {
+                throw new DuplicateItemException(
+                        "A profile with the same bio already exists for this user.");
             }
+
+            // if no id is provided, create a new profile
+            return profileRepo.saveProfile(newProfile);
+
         } catch (DuplicateItemException e) {
             throw e;
+        } catch (Exception e) {
+            // Catch other exceptions and wrap them in a CustomInternalServerErrorException
+            throw new CustomInternalServerErrorException("Failed to save the profile. " + e.toString());
+        }
+    }
+
+    @Override
+    @Transactional
+    public ProfileDTO updateProfile(Integer userId, ProfileDTO profileDTO) {
+        try {
+            Profile profileToUpdate = profileRepo.findByUserId(userId);
+
+            if (profileToUpdate == null) {
+                throw new CustomNotFoundException("Profile with User ID: " + userId + " was not found");
+            }
+
+            // set the id so that it won't think that it's a new record.
+            profileToUpdate.setId(profileToUpdate.getId());
+
+            // Update the existing profile with the new data
+            profileToUpdate.setBalance(profileDTO.getBalance());
+            profileToUpdate.setBio(profileDTO.getBio());
+
+            Profile updatedProfile = profileRepo.saveProfile(profileToUpdate);
+            return ProfileMapper.toProfileDTO(updatedProfile);
+
         } catch (CustomNotFoundException e) {
             // Re-throw the CustomNotFoundException
             throw e;
         } catch (Exception e) {
             // Catch other exceptions and wrap them in a CustomInternalServerErrorException
-            throw new CustomInternalServerErrorException("Failed to save the profile. " + e.toString());
+            throw new CustomInternalServerErrorException("Failed to update the profile. " + e.toString());
         }
     }
 

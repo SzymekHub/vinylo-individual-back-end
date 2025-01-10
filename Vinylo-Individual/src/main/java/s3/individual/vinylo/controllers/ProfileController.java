@@ -1,6 +1,7 @@
 package s3.individual.vinylo.controllers;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -10,10 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
-import s3.individual.vinylo.domain.Profile;
 import s3.individual.vinylo.domain.dtos.ProfileAndUserDTO;
 import s3.individual.vinylo.domain.dtos.ProfileDTO;
-import s3.individual.vinylo.domain.mappers.ProfileMapper;
 import s3.individual.vinylo.exceptions.CustomNotFoundException;
 import s3.individual.vinylo.services.ProfileService;
 
@@ -22,9 +21,12 @@ import s3.individual.vinylo.services.ProfileService;
 public class ProfileController {
 
     private final ProfileService profileService;
+    private final SimpMessagingTemplate messagingTemplate;
 
-    public ProfileController(ProfileService profileService) {
+    public ProfileController(ProfileService profileService, SimpMessagingTemplate messagingTemplate) {
         this.profileService = profileService;
+        this.messagingTemplate = messagingTemplate;
+
     }
 
     @GetMapping("/{id}")
@@ -43,11 +45,12 @@ public class ProfileController {
 
     @PutMapping("/{id}")
     @RolesAllowed({ "REGULAR", "ADMIN", "PREMIUM" })
-    public ResponseEntity<?> updateProfile(@Valid @RequestBody ProfileDTO profileDTO,
+    public ResponseEntity<ProfileDTO> updateProfile(@Valid @RequestBody ProfileDTO profileDTO,
             @PathVariable("id") int id) {
-        Profile newProfile = ProfileMapper.toProfile(profileDTO);
-        Profile updatedProfile = profileService.saveProfile(id, newProfile);
 
-        return ResponseEntity.ok(ProfileMapper.toProfileDTO(updatedProfile));
+        ProfileDTO updatedProfileDTO = profileService.updateProfile(id, profileDTO);
+
+        messagingTemplate.convertAndSendToUser(String.valueOf(id), "/topic/profileUpdated", updatedProfileDTO);
+        return ResponseEntity.ok(updatedProfileDTO);
     }
 }
