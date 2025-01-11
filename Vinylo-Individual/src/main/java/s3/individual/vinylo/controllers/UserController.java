@@ -63,7 +63,7 @@ public class UserController {
 
         User newuser = UserMapper.toUser(newUserDTO);
         // Save the user object
-        User createdUser = userService.saveUser(null, newuser);
+        User createdUser = userService.createUser(newuser);
         profileService.createProfile(new Profile(0, createdUser, "", 0));
 
         return ResponseEntity.status(HttpStatus.CREATED).body("User created successfully");

@@ -3,6 +3,7 @@ package s3.individual.vinylo.serviceimpl;
 import org.springframework.stereotype.Service;
 
 import s3.individual.vinylo.domain.Profile;
+import s3.individual.vinylo.domain.User;
 import s3.individual.vinylo.domain.dtos.ProfileAndUserDTO;
 import s3.individual.vinylo.domain.dtos.ProfileDTO;
 import s3.individual.vinylo.domain.dtos.UserDTO;
@@ -12,8 +13,10 @@ import s3.individual.vinylo.exceptions.CustomInternalServerErrorException;
 import s3.individual.vinylo.exceptions.CustomNotFoundException;
 import s3.individual.vinylo.exceptions.DuplicateItemException;
 import s3.individual.vinylo.persistence.ProfileRepo;
+import s3.individual.vinylo.persistence.entity.RoleEnum;
 import s3.individual.vinylo.persistence.entity.UserEntity;
 import s3.individual.vinylo.services.ProfileService;
+import s3.individual.vinylo.services.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
@@ -22,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 public class ProfileServiceIMPL implements ProfileService {
 
     private final ProfileRepo profileRepo;
+    private final UserService userService;
 
     @Override
     @Transactional
@@ -73,6 +77,44 @@ public class ProfileServiceIMPL implements ProfileService {
         } catch (Exception e) {
             // Catch other exceptions and wrap them in a CustomInternalServerErrorException
             throw new CustomInternalServerErrorException("Failed to update the profile. " + e.toString());
+        }
+    }
+
+    @Override
+    @Transactional
+    public ProfileDTO upgradeToPremium(int userId) {
+        try {
+            Profile profile = profileRepo.findByUserId(userId);
+            if (profile == null) {
+                throw new CustomNotFoundException("Profile not found for user ID: " + userId);
+            }
+
+            // fetch user by user id
+            User user = userService.getUserById(userId);
+            if (user == null) {
+                throw new CustomNotFoundException("User not found for profile with ID: " + profile.getId());
+            }
+            // check if user is regular
+            if (!user.getRole().equals(RoleEnum.REGULAR)) {
+                throw new CustomInternalServerErrorException("User is not a REGULAR user");
+            }
+            // check the balance to see if user has enough money
+            if (profile.getBalance() < 50) {
+                throw new CustomInternalServerErrorException("Not enough funds.");
+            }
+
+            // update the user role to PREMIUM
+            user.setRole(RoleEnum.PREMIUM);
+            profile.setBalance(profile.getBalance() - 50);
+            userService.updateUser(user);
+
+            Profile updatedProfile = profileRepo.saveProfile(profile);
+            return ProfileMapper.toProfileDTO(updatedProfile);
+
+        } catch (CustomNotFoundException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new CustomInternalServerErrorException("Failed to upgrade to premium. " + e.getMessage());
         }
     }
 

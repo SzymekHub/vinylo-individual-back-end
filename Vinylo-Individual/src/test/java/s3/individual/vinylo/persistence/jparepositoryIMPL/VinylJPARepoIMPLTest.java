@@ -19,7 +19,6 @@ import s3.individual.vinylo.persistence.entity.VinylTypeEnum;
 import s3.individual.vinylo.persistence.jparepository.ArtistJPARepo;
 import s3.individual.vinylo.persistence.jparepository.VinylJPARepo;
 
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;

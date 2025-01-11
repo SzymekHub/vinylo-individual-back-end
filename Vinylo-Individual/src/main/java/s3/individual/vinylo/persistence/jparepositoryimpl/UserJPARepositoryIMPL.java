@@ -5,6 +5,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import s3.individual.vinylo.persistence.UserRepo;
 import s3.individual.vinylo.persistence.entity.UserEntity;
@@ -16,6 +18,9 @@ import s3.individual.vinylo.persistence.jparepository.UserJPARepo;
 public class UserJPARepositoryIMPL implements UserRepo {
 
     private final UserJPARepo userJPARepo;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     public UserJPARepositoryIMPL(UserJPARepo userJPARepo) {
         this.userJPARepo = userJPARepo;
@@ -53,9 +58,31 @@ public class UserJPARepositoryIMPL implements UserRepo {
     @Override
     @Transactional
     public User saveUser(User user) {
+        UserEntity entity = UserEntityMapper.toNewEntity(user);
+
+        // Check if id is null or 0, then save if it's not then update
+        if (entity.getId() == 0) {
+            UserEntity savedUserEntity = userJPARepo.save(entity);
+            return UserEntityMapper.fromEntity(savedUserEntity);
+        }
+        UserEntity mergedUserEntity = entityManager.merge(entity);
+
+        return UserEntityMapper.fromEntity(mergedUserEntity);
+    }
+
+    @Override
+    @Transactional
+    public User updateUser(User user) {
         UserEntity entity = UserEntityMapper.toEntity(user);
-        UserEntity savedEntity = userJPARepo.save(entity);
-        return UserEntityMapper.fromEntity(savedEntity);
+
+        // Check if id is null or 0, then save if it's not then update
+        if (entity.getId() == 0) {
+            UserEntity savedUserEntity = userJPARepo.save(entity);
+            return UserEntityMapper.fromEntity(savedUserEntity);
+        }
+        UserEntity mergedUserEntity = entityManager.merge(entity);
+
+        return UserEntityMapper.fromEntity(mergedUserEntity);
     }
 
     @Override

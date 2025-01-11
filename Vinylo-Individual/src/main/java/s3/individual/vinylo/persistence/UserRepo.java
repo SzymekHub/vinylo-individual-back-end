@@ -12,6 +12,8 @@ public interface UserRepo {
 
     User saveUser(User user);
 
+    User updateUser(User user);
+
     User findByUsername(String username);
 
     boolean deativateUserById(int id);

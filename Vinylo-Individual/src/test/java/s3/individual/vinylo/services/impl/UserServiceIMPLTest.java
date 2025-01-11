@@ -12,6 +12,7 @@ import s3.individual.vinylo.persistence.UserRepo;
 import s3.individual.vinylo.persistence.entity.RoleEnum;
 import s3.individual.vinylo.serviceimpl.UserServiceIMPL;
 import s3.individual.vinylo.domain.User;
+import s3.individual.vinylo.domain.dtos.UserDTO;
 import s3.individual.vinylo.exceptions.CustomInternalServerErrorException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -53,7 +54,7 @@ public class UserServiceIMPLTest {
         when(userRepoMock.saveUser(any(User.class))).thenReturn(savedUser);
 
         // Act
-        User result = userService.saveUser(null, newUser);
+        User result = userService.createUser(newUser);
 
         // Assert
         assertEquals(savedUser, result);
@@ -78,18 +79,23 @@ public class UserServiceIMPLTest {
                 "User2Password",
                 RoleEnum.REGULAR);
 
+        User updatedUserEntity = createUser(userId,
+                "Crazy Username",
+                "UseerName2@gmail.com",
+                "EncodedPassword",
+                RoleEnum.REGULAR);
+
         when(userRepoMock.getUserById(userId)).thenReturn(existingUser);
-        when(userRepoMock.saveUser(existingUser)).thenReturn(updatedUser);
+        when(userRepoMock.updateUser(existingUser)).thenReturn(updatedUserEntity);
 
         // Act
-        User result = userService.saveUser(userId, updatedUser);
+        UserDTO result = userService.updateUser(updatedUser);
 
         // Assert
         assertEquals("Crazy Username", result.getUsername());
 
-        verify(userRepoMock).saveUser(existingUser);
+        verify(userRepoMock).updateUser(existingUser);
         verify(userRepoMock).getUserById(userId);
-
     }
 
     @Test
@@ -107,9 +113,8 @@ public class UserServiceIMPLTest {
 
         // Act and Assert
         assertThrows(CustomInternalServerErrorException.class, () -> {
-            userService.saveUser(userId, updatedUser);
+            userService.updateUser(updatedUser); // Should be updateUser, not createUser
         });
-
     }
 
     @Test

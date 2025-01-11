@@ -10,6 +10,8 @@ public interface ProfileService {
 
     ProfileDTO updateProfile(Integer userId, ProfileDTO profileDTO);
 
+    ProfileDTO upgradeToPremium(int userId);
+
     ProfileAndUserDTO getProfileAndUserById(int id);
 
 }

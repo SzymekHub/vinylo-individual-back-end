@@ -3,10 +3,13 @@ package s3.individual.vinylo.services;
 import java.util.List;
 
 import s3.individual.vinylo.domain.User;
+import s3.individual.vinylo.domain.dtos.UserDTO;
 
 public interface UserService {
 
-    User saveUser(Integer id, User user);
+    User createUser(User newuser);
+
+    UserDTO updateUser(User user);
 
     User getUserById(int id);
 

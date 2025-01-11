@@ -53,4 +53,12 @@ public class ProfileController {
         messagingTemplate.convertAndSendToUser(String.valueOf(id), "/topic/profileUpdated", updatedProfileDTO);
         return ResponseEntity.ok(updatedProfileDTO);
     }
+
+    @PutMapping("/upgrade/{id}")
+    @RolesAllowed({ "REGULAR" })
+    public ResponseEntity<ProfileDTO> upgradeToPremium(@PathVariable("id") int id) {
+        ProfileDTO upgradedProfileDTO = profileService.upgradeToPremium(id);
+        messagingTemplate.convertAndSendToUser(String.valueOf(id), "/topic/profileUpdated", upgradedProfileDTO);
+        return ResponseEntity.ok(upgradedProfileDTO);
+    }
 }

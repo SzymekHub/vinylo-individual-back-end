@@ -7,11 +7,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import jakarta.persistence.EntityManager;
 import s3.individual.vinylo.domain.User;
 import s3.individual.vinylo.persistence.entity.RoleEnum;
 import s3.individual.vinylo.persistence.entity.UserEntity;
 import s3.individual.vinylo.persistence.jparepository.UserJPARepo;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +27,9 @@ public class UserJPARepositoryIMPLTest {
     @Mock
     private UserJPARepo userJPARepo;
 
+    @Mock
+    private EntityManager entityManager;
+
     @InjectMocks
     private UserJPARepositoryIMPL userJPARepoImpl;
 
@@ -32,7 +37,7 @@ public class UserJPARepositoryIMPLTest {
     private User user;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws NoSuchFieldException, IllegalAccessException {
         userEntity = UserEntity.builder()
                 .id(1)
                 .username("TestUser")
@@ -48,6 +53,11 @@ public class UserJPARepositoryIMPLTest {
                 .password("Pass")
                 .role(RoleEnum.REGULAR)
                 .build();
+
+        // Inject the mocked EntityManager using reflection
+        Field entityManagerField = UserJPARepositoryIMPL.class.getDeclaredField("entityManager");
+        entityManagerField.setAccessible(true);
+        entityManagerField.set(userJPARepoImpl, entityManager);
     }
 
     @Test
@@ -62,18 +72,30 @@ public class UserJPARepositoryIMPLTest {
         assertNotNull(savedUser);
         assertEquals(user.getUsername(), savedUser.getUsername());
         verify(userJPARepo, times(1)).save(any(UserEntity.class));
-
     }
 
-    @SuppressWarnings("null")
+    @Test
+    void testSaveUser_UpdateExistingUser() {
+        // Arrange
+        user.setId(1); // Simulating an update scenario with an existing ID
+        userEntity.setId(1); // Corresponding UserEntity
+        when(entityManager.merge(any(UserEntity.class))).thenReturn(userEntity);
+
+        // Act
+        User updatedUser = userJPARepoImpl.updateUser(user);
+
+        // Assert
+        assertNotNull(updatedUser);
+        assertEquals(user.getUsername(), updatedUser.getUsername());
+        verify(entityManager, times(1)).merge(any(UserEntity.class)); // Verify merge is called
+    }
+
     @Test
     void testSaveUser_NullUser() {
-        // Arrange
-        when(userJPARepo.save(null)).thenThrow(new IllegalArgumentException("UserEntity cannot be null"));
-
         // Act & Assert
-        assertThrows(IllegalArgumentException.class, () -> userJPARepoImpl.saveUser(null));
-        verify(userJPARepo, times(1)).save(null);
+        assertThrows(NullPointerException.class, () -> userJPARepoImpl.saveUser(null));
+        verify(userJPARepo, times(0)).save(any(UserEntity.class)); // Ensure save is not called
+        verify(entityManager, times(0)).merge(any(UserEntity.class)); // Ensure merge is not called
     }
 
     @Test

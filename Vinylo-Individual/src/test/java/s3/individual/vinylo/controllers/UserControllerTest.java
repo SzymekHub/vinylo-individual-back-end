@@ -19,7 +19,6 @@ import s3.individual.vinylo.services.UserService;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -53,7 +52,7 @@ class UserControllerTest {
                                 .role(RoleEnum.REGULAR)
                                 .build();
                 // Act
-                when(userService.saveUser(eq(null), any(User.class))).thenReturn(createdUser);
+                when(userService.createUser(any(User.class))).thenReturn(createdUser);
                 when(profileService.createProfile(any(Profile.class)))
                                 .thenReturn(new Profile(0, createdUser, "", 0));
 
@@ -73,7 +72,7 @@ class UserControllerTest {
                                 .andExpect(status().isCreated())
                                 .andExpect(content().string("User created successfully"));
 
-                verify(userService).saveUser(eq(null), any(User.class));
+                verify(userService).createUser(any(User.class));
                 verify(profileService).createProfile(any(Profile.class));
         }
 
