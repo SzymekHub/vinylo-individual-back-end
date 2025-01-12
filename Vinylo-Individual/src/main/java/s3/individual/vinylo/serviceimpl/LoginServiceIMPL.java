@@ -40,6 +40,18 @@ public class LoginServiceIMPL implements LoginService {
         return LoginResponse.builder().accessToken(accessToken).build();
     }
 
+    @Override
+    public LoginResponse refresh(String username) {
+        Optional<UserEntity> optionalUser = userRepo.findByUsername(username);
+        if (optionalUser.isEmpty()) {
+            throw new InvalidCredentialsException();
+        }
+        UserEntity user = optionalUser.get();
+        String accessToken = generateAccessToken(user);
+
+        return LoginResponse.builder().accessToken(accessToken).build();
+    }
+
     private boolean matchesPassword(String rawPassword, String encodedPassword) {
         return passwordEncoder.matches(rawPassword, encodedPassword);
     }
