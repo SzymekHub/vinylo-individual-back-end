@@ -53,7 +53,7 @@ public class ProfileServiceIMPL implements ProfileService {
 
     @Override
     @Transactional
-    public ProfileDTO updateProfile(Integer userId, ProfileDTO profileDTO) {
+    public Profile updateProfile(Integer userId, ProfileDTO profileDTO) {
         try {
             Profile profileToUpdate = profileRepo.findByUserId(userId);
 
@@ -68,8 +68,7 @@ public class ProfileServiceIMPL implements ProfileService {
             profileToUpdate.setBalance(profileDTO.getBalance());
             profileToUpdate.setBio(profileDTO.getBio());
 
-            Profile updatedProfile = profileRepo.saveProfile(profileToUpdate);
-            return ProfileMapper.toProfileDTO(updatedProfile);
+            return profileRepo.saveProfile(profileToUpdate);
 
         } catch (CustomNotFoundException e) {
             // Re-throw the CustomNotFoundException
@@ -82,7 +81,7 @@ public class ProfileServiceIMPL implements ProfileService {
 
     @Override
     @Transactional
-    public ProfileDTO upgradeToPremium(int userId) {
+    public Profile upgradeToPremium(int userId) {
         try {
             Profile profile = profileRepo.findByUserId(userId);
             if (profile == null) {
@@ -108,8 +107,7 @@ public class ProfileServiceIMPL implements ProfileService {
             profile.setBalance(profile.getBalance() - 50);
             userService.updateUser(user);
 
-            Profile updatedProfile = profileRepo.saveProfile(profile);
-            return ProfileMapper.toProfileDTO(updatedProfile);
+            return profileRepo.saveProfile(profile);
 
         } catch (CustomNotFoundException e) {
             throw e;

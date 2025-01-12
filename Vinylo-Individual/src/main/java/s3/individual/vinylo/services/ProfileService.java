@@ -8,9 +8,9 @@ public interface ProfileService {
 
     Profile createProfile(Profile newProfile);
 
-    ProfileDTO updateProfile(Integer userId, ProfileDTO profileDTO);
+    Profile updateProfile(Integer userId, ProfileDTO profileDTO);
 
-    ProfileDTO upgradeToPremium(int userId);
+    Profile upgradeToPremium(int userId);
 
     ProfileAndUserDTO getProfileAndUserById(int id);
 

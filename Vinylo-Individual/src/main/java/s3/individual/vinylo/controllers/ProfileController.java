@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
+import s3.individual.vinylo.domain.Profile;
 import s3.individual.vinylo.domain.dtos.ProfileAndUserDTO;
 import s3.individual.vinylo.domain.dtos.ProfileDTO;
+import s3.individual.vinylo.domain.mappers.ProfileMapper;
 import s3.individual.vinylo.exceptions.CustomNotFoundException;
 import s3.individual.vinylo.services.ProfileService;
 
@@ -48,7 +50,8 @@ public class ProfileController {
     public ResponseEntity<ProfileDTO> updateProfile(@Valid @RequestBody ProfileDTO profileDTO,
             @PathVariable("id") int id) {
 
-        ProfileDTO updatedProfileDTO = profileService.updateProfile(id, profileDTO);
+        Profile updatedProfile = profileService.updateProfile(id, profileDTO);
+        ProfileDTO updatedProfileDTO = ProfileMapper.toProfileDTO(updatedProfile);
 
         messagingTemplate.convertAndSendToUser(String.valueOf(id), "/topic/profileUpdated", updatedProfileDTO);
         return ResponseEntity.ok(updatedProfileDTO);
@@ -57,7 +60,8 @@ public class ProfileController {
     @PutMapping("/upgrade/{id}")
     @RolesAllowed({ "REGULAR" })
     public ResponseEntity<ProfileDTO> upgradeToPremium(@PathVariable("id") int id) {
-        ProfileDTO upgradedProfileDTO = profileService.upgradeToPremium(id);
+        Profile upgradedProfile = profileService.upgradeToPremium(id);
+        ProfileDTO upgradedProfileDTO = ProfileMapper.toProfileDTO(upgradedProfile);
         messagingTemplate.convertAndSendToUser(String.valueOf(id), "/topic/profileUpdated", upgradedProfileDTO);
         return ResponseEntity.ok(upgradedProfileDTO);
     }

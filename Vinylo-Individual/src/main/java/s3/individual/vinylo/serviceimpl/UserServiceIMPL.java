@@ -10,8 +10,6 @@ import lombok.RequiredArgsConstructor;
 import s3.individual.vinylo.persistence.UserRepo;
 import s3.individual.vinylo.services.UserService;
 import s3.individual.vinylo.domain.User;
-import s3.individual.vinylo.domain.dtos.UserDTO;
-import s3.individual.vinylo.domain.mappers.UserMapper;
 import s3.individual.vinylo.exceptions.CustomInternalServerErrorException;
 import s3.individual.vinylo.exceptions.CustomNotFoundException;
 import s3.individual.vinylo.exceptions.DuplicateItemException;
@@ -59,7 +57,7 @@ public class UserServiceIMPL implements UserService {
 
     @Override
     @Transactional
-    public UserDTO updateUser(User user) {
+    public User updateUser(User user) {
         try {
             // Check if the user exists
             User userToUpdate = userRepo.getUserById(user.getId());
@@ -79,8 +77,7 @@ public class UserServiceIMPL implements UserService {
 
             // Save the updated user to the db
 
-            User updatedUser = userRepo.updateUser(userToUpdate);
-            return UserMapper.toUserDTO(updatedUser);
+            return userRepo.updateUser(userToUpdate);
 
         } catch (Exception ex) {
             throw new CustomInternalServerErrorException("Failed to update the user " + ex.getMessage());

@@ -12,7 +12,6 @@ import s3.individual.vinylo.persistence.UserRepo;
 import s3.individual.vinylo.persistence.entity.RoleEnum;
 import s3.individual.vinylo.serviceimpl.UserServiceIMPL;
 import s3.individual.vinylo.domain.User;
-import s3.individual.vinylo.domain.dtos.UserDTO;
 import s3.individual.vinylo.exceptions.CustomInternalServerErrorException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -89,7 +88,7 @@ public class UserServiceIMPLTest {
         when(userRepoMock.updateUser(existingUser)).thenReturn(updatedUserEntity);
 
         // Act
-        UserDTO result = userService.updateUser(updatedUser);
+        User result = userService.updateUser(updatedUser);
 
         // Assert
         assertEquals("Crazy Username", result.getUsername());
