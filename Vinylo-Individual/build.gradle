@@ -65,8 +65,22 @@ flyway {
 
 jacocoTestReport{
     dependsOn test
+
+     afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect{
+            fileTree(dir: it, exclude: [
+                "**/domain/**",
+                "**/configuration/**",
+                "**/exception/**",
+                "**/VinyloIndividualApplication.java"
+            ])
+        }
+        ))
+    }
+
     reports {
         xml.required = true
+        html.required = true
     }
 }
 
@@ -76,6 +90,7 @@ sonar {
     property "sonar.host.url", "https://sonarcloud.io"
     property "sonar.organization", "vinylo"
     property "sonar.java.binaries", "src/main/java/s3/individual/vinylo"
+    property "sonar.exclusions", "**/domain/**,**/configuration/**,**/exception/**,**/VinyloIndividualApplication.java"
   }
 }
 
