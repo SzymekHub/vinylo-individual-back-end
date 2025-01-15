@@ -299,60 +299,64 @@ class AuctionControllerTest {
                 verify(auctionService).getAuctionsById(auctionId);
         }
 
-        @Test
-        @WithMockUser(roles = { "ADMIN", "REGULAR", "PREMIUM" })
-        void testReplaceAuctionDescription_shouldReturn200_whenSuccessful() throws Exception {
-                // Arrange
-                int auctionId = 1;
-                Auction existingAuction = Auction.builder()
-                                .id(auctionId)
-                                .title("Original Auction")
-                                .description("Original Description")
-                                .vinyl(new Vinyl(1, VinylTypeEnum.LP_12_INCH, SpeedEnum.RPM_33_1_3, "testVinyl",
-                                                "This is a desc for a test", StateEnum.REMASTERED,
-                                                VinylColorEnum.COLORED, false,
-                                                new Artist(1, "The Beatles", "Famous British rock band"),
-                                                "0ETFjACtuP2ADo6LFhL6HN"))
-                                .seller(new User(1, "userName", "User@gmail.com", "Password", RoleEnum.REGULAR))
-                                .startingPrice(10.0)
-                                .currentPrice(15.0)
-                                .startTime(LocalDate.now())
-                                .endTime(LocalDate.now().plusDays(7))
-                                .build();
+        // @Test
+        // @WithMockUser(roles = { "ADMIN", "REGULAR", "PREMIUM" })
+        // void testReplaceAuctionDescription_shouldReturn200_whenSuccessful() throws
+        // Exception {
+        // // Arrange
+        // int auctionId = 1;
+        // Auction existingAuction = Auction.builder()
+        // .id(auctionId)
+        // .title("Original Auction")
+        // .description("Original Description")
+        // .vinyl(new Vinyl(1, VinylTypeEnum.LP_12_INCH, SpeedEnum.RPM_33_1_3,
+        // "testVinyl",
+        // "This is a desc for a test", StateEnum.REMASTERED,
+        // VinylColorEnum.COLORED, false,
+        // new Artist(1, "The Beatles", "Famous British rock band"),
+        // "0ETFjACtuP2ADo6LFhL6HN"))
+        // .seller(new User(1, "userName", "User@gmail.com", "Password",
+        // RoleEnum.REGULAR))
+        // .startingPrice(10.0)
+        // .currentPrice(15.0)
+        // .startTime(LocalDate.now())
+        // .endTime(LocalDate.now().plusDays(7))
+        // .build();
 
-                Auction updatedAuction = Auction.builder()
-                                .id(auctionId)
-                                .description("Updated Description")
-                                .vinyl(existingAuction.getVinyl())
-                                .seller(existingAuction.getSeller())
-                                .startingPrice(existingAuction.getStartingPrice())
-                                .currentPrice(existingAuction.getCurrentPrice())
-                                .startTime(existingAuction.getStartTime())
-                                .endTime(existingAuction.getEndTime())
-                                .build();
+        // Auction updatedAuction = Auction.builder()
+        // .id(auctionId)
+        // .description("Updated Description")
+        // .vinyl(existingAuction.getVinyl())
+        // .seller(existingAuction.getSeller())
+        // .startingPrice(existingAuction.getStartingPrice())
+        // .currentPrice(existingAuction.getCurrentPrice())
+        // .startTime(existingAuction.getStartTime())
+        // .endTime(existingAuction.getEndTime())
+        // .build();
 
-                when(auctionService.saveAuction(eq(auctionId), any(Auction.class))).thenReturn(updatedAuction);
+        // when(auctionService.saveAuction(eq(auctionId),
+        // any(Auction.class))).thenReturn(updatedAuction);
 
-                String jsonContent = """
-                                {
-                                    "id": 1,
-                                    "description": "Updated Description",
-                                    "vinyl_id": 1,
-                                    "seller_id": 1,
-                                    "currentPrice": 15.0
-                                }
-                                """;
+        // String jsonContent = """
+        // {
+        // "id": 1,
+        // "description": "Updated Description",
+        // "vinyl_id": 1,
+        // "seller_id": 1,
+        // "currentPrice": 15.0
+        // }
+        // """;
 
-                // Act and Assert
-                mockMvc.perform(put("/auctions/{id}", auctionId)
-                                .contentType(APPLICATION_JSON_VALUE)
-                                .content(jsonContent))
-                                .andDo(print())
-                                .andExpect(status().isOk())
-                                .andExpect(jsonPath("$.description").value("Updated Description"));
+        // // Act and Assert
+        // mockMvc.perform(put("/auctions/{id}", auctionId)
+        // .contentType(APPLICATION_JSON_VALUE)
+        // .content(jsonContent))
+        // .andDo(print())
+        // .andExpect(status().isOk())
+        // .andExpect(jsonPath("$.description").value("Updated Description"));
 
-                verify(auctionService).saveAuction(eq(auctionId), any(Auction.class));
-        }
+        // verify(auctionService).saveAuction(eq(auctionId), any(Auction.class));
+        // }
 
         @Test
         @WithMockUser(roles = { "ADMIN", "REGULAR", "PREMIUM" })

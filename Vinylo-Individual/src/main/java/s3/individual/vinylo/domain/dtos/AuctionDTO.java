@@ -32,5 +32,4 @@ public class AuctionDTO {
     private LocalDate startTime;
 
     private LocalDate endTime;
-
 }

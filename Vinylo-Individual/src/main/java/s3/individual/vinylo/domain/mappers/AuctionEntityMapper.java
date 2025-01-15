@@ -14,7 +14,7 @@ import s3.individual.vinylo.persistence.jparepository.VinylJPARepo;
 import s3.individual.vinylo.persistence.jparepository.UserJPARepo;
 import s3.individual.vinylo.exceptions.CustomNotFoundException;
 
-@Component // Make this class a Spring-managed bean
+@Component
 public class AuctionEntityMapper {
 
     private static VinylJPARepo vinylJPARepo;
@@ -39,6 +39,7 @@ public class AuctionEntityMapper {
         auctionEntity.setCurrentPrice(auction.getCurrentPrice());
         auctionEntity.setStartTime(auction.getStartTime());
         auctionEntity.setEndTime(auction.getEndTime());
+        auctionEntity.setAuctionStatus(auction.getAuctionStatus());
 
         // Handling the vinyl entity correctly
         if (auction.getVinyl() != null && auction.getVinyl().getId() != null) {
@@ -71,6 +72,7 @@ public class AuctionEntityMapper {
         auction.setCurrentPrice(entity.getCurrentPrice());
         auction.setStartTime(entity.getStartTime());
         auction.setEndTime(entity.getEndTime());
+        auction.setAuctionStatus(entity.getAuctionStatus());
 
         auction.setVinyl(VinylEntityMapper.fromEntity(entity.getVinyl()));
 
@@ -85,7 +87,7 @@ public class AuctionEntityMapper {
         }
 
         AuctionDTO auctionDTO = new AuctionDTO();
-        auctionDTO.setId(entity.getId()); // Retrieve the auto-generated ID from the entity
+        auctionDTO.setId(entity.getId());
         auctionDTO.setTitle(entity.getTitle());
         auctionDTO.setDescription(entity.getDescription());
         auctionDTO.setStartingPrice(entity.getStartingPrice());

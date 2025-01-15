@@ -1,17 +1,19 @@
 package s3.individual.vinylo.serviceimpl;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import s3.individual.vinylo.persistence.AuctionRepo;
-import s3.individual.vinylo.services.AuctionService;
 import s3.individual.vinylo.domain.Auction;
 import s3.individual.vinylo.exceptions.CustomInternalServerErrorException;
 import s3.individual.vinylo.exceptions.CustomNotFoundException;
 import s3.individual.vinylo.exceptions.DuplicateItemException;
+import s3.individual.vinylo.persistence.AuctionRepo;
+import s3.individual.vinylo.services.AuctionService;
+import s3.individual.vinylo.domain.mappers.AuctionMapper;
 
 @Service
 @RequiredArgsConstructor
@@ -44,8 +46,10 @@ public class AuctionServiceIMPL implements AuctionService {
                 // Update the existing auction with the new details
                 auctionToUpdate.setTitle(newAuction.getTitle());
                 auctionToUpdate.setDescription(newAuction.getDescription());
-                auctionToUpdate.setStartingPrice(newAuction.getStartingPrice());
+                auctionToUpdate.setCurrentPrice(newAuction.getCurrentPrice());
+                auctionToUpdate.setStartTime(newAuction.getStartTime());
                 auctionToUpdate.setEndTime(newAuction.getEndTime());
+                auctionToUpdate.setAuctionStatus(newAuction.getAuctionStatus());
 
                 return auctionRepo.saveAuction(auctionToUpdate);
 
@@ -73,32 +77,25 @@ public class AuctionServiceIMPL implements AuctionService {
 
     @Override
     public Auction getAuctionsById(int id) {
-
         return auctionRepo.getAuctionById(id);
     }
 
     @Override
     public List<Auction> getAuctions(int page, int size) {
-
         int offset = page * size;
-
-        return auctionRepo.getAuctions(offset, size);
+        List<Auction> auctions = auctionRepo.getAuctions(offset, size);
+        return auctions.stream()
+                .map(auction -> {
+                    // update the auction status in the mapper
+                    AuctionMapper.updateAuctionStatus(auction);
+                    return auction;
+                })
+                .collect(Collectors.toList());
     }
 
     @Override
     public int getTotalAuctionsCount() {
         return auctionRepo.getTotalAuctionsCount();
-    }
-
-    @Override
-    public boolean placeBid(int auctionId, double bidAmount) {
-        Auction auction = auctionRepo.getAuctionById(auctionId);
-        if (auction != null && bidAmount > auction.getCurrentPrice()) {
-            auction.setCurrentPrice(bidAmount);
-            auctionRepo.saveAuction(auction);
-            return true;
-        }
-        return false;
     }
 
     @Override

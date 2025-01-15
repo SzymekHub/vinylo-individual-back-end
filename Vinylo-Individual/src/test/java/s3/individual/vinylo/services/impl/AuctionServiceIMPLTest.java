@@ -20,7 +20,6 @@ import s3.individual.vinylo.exceptions.CustomNotFoundException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import java.util.List;
 
@@ -325,98 +324,6 @@ public class AuctionServiceIMPLTest {
                 // Assert
                 assertEquals(true, isDeleted);
                 verify(auctionRepoMock).deativateAuctionById(auctionId);
-        }
-
-        @Test
-        void testPlaceBid() {
-                // Arrange
-                int auctionId = 1;
-                double initialPrice = 50.00;
-                double bidAmount = 60.00;
-
-                Auction auction = createAuction(auctionId,
-                                "Rubber Soul vinyl auction!!",
-                                createVinyl(2,
-                                                VinylTypeEnum.EP,
-                                                SpeedEnum.RPM_45,
-                                                "Rubber Soul",
-                                                "ROCK&ROLL",
-                                                StateEnum.NEW,
-                                                VinylColorEnum.COLORED,
-                                                true,
-                                                createArtist(2, "The Beatles", "Yeah yeah yeah")),
-                                createSeller(2, "Username1", "UseerName1@gmail.com", "User1Password", RoleEnum.REGULAR),
-                                "Fresh Rubber Soul vinyl!!",
-                                35.00,
-                                initialPrice,
-                                LocalDate.now(),
-                                LocalDate.now().plusDays(7));
-
-                when(auctionRepoMock.getAuctionById(auctionId)).thenReturn(auction);
-                when(auctionRepoMock.saveAuction(auction)).thenReturn(auction);
-
-                // Act
-                boolean bidPlaced = auctionService.placeBid(auctionId, bidAmount);
-
-                // Assert
-                assertEquals(true, bidPlaced);
-                assertEquals(bidAmount, auction.getCurrentPrice());
-                verify(auctionRepoMock).getAuctionById(auctionId);
-                verify(auctionRepoMock).saveAuction(auction);
-        }
-
-        @Test
-        void testPlaceBid_ShouldFailIfBidIsLowerThanCurrentPrice() {
-                // Arrange
-                int auctionId = 1;
-                double initialPrice = 50.00;
-                double lowerBidAmount = 40.00;
-
-                Auction auction = createAuction(auctionId,
-                                "Rubber Soul vinyl auction!!",
-                                createVinyl(2,
-                                                VinylTypeEnum.EP,
-                                                SpeedEnum.RPM_45,
-                                                "Rubber Soul",
-                                                "ROCK&ROLL",
-                                                StateEnum.NEW,
-                                                VinylColorEnum.COLORED,
-                                                true,
-                                                createArtist(2, "The Beatles", "Yeah yeah yeah")),
-                                createSeller(2, "Username1", "UseerName1@gmail.com", "User1Password", RoleEnum.REGULAR),
-                                "Fresh Rubber Soul vinyl!!",
-                                35.00,
-                                initialPrice,
-                                LocalDate.now(),
-                                LocalDate.now().plusDays(7));
-
-                when(auctionRepoMock.getAuctionById(auctionId)).thenReturn(auction);
-
-                // Act
-                boolean bidPlaced = auctionService.placeBid(auctionId, lowerBidAmount);
-
-                // Assert
-                assertEquals(false, bidPlaced);
-                assertEquals(initialPrice, auction.getCurrentPrice());
-                verify(auctionRepoMock).getAuctionById(auctionId);
-                verify(auctionRepoMock, never()).saveAuction(auction);
-        }
-
-        @Test
-        void testPlaceBid_ShouldFailIfAuctionDoesNotExist() {
-                // Arrange
-                int auctionId = 1;
-                double bidAmount = 60.00;
-
-                when(auctionRepoMock.getAuctionById(auctionId)).thenReturn(null);
-
-                // Act
-                boolean bidPlaced = auctionService.placeBid(auctionId, bidAmount);
-
-                // Assert
-                assertEquals(false, bidPlaced);
-                verify(auctionRepoMock).getAuctionById(auctionId);
-                verify(auctionRepoMock, never()).saveAuction(any(Auction.class));
         }
 
 }

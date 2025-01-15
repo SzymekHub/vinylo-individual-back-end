@@ -14,8 +14,6 @@ public interface AuctionService {
 
     int getTotalAuctionsCount();
 
-    boolean placeBid(int auctionId, double bidAmount);
-
     boolean deativateAuctionById(int id);
 
 }

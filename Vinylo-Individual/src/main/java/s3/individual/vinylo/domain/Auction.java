@@ -24,9 +24,10 @@ public class Auction {
     private double currentPrice;
     private LocalDate startTime;
     private LocalDate endTime;
+    private String auctionStatus;
 
     public Auction(Integer id, String title, Vinyl vinyl, User seller, String description, double startingPrice,
-            double currentPrice, LocalDate startTime, LocalDate endTime) {
+            double currentPrice, LocalDate startTime, LocalDate endTime, String auctionStatus) {
         this.id = id;
         this.title = title;
         this.vinyl = vinyl;
@@ -36,6 +37,7 @@ public class Auction {
         this.currentPrice = currentPrice;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.auctionStatus = auctionStatus;
     }
 
 }

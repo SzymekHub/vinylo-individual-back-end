@@ -63,6 +63,9 @@ public class AuctionEntity {
     @JsonFormat(pattern = "YYYY-MM-DD")
     private LocalDate endTime;
 
+    @Column(name = "auctionStatus")
+    private String auctionStatus;
+
     @Override
     public String toString() {
         return "AuctionEntity{id=" + id + ", title='" + title + "', description='" + description + "', startingPrice="
