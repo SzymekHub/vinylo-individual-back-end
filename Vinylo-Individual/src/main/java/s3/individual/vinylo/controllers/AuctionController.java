@@ -4,6 +4,7 @@ import java.util.*;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,11 +34,15 @@ public class AuctionController {
     private final AuctionService auctionService;
     private final VinylService vinylService;
     private final UserService userService;
+    private final SimpMessagingTemplate messagingTemplate;
 
-    public AuctionController(AuctionService auctionService, VinylService vinylService, UserService userService) {
+    public AuctionController(AuctionService auctionService, VinylService vinylService, UserService userService,
+            SimpMessagingTemplate messagingTemplate) {
         this.auctionService = auctionService;
         this.vinylService = vinylService;
         this.userService = userService;
+        this.messagingTemplate = messagingTemplate;
+
     }
 
     @GetMapping()
@@ -101,17 +106,21 @@ public class AuctionController {
         auction.setVinyl(vinyl);
         auction.setSeller(seller);
 
-        auctionService.saveAuction(null, auction);
+        auctionService.createAuction(auction);
 
         return ResponseEntity.status(HttpStatus.CREATED).body("Auction was created successfully");
     }
 
     @PutMapping("{id}")
     @RolesAllowed({ "REGULAR", "ADMIN", "PREMIUM" })
-    public AuctionDTO replaceAuctionDescription(@RequestBody AuctionDTO newAuction, @PathVariable("id") int id) {
-        Auction newAuctions = AuctionMapper.toAuction(newAuction);
-        Auction createdAuction = auctionService.saveAuction(id, newAuctions);
-        return AuctionMapper.toAuctionDTO(createdAuction);
+    public ResponseEntity<AuctionDTO> replaceAuctionDescription(@RequestBody AuctionDTO auctionDTO,
+            @PathVariable("id") int id) {
+
+        Auction updatedAuction = auctionService.updateAuction(id, auctionDTO);
+        AuctionDTO updatedAuctionDTO = AuctionMapper.toAuctionDTO(updatedAuction);
+
+        messagingTemplate.convertAndSendToUser(String.valueOf(id), "/topic/auctionUpdated", updatedAuctionDTO);
+        return ResponseEntity.ok(updatedAuctionDTO);
     }
 
     @DeleteMapping("{id}")

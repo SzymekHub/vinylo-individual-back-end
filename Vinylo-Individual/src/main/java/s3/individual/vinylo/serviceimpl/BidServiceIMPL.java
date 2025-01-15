@@ -13,9 +13,10 @@ import s3.individual.vinylo.domain.Auction;
 import s3.individual.vinylo.domain.Bid;
 import s3.individual.vinylo.domain.Profile;
 import s3.individual.vinylo.domain.User;
+import s3.individual.vinylo.domain.dtos.AuctionDTO;
 import s3.individual.vinylo.domain.dtos.ProfileAndUserDTO;
 import s3.individual.vinylo.domain.dtos.ProfileDTO;
-import s3.individual.vinylo.exceptions.CustomInternalServerErrorException;
+import s3.individual.vinylo.exceptions.CustomGlobalException;
 import s3.individual.vinylo.exceptions.CustomNotFoundException;
 import s3.individual.vinylo.persistence.BidRepo;
 import s3.individual.vinylo.services.AuctionService;
@@ -23,6 +24,7 @@ import s3.individual.vinylo.services.BidService;
 import s3.individual.vinylo.services.ProfileService;
 import s3.individual.vinylo.services.UserService;
 import s3.individual.vinylo.persistence.entity.RoleEnum;
+import s3.individual.vinylo.domain.mappers.AuctionMapper;
 import s3.individual.vinylo.domain.mappers.ProfileMapper;
 
 @Service
@@ -47,15 +49,15 @@ public class BidServiceIMPL implements BidService {
 
         // check if the end time is today or before today
         if (auction.getEndTime().isBefore(LocalDate.now()) || auction.getEndTime().isEqual(LocalDate.now())) {
-            throw new CustomInternalServerErrorException("Auction has ended. You cannot bid on a closed auction.");
+            throw new CustomGlobalException("Auction has ended. You cannot bid on a closed auction.");
         }
 
         if (auction.getStartTime().isAfter(LocalDate.now())) {
-            throw new CustomInternalServerErrorException("Auction has not started yet.");
+            throw new CustomGlobalException("Auction has not started yet.");
         }
 
         if (bidAmount <= auction.getCurrentPrice()) {
-            throw new CustomInternalServerErrorException("Bid must be higher than the current price.");
+            throw new CustomGlobalException("Bid must be higher than the current price.");
         }
 
         ProfileAndUserDTO profileAndUser = profileService.getProfileAndUserById(userId);
@@ -74,7 +76,7 @@ public class BidServiceIMPL implements BidService {
 
             // Check if the user has enough balance for the bid + fee
             if (profile.getBalance() < bidAmount + REGULAR_USER_FEE) {
-                throw new CustomInternalServerErrorException("Not enough funds to place bid.");
+                throw new CustomGlobalException("Not enough funds to place bid.");
             }
             // Deduct the bid amount and fee for regular users.
             profile.setBalance(profile.getBalance() - (int) bidAmount - REGULAR_USER_FEE);
@@ -82,7 +84,7 @@ public class BidServiceIMPL implements BidService {
         } else {
             // Check if the user has enough balance for the bid
             if (profile.getBalance() < bidAmount) {
-                throw new CustomInternalServerErrorException("Not enough funds to place bid.");
+                throw new CustomGlobalException("Not enough funds to place bid.");
             }
             // Deduct the bid amount
             profile.setBalance(profile.getBalance() - (int) bidAmount);
@@ -99,7 +101,10 @@ public class BidServiceIMPL implements BidService {
         bidRepo.saveBid(newBid);
 
         auction.setCurrentPrice(bidAmount);
-        auctionService.saveAuction(auctionId, auction);
+
+        AuctionDTO auctionDTO = AuctionMapper.toAuctionDTO(auction);
+
+        auctionService.updateAuction(auctionId, auctionDTO);
         return true;
     }
 

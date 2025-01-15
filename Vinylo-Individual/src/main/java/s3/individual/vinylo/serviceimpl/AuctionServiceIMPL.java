@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import s3.individual.vinylo.domain.Auction;
+import s3.individual.vinylo.domain.dtos.AuctionDTO;
 import s3.individual.vinylo.exceptions.CustomInternalServerErrorException;
 import s3.individual.vinylo.exceptions.CustomNotFoundException;
 import s3.individual.vinylo.exceptions.DuplicateItemException;
@@ -23,47 +24,18 @@ public class AuctionServiceIMPL implements AuctionService {
 
     @Override
     @Transactional
-    public Auction saveAuction(Integer id, Auction newAuction) {
+    public Auction createAuction(Auction newAuction) {
         try {
-            if (id != null) {
-                Auction auctionToUpdate = auctionRepo.getAuctionById(id);
-                if (auctionToUpdate == null) {
-                    throw new CustomNotFoundException(
-                            "Auction with ID " + id + " was not found.");
-                }
 
-                // Check if a auction with the same vinyl and title exists(excluding the current
-                // ID)
-
-                Auction existingAuction = auctionRepo.findByVinylAndTitle(
-                        newAuction.getVinyl().getId(),
-                        newAuction.getTitle());
-                if (existingAuction != null && !existingAuction.getId().equals(id)) {
-                    throw new DuplicateItemException(
-                            "An auction with the same title and vinyl already exists.");
-                }
-
-                // Update the existing auction with the new details
-                auctionToUpdate.setTitle(newAuction.getTitle());
-                auctionToUpdate.setDescription(newAuction.getDescription());
-                auctionToUpdate.setCurrentPrice(newAuction.getCurrentPrice());
-                auctionToUpdate.setStartTime(newAuction.getStartTime());
-                auctionToUpdate.setEndTime(newAuction.getEndTime());
-                auctionToUpdate.setAuctionStatus(newAuction.getAuctionStatus());
-
-                return auctionRepo.saveAuction(auctionToUpdate);
-
-            } else {
-                Auction existingAuction = auctionRepo.findByVinylAndTitle(
-                        newAuction.getVinyl().getId(),
-                        newAuction.getTitle());
-                if (existingAuction != null && !existingAuction.getId().equals(id)) {
-                    throw new DuplicateItemException(
-                            "An auction with the same title and vinyl already exists.");
-                }
-
-                return auctionRepo.saveAuction(newAuction);
+            Auction existingAuction = auctionRepo.findByVinylAndTitle(
+                    newAuction.getVinyl().getId(),
+                    newAuction.getTitle());
+            if (existingAuction != null) {
+                throw new DuplicateItemException(
+                        "An auction with the same title and vinyl already exists.");
             }
+
+            return auctionRepo.saveAuction(newAuction);
         } catch (DuplicateItemException e) {
             // Re-throw the DuplicateVinylException
             throw e;
@@ -72,6 +44,37 @@ public class AuctionServiceIMPL implements AuctionService {
             throw e;
         } catch (Exception ex) {
             throw new CustomInternalServerErrorException("Failed to save the auction " + ex.toString());
+        }
+    }
+
+    @Override
+    @Transactional
+    public Auction updateAuction(Integer id, AuctionDTO auctionDTO) {
+        try {
+            Auction auctionToUpdate = auctionRepo.getAuctionById(id);
+
+            if (auctionToUpdate == null) {
+                throw new CustomNotFoundException("Auction with ID: " + id + " was not found.");
+            }
+
+            // I set the id so that it won't think it's a new auction
+            auctionToUpdate.setId(auctionToUpdate.getId());
+
+            auctionToUpdate.setTitle(auctionDTO.getTitle());
+            auctionToUpdate.setDescription(auctionDTO.getDescription());
+            auctionToUpdate.setStartingPrice(auctionDTO.getStartingPrice());
+            auctionToUpdate.setCurrentPrice(auctionDTO.getCurrentPrice());
+            auctionToUpdate.setStartTime(auctionDTO.getStartTime());
+            auctionToUpdate.setEndTime(auctionDTO.getEndTime());
+
+            return auctionRepo.saveAuction(auctionToUpdate);
+
+        } catch (CustomNotFoundException e) {
+            // Re-throw the CustomNotFoundException
+            throw e;
+        } catch (Exception e) {
+            // Catch other exceptions and wrap them in a CustomInternalServerErrorException
+            throw new CustomInternalServerErrorException("Failed to update the auction. " + e.toString());
         }
     }
 

@@ -5,6 +5,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import s3.individual.vinylo.domain.dtos.AuctionDTO;
+import s3.individual.vinylo.exceptions.CustomNotFoundException;
+import s3.individual.vinylo.exceptions.DuplicateItemException;
 import s3.individual.vinylo.persistence.AuctionRepo;
 import s3.individual.vinylo.persistence.entity.RoleEnum;
 import s3.individual.vinylo.persistence.entity.SpeedEnum;
@@ -16,7 +19,6 @@ import s3.individual.vinylo.domain.Artist;
 import s3.individual.vinylo.domain.Vinyl;
 import s3.individual.vinylo.domain.Auction;
 import s3.individual.vinylo.domain.User;
-import s3.individual.vinylo.exceptions.CustomNotFoundException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -84,8 +86,21 @@ public class AuctionServiceIMPLTest {
                                 .build();
         }
 
+        private AuctionDTO createAuctionDTO(String title, String description,
+                        double startingPrice,
+                        double currentPrice, LocalDate startTime, LocalDate endTime) {
+                return AuctionDTO.builder()
+                                .title(title)
+                                .description(description)
+                                .startingPrice(startingPrice)
+                                .currentPrice(currentPrice)
+                                .startTime(startTime)
+                                .endTime(endTime)
+                                .build();
+        }
+
         @Test
-        void testSaveAuction_shouldSaveAndReturnNewAuction() {
+        void testCreateAuction_shouldSaveAndReturnNewAuction() {
                 // Arrange
                 Auction newAuction = createAuction(34,
                                 "Rubber Soul vinyl auction!!",
@@ -109,19 +124,56 @@ public class AuctionServiceIMPLTest {
                                 LocalDate.now(),
                                 LocalDate.now().plusDays(7));
 
+                when(auctionRepoMock.findByVinylAndTitle(newAuction.getVinyl().getId(), newAuction.getTitle()))
+                                .thenReturn(null);
                 when(auctionRepoMock.saveAuction(newAuction)).thenReturn(newAuction);
 
                 // Act
-                Auction savedAuction = auctionService.saveAuction(null, newAuction);
+                Auction savedAuction = auctionService.createAuction(newAuction);
 
                 // Assert
                 assertEquals(newAuction, savedAuction);
                 verify(auctionRepoMock).saveAuction(newAuction);
+                verify(auctionRepoMock).findByVinylAndTitle(newAuction.getVinyl().getId(), newAuction.getTitle());
+        }
+
+        @Test
+        void testCreateAuction_shouldThrowExceptionWhenAuctionExists() {
+                // Arrange
+                Auction newAuction = createAuction(34,
+                                "Rubber Soul vinyl auction!!",
+                                createVinyl(2,
+                                                VinylTypeEnum.EP,
+                                                SpeedEnum.RPM_45,
+                                                "Rubber Soul",
+                                                "ROCK&ROLL",
+                                                StateEnum.NEW,
+                                                VinylColorEnum.COLORED,
+                                                true,
+                                                createArtist(2, "The Beatles", "Yeah yeah yeah")),
+                                createSeller(2,
+                                                "Username1",
+                                                "UseerName1@gmail.com",
+                                                "User1Password",
+                                                RoleEnum.REGULAR),
+                                "Fresh Rubber Soul vinyl!!",
+                                35.00,
+                                45.50,
+                                LocalDate.now(),
+                                LocalDate.now().plusDays(7));
+                when(auctionRepoMock.findByVinylAndTitle(newAuction.getVinyl().getId(), newAuction.getTitle()))
+                                .thenReturn(newAuction);
+                // Act and Assert
+                assertThrows(DuplicateItemException.class, () -> {
+                        auctionService.createAuction(newAuction);
+                });
+                verify(auctionRepoMock).findByVinylAndTitle(newAuction.getVinyl().getId(), newAuction.getTitle());
+                verify(auctionRepoMock, times(0)).saveAuction(newAuction);
 
         }
 
         @Test
-        void testSaveAuction_shouldUpdateExistingAuction() {
+        void testUpdateAuction_shouldUpdateExistingAuction() {
                 // Arrange
                 int auctionId = 2;
 
@@ -147,22 +199,8 @@ public class AuctionServiceIMPLTest {
                                 LocalDate.now(),
                                 LocalDate.now().plusDays(7));
 
-                Auction updatedAuction = createAuction(auctionId,
+                AuctionDTO updatedAuctionDTO = createAuctionDTO(
                                 "Rubber Soul vinyl auction!!",
-                                createVinyl(2,
-                                                VinylTypeEnum.EP,
-                                                SpeedEnum.RPM_45,
-                                                "Rubber Soul",
-                                                "ROCK&ROLL",
-                                                StateEnum.USED,
-                                                VinylColorEnum.COLORED,
-                                                true,
-                                                createArtist(2, "The Beatles", "Yeah yeah yeah")),
-                                createSeller(2,
-                                                "Username1",
-                                                "UseerName1@gmail.com",
-                                                "User1Password",
-                                                RoleEnum.REGULAR),
                                 "Used and bad Rubber Soul vinyl!!",
                                 35.00,
                                 25.50,
@@ -170,10 +208,10 @@ public class AuctionServiceIMPLTest {
                                 LocalDate.now().plusDays(3));
 
                 when(auctionRepoMock.getAuctionById(auctionId)).thenReturn(existingAuction);
-                when(auctionRepoMock.saveAuction(existingAuction)).thenReturn(updatedAuction);
+                when(auctionRepoMock.saveAuction(existingAuction)).thenReturn(existingAuction);
 
                 // Act
-                Auction result = auctionService.saveAuction(auctionId, updatedAuction);
+                Auction result = auctionService.updateAuction(auctionId, updatedAuctionDTO);
 
                 // Assert
                 assertEquals("Used and bad Rubber Soul vinyl!!", result.getDescription());
@@ -186,25 +224,11 @@ public class AuctionServiceIMPLTest {
         }
 
         @Test
-        void testSaveAuction_ShouldThrowExceptionWhenAuctionNotFoundForUpdate() {
+        void testUpdateAuction_ShouldThrowExceptionWhenAuctionNotFoundForUpdate() {
                 // Arrange
                 int auctionId = 2;
-                Auction updatedAuction = createAuction(auctionId,
+                AuctionDTO updatedAuctionDTO = createAuctionDTO(
                                 "Rubber Soul vinyl auction!!",
-                                createVinyl(2,
-                                                VinylTypeEnum.EP,
-                                                SpeedEnum.RPM_45,
-                                                "Rubber Soul",
-                                                "ROCK&ROLL",
-                                                StateEnum.NEW,
-                                                VinylColorEnum.COLORED,
-                                                true,
-                                                createArtist(2, "The Beatles", "Yeah yeah yeah")),
-                                createSeller(2,
-                                                "Username1",
-                                                "UseerName1@gmail.com",
-                                                "User1Password",
-                                                RoleEnum.REGULAR),
                                 "Used and bad Rubber Soul vinyl!!",
                                 35.00,
                                 25.50,
@@ -215,7 +239,7 @@ public class AuctionServiceIMPLTest {
 
                 // Act & Assert
                 assertThrows(CustomNotFoundException.class, () -> {
-                        auctionService.saveAuction(auctionId, updatedAuction);
+                        auctionService.updateAuction(auctionId, updatedAuctionDTO);
                 });
         }
 

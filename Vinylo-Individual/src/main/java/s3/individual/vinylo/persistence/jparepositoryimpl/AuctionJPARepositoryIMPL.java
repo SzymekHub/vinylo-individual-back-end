@@ -77,8 +77,13 @@ public class AuctionJPARepositoryIMPL implements AuctionRepo {
         entity.setVinyl(managedVinyl);
         entity.setSeller(managedSeller);
 
-        AuctionEntity savedEntity = auctionJPARepo.save(entity);
-        return AuctionEntityMapper.fromEntity(savedEntity);
+        if (entity.getId() == 0) {
+            AuctionEntity savedEntity = auctionJPARepo.save(entity);
+            return AuctionEntityMapper.fromEntity(savedEntity);
+        }
+        AuctionEntity mergedAuctionEntity = entityManager.merge(entity);
+
+        return AuctionEntityMapper.fromEntity(mergedAuctionEntity);
     }
 
     @Override
