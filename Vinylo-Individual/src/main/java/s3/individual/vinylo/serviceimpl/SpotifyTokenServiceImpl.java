@@ -50,6 +50,7 @@ public class SpotifyTokenServiceImpl implements SpotifyTokenService {
         if (response.getBody() != null) {
             TokenResponse tokenResponse = response.getBody();
             if (tokenResponse != null && tokenResponse.getAccessToken() != null) {
+                // Store the access token and calculate its expiration time
                 this.accessToken = tokenResponse.getAccessToken();
                 this.tokenExpirationTime = System.currentTimeMillis()
                         + (tokenResponse.getExpiresIn() - TOKEN_EXPIRATION_BUFFER) * 1000;
@@ -61,6 +62,7 @@ public class SpotifyTokenServiceImpl implements SpotifyTokenService {
 
     @Override
     public String getAccessToken() {
+        // Check if the token is null or expired
         if (accessToken == null || System.currentTimeMillis() > tokenExpirationTime) {
             // Fetch new token if it doesn't exist or has expired
             return fetchAccessToken();
@@ -71,6 +73,7 @@ public class SpotifyTokenServiceImpl implements SpotifyTokenService {
     // This method will be scheduled to refresh the token every hour
     @Scheduled(fixedRate = 3600000) // 1 hour in milliseconds
     public void refreshAccessToken() {
+        // Fetch a new token and update the stored token
         fetchAccessToken();
         System.out.println("Spotify token refreshed.");
     }
