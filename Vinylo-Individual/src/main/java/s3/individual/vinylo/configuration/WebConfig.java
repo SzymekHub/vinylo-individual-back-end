@@ -87,7 +87,7 @@ public class WebConfig implements WebMvcConfigurer {
                         public void addCorsMappings(@NonNull CorsRegistry registry) {
                                 // This allows CORS for all paths
                                 registry.addMapping("/**")
-                                                .allowedOrigins("http://localhost:5173")
+                                                .allowedOrigins("http://localhost:5173", "http://localhost:3000")
                                                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                                                 // This allows all headers to request.
                                                 .allowedHeaders("*")
