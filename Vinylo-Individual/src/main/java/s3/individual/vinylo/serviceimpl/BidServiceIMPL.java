@@ -40,7 +40,7 @@ public class BidServiceIMPL implements BidService {
 
     @Override
     @Transactional
-    public boolean placeBid(int auctionId, int userId, double bidAmount) {
+    public Bid placeBid(int auctionId, int userId, double bidAmount) {
         Auction auction = auctionService.getAuctionsById(auctionId);
 
         if (auction == null) {
@@ -98,14 +98,14 @@ public class BidServiceIMPL implements BidService {
                 .bidTime(LocalDateTime.now())
                 .build();
 
-        bidRepo.saveBid(newBid);
-
         auction.setCurrentPrice(bidAmount);
 
         AuctionDTO auctionDTO = AuctionMapper.toAuctionDTO(auction);
 
         auctionService.updateAuction(auctionId, auctionDTO);
-        return true;
+
+        return bidRepo.saveBid(newBid);
+
     }
 
     @Override

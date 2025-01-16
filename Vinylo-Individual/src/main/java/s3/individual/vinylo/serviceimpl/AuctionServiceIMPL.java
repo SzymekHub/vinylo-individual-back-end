@@ -26,7 +26,7 @@ public class AuctionServiceIMPL implements AuctionService {
     @Transactional
     public Auction createAuction(Auction newAuction) {
         try {
-
+            // Check if auction with the same title and vinyl exists
             Auction existingAuction = auctionRepo.findByVinylAndTitle(
                     newAuction.getVinyl().getId(),
                     newAuction.getTitle());
@@ -35,6 +35,7 @@ public class AuctionServiceIMPL implements AuctionService {
                         "An auction with the same title and vinyl already exists.");
             }
 
+            // if no id is provided, create a new profile
             return auctionRepo.saveAuction(newAuction);
         } catch (DuplicateItemException e) {
             // Re-throw the DuplicateVinylException

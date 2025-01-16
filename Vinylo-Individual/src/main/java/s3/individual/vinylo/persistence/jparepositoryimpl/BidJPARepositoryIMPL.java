@@ -31,15 +31,20 @@ public class BidJPARepositoryIMPL implements BidRepo {
     @Override
     @Transactional
     public Bid saveBid(Bid bid) {
-        BidEntity entity = BidEntityMapper.toEntity(bid);
 
+        BidEntity entity = BidEntityMapper.toEntity(bid);
         AuctionEntity managedAuction = entityManager.merge(entity.getAuction());
         UserEntity managedUser = entityManager.merge(entity.getUser());
         entity.setAuction(managedAuction);
         entity.setUser(managedUser);
 
-        BidEntity savedEntity = bidJPARepo.save(entity);
-        return BidEntityMapper.fromEntity(savedEntity);
+        // Check if id is null or 0, then save if it's not then update
+        if (entity.getId() == 0) {
+            BidEntity savedEntity = bidJPARepo.save(entity);
+            return BidEntityMapper.fromEntity(savedEntity);
+        }
+        BidEntity mergedBidEntity = entityManager.merge(entity);
+        return BidEntityMapper.fromEntity(mergedBidEntity);
     }
 
     @Override

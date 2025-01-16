@@ -118,8 +118,7 @@ public class AuctionController {
 
         Auction updatedAuction = auctionService.updateAuction(id, auctionDTO);
         AuctionDTO updatedAuctionDTO = AuctionMapper.toAuctionDTO(updatedAuction);
-
-        messagingTemplate.convertAndSendToUser(String.valueOf(id), "/topic/auctionUpdated", updatedAuctionDTO);
+        messagingTemplate.convertAndSend("/topic/auction/" + id, updatedAuction);
         return ResponseEntity.ok(updatedAuctionDTO);
     }
 

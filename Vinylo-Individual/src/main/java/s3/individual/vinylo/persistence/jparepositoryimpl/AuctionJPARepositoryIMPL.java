@@ -77,6 +77,7 @@ public class AuctionJPARepositoryIMPL implements AuctionRepo {
         entity.setVinyl(managedVinyl);
         entity.setSeller(managedSeller);
 
+        // Check if id is null or 0, then save if it's not then update
         if (entity.getId() == 0) {
             AuctionEntity savedEntity = auctionJPARepo.save(entity);
             return AuctionEntityMapper.fromEntity(savedEntity);
