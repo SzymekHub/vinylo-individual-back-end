@@ -1,0 +1,25 @@
+services:
+  vinylo-db:
+    image: mysql:8.0
+    container_name: vinylo-db
+    environment:
+      MYSQL_DATABASE: mysql-db-vinylo
+      MYSQL_ROOT_PASSWORD: vinylo1234
+    ports:
+      - "3316:3306"
+    restart: always
+
+  vinylo-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vinylo-backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://vinylo-db:3306/mysql-db-vinylo
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: vinylo1234
+    ports:
+      - "8080:8080"
+    depends_on:
+      - vinylo-db
+    restart: always
