@@ -9,7 +9,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import s3.individual.vinylo.domain.Artist;
 import s3.individual.vinylo.persistence.entity.ArtistEntity;
 import s3.individual.vinylo.persistence.jparepository.ArtistJPARepo;
-import s3.individual.vinylo.persistence.jparepositoryimpl.ArtistJPARepositoryIMPL;
 
 import java.util.List;
 import java.util.Optional;

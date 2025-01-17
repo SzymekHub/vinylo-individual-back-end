@@ -12,7 +12,6 @@ import s3.individual.vinylo.persistence.entity.AuctionEntity;
 import s3.individual.vinylo.persistence.entity.UserEntity;
 import s3.individual.vinylo.persistence.entity.VinylEntity;
 import s3.individual.vinylo.persistence.jparepository.AuctionJPARepo;
-import s3.individual.vinylo.persistence.jparepositoryimpl.AuctionJPARepositoryIMPL;
 
 import java.time.LocalDate;
 // import java.util.List;

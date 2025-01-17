@@ -12,7 +12,6 @@ import s3.individual.vinylo.domain.User;
 import s3.individual.vinylo.persistence.entity.RoleEnum;
 import s3.individual.vinylo.persistence.entity.UserEntity;
 import s3.individual.vinylo.persistence.jparepository.UserJPARepo;
-import s3.individual.vinylo.persistence.jparepositoryimpl.UserJPARepositoryIMPL;
 
 import java.lang.reflect.Field;
 import java.util.List;

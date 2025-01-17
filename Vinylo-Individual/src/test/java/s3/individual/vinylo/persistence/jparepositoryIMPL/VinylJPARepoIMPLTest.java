@@ -18,7 +18,6 @@ import s3.individual.vinylo.persistence.entity.VinylEntity;
 import s3.individual.vinylo.persistence.entity.VinylTypeEnum;
 import s3.individual.vinylo.persistence.jparepository.ArtistJPARepo;
 import s3.individual.vinylo.persistence.jparepository.VinylJPARepo;
-import s3.individual.vinylo.persistence.jparepositoryimpl.VinylJPARepoIMPL;
 
 import java.util.Optional;
 
