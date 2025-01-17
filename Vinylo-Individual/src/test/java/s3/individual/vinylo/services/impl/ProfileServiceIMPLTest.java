@@ -10,6 +10,8 @@ import s3.individual.vinylo.domain.Profile;
 import s3.individual.vinylo.domain.User;
 import s3.individual.vinylo.domain.dtos.ProfileAndUserDTO;
 import s3.individual.vinylo.domain.dtos.ProfileDTO;
+import s3.individual.vinylo.exceptions.CustomGlobalException;
+import s3.individual.vinylo.exceptions.CustomInternalServerErrorException;
 import s3.individual.vinylo.exceptions.CustomNotFoundException;
 import s3.individual.vinylo.exceptions.DuplicateItemException;
 import s3.individual.vinylo.persistence.ProfileRepo;
@@ -89,7 +91,25 @@ public class ProfileServiceIMPLTest {
                 .thenReturn(testProfile);
 
         // Act & Assert
-        assertThrows(DuplicateItemException.class, () -> profileService.createProfile(testProfile));
+        DuplicateItemException thrown = assertThrows(DuplicateItemException.class,
+                () -> profileService.createProfile(testProfile));
+
+        assertEquals("A profile with the same bio already exists for this user.", thrown.getMessage());
+        verify(profileRepoMock, never()).saveProfile(testProfile);
+    }
+
+    @Test
+    void testCreateProfile_ShouldThrowInternalServerErrorOnException() {
+        // Arrange
+        when(profileRepoMock.findByBioAndUser(testProfile.getBio(), testProfile.getUser().getId()))
+                .thenThrow(new RuntimeException("Internal Server Error"));
+
+        // Act & Assert
+        CustomInternalServerErrorException thrown = assertThrows(CustomInternalServerErrorException.class,
+                () -> profileService.createProfile(testProfile));
+
+        assertEquals("Failed to save the profile. java.lang.RuntimeException: Internal Server Error",
+                thrown.getMessage());
         verify(profileRepoMock, never()).saveProfile(testProfile);
     }
 
@@ -113,8 +133,25 @@ public class ProfileServiceIMPLTest {
         when(profileRepoMock.findByUserId(testProfile.getUser().getId())).thenReturn(null);
 
         // Act & Assert
-        assertThrows(CustomNotFoundException.class,
+        CustomNotFoundException thrown = assertThrows(CustomNotFoundException.class,
                 () -> profileService.updateProfile(testProfile.getUser().getId(), testProfileDTO));
+
+        assertEquals("Profile with User ID: 1 was not found", thrown.getMessage());
+        verify(profileRepoMock, never()).saveProfile(testProfile);
+    }
+
+    @Test
+    void testUpdateProfile_ShouldThrowInternalServerErrorOnException() {
+        // Arrange
+        when(profileRepoMock.findByUserId(testProfile.getUser().getId()))
+                .thenThrow(new RuntimeException("Internal Server Error"));
+
+        // Act & Assert
+        CustomInternalServerErrorException thrown = assertThrows(CustomInternalServerErrorException.class,
+                () -> profileService.updateProfile(testProfile.getUser().getId(), testProfileDTO));
+
+        assertEquals("Failed to update the profile. java.lang.RuntimeException: Internal Server Error",
+                thrown.getMessage());
         verify(profileRepoMock, never()).saveProfile(testProfile);
     }
 
@@ -135,6 +172,72 @@ public class ProfileServiceIMPLTest {
     }
 
     @Test
+    void testUpgradeToPremium_ShouldCheckIfUserIsRegular() {
+        // Arrange
+        testUser.setRole(RoleEnum.REGULAR);
+        when(profileRepoMock.findByUserId(testProfile.getUser().getId())).thenReturn(testProfile);
+        when(userServiceMock.getUserById(testProfile.getUser().getId())).thenReturn(testUser);
+        when(profileRepoMock.saveProfile(testProfile)).thenReturn(testProfile);
+
+        // Act
+        Profile result = profileService.upgradeToPremium(testProfile.getUser().getId());
+
+        // Assert
+        assertEquals(testProfile, result);
+        verify(profileRepoMock).saveProfile(testProfile);
+        verify(userServiceMock).updateUser(testUser);
+    }
+
+    @Test
+    void testUpgradeToPremium_ShouldCheckIfUserIsRegularAndIfNotThrowCustomInternalServerErrorException() {
+        // Arrange
+        testUser.setRole(RoleEnum.PREMIUM);
+        when(profileRepoMock.findByUserId(testProfile.getUser().getId())).thenReturn(testProfile);
+        when(userServiceMock.getUserById(testProfile.getUser().getId())).thenReturn(testUser);
+
+        // Act & Assert
+        CustomInternalServerErrorException thrown = assertThrows(CustomInternalServerErrorException.class,
+                () -> profileService.upgradeToPremium(testProfile.getUser().getId()));
+
+        assertEquals("Failed to upgrade to premium. User is not a REGULAR user", thrown.getMessage());
+        verify(profileRepoMock, never()).saveProfile(testProfile);
+        verify(userServiceMock, never()).updateUser(testUser);
+    }
+
+    @Test
+    void testUpgradeToPremium_ShouldCheckTheBalanceToSeeIfUserHasEnoughMoney() {
+        // Arrange
+        testProfile.setBalance(10000); // Assume 10000 is enough for premium
+        when(profileRepoMock.findByUserId(testProfile.getUser().getId())).thenReturn(testProfile);
+        when(userServiceMock.getUserById(testProfile.getUser().getId())).thenReturn(testUser);
+        when(profileRepoMock.saveProfile(testProfile)).thenReturn(testProfile);
+
+        // Act
+        Profile result = profileService.upgradeToPremium(testProfile.getUser().getId());
+
+        // Assert
+        assertEquals(testProfile, result);
+        verify(profileRepoMock).saveProfile(testProfile);
+        verify(userServiceMock).updateUser(testUser);
+    }
+
+    @Test
+    void testUpgradeToPremium_ShouldThrowErrorIfNotEnoughFunds() {
+        // Arrange
+        testProfile.setBalance(30); // Assume 100 is not enough for premium
+        when(profileRepoMock.findByUserId(testProfile.getUser().getId())).thenReturn(testProfile);
+        when(userServiceMock.getUserById(testProfile.getUser().getId())).thenReturn(testUser);
+
+        // Act & Assert
+        CustomGlobalException thrown = assertThrows(CustomGlobalException.class,
+                () -> profileService.upgradeToPremium(testProfile.getUser().getId()));
+
+        assertEquals("Not enough funds.", thrown.getMessage());
+        verify(profileRepoMock, never()).saveProfile(testProfile);
+        verify(userServiceMock, never()).updateUser(testUser);
+    }
+
+    @Test
     void testUpgradeToPremium_ShouldThrowCustomNotFoundExceptionForProfile() {
         // Arrange
         when(profileRepoMock.findByUserId(testProfile.getUser().getId())).thenReturn(null);
@@ -142,6 +245,22 @@ public class ProfileServiceIMPLTest {
         // Act & Assert
         assertThrows(CustomNotFoundException.class,
                 () -> profileService.upgradeToPremium(testProfile.getUser().getId()));
+        verify(profileRepoMock, never()).saveProfile(testProfile);
+        verify(userServiceMock, never()).updateUser(testUser);
+    }
+
+    @Test
+    void testUpgradeToPremium_ShouldThrowCustomInternalServerErrorException() {
+        // Arrange
+        when(profileRepoMock.findByUserId(testProfile.getUser().getId()))
+                .thenThrow(new RuntimeException("Internal Server Error"));
+
+        // Act & Assert
+        CustomInternalServerErrorException thrown = assertThrows(CustomInternalServerErrorException.class,
+                () -> profileService.upgradeToPremium(testProfile.getUser().getId()));
+
+        assertEquals("Failed to upgrade to premium. Internal Server Error",
+                thrown.getMessage());
         verify(profileRepoMock, never()).saveProfile(testProfile);
         verify(userServiceMock, never()).updateUser(testUser);
     }

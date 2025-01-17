@@ -9,6 +9,7 @@ import s3.individual.vinylo.domain.dtos.ProfileDTO;
 import s3.individual.vinylo.domain.dtos.UserDTO;
 import s3.individual.vinylo.domain.mappers.ProfileMapper;
 import s3.individual.vinylo.domain.mappers.UserEntityMapper;
+import s3.individual.vinylo.exceptions.CustomGlobalException;
 import s3.individual.vinylo.exceptions.CustomInternalServerErrorException;
 import s3.individual.vinylo.exceptions.CustomNotFoundException;
 import s3.individual.vinylo.exceptions.DuplicateItemException;
@@ -95,11 +96,11 @@ public class ProfileServiceIMPL implements ProfileService {
             }
             // check if user is regular
             if (!user.getRole().equals(RoleEnum.REGULAR)) {
-                throw new CustomInternalServerErrorException("User is not a REGULAR user");
+                throw new CustomGlobalException("User is not a REGULAR user");
             }
             // check the balance to see if user has enough money
             if (profile.getBalance() < 50) {
-                throw new CustomInternalServerErrorException("Not enough funds.");
+                throw new CustomGlobalException("Not enough funds.");
             }
 
             // update the user role to PREMIUM
@@ -111,6 +112,8 @@ public class ProfileServiceIMPL implements ProfileService {
 
         } catch (CustomNotFoundException e) {
             throw e;
+        } catch (CustomGlobalException ex) {
+            throw ex;
         } catch (Exception e) {
             throw new CustomInternalServerErrorException("Failed to upgrade to premium. " + e.getMessage());
         }

@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import s3.individual.vinylo.domain.dtos.AuctionDTO;
+import s3.individual.vinylo.exceptions.CustomInternalServerErrorException;
 import s3.individual.vinylo.exceptions.CustomNotFoundException;
 import s3.individual.vinylo.exceptions.DuplicateItemException;
 import s3.individual.vinylo.persistence.AuctionRepo;
@@ -22,6 +23,7 @@ import s3.individual.vinylo.domain.User;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import java.util.List;
 
@@ -161,15 +163,58 @@ public class AuctionServiceIMPLTest {
                                 45.50,
                                 LocalDate.now(),
                                 LocalDate.now().plusDays(7));
+
                 when(auctionRepoMock.findByVinylAndTitle(newAuction.getVinyl().getId(), newAuction.getTitle()))
                                 .thenReturn(newAuction);
                 // Act and Assert
-                assertThrows(DuplicateItemException.class, () -> {
+                DuplicateItemException thrown = assertThrows(DuplicateItemException.class, () -> {
                         auctionService.createAuction(newAuction);
                 });
+
+                assertEquals("An auction with the same title and vinyl already exists.", thrown.getMessage());
                 verify(auctionRepoMock).findByVinylAndTitle(newAuction.getVinyl().getId(), newAuction.getTitle());
                 verify(auctionRepoMock, times(0)).saveAuction(newAuction);
 
+        }
+
+        @Test
+        void testCreateAuction_shouldThrowInternalServerErrorOnException() {
+                // Arrange
+                Auction newAuction = createAuction(34,
+                                "Rubber Soul vinyl auction!!",
+                                createVinyl(2,
+                                                VinylTypeEnum.EP,
+                                                SpeedEnum.RPM_45,
+                                                "Rubber Soul",
+                                                "ROCK&ROLL",
+                                                StateEnum.NEW,
+                                                VinylColorEnum.COLORED,
+                                                true,
+                                                createArtist(2, "The Beatles", "Yeah yeah yeah")),
+                                createSeller(2,
+                                                "Username1",
+                                                "UseerName1@gmail.com",
+                                                "User1Password",
+                                                RoleEnum.REGULAR),
+                                "Fresh Rubber Soul vinyl!!",
+                                35.00,
+                                45.50,
+                                LocalDate.now(),
+                                LocalDate.now().plusDays(7));
+
+                when(auctionRepoMock.findByVinylAndTitle(newAuction.getVinyl().getId(), newAuction.getTitle()))
+                                .thenThrow(new RuntimeException("Database error"));
+
+                // Act & Assert
+                CustomInternalServerErrorException thrown = assertThrows(CustomInternalServerErrorException.class,
+                                () -> {
+                                        auctionService.createAuction(newAuction);
+                                });
+
+                assertEquals("Failed to save the auction java.lang.RuntimeException: Database error",
+                                thrown.getMessage());
+                verify(auctionRepoMock).findByVinylAndTitle(newAuction.getVinyl().getId(), newAuction.getTitle());
+                verify(auctionRepoMock, times(0)).saveAuction(newAuction);
         }
 
         @Test
@@ -221,6 +266,32 @@ public class AuctionServiceIMPLTest {
                 verify(auctionRepoMock).saveAuction(existingAuction);
                 verify(auctionRepoMock).getAuctionById(auctionId);
 
+        }
+
+        @Test
+        void testUpdateAuction_shouldThrowInternalServerErrorOnExceptionForUpdate() {
+                // Arrange
+                int auctionId = 2;
+                AuctionDTO updatedAuctionDTO = createAuctionDTO(
+                                "Rubber Soul vinyl auction!!",
+                                "Used and bad Rubber Soul vinyl!!",
+                                35.00,
+                                25.50,
+                                LocalDate.now(),
+                                LocalDate.now().plusDays(3));
+
+                when(auctionRepoMock.getAuctionById(auctionId)).thenThrow(new RuntimeException("Database error"));
+
+                // Act & Assert
+                CustomInternalServerErrorException thrown = assertThrows(CustomInternalServerErrorException.class,
+                                () -> {
+                                        auctionService.updateAuction(auctionId, updatedAuctionDTO);
+                                });
+
+                assertEquals("Failed to update the auction. java.lang.RuntimeException: Database error",
+                                thrown.getMessage());
+                verify(auctionRepoMock).getAuctionById(auctionId);
+                verify(auctionRepoMock, times(0)).saveAuction(any(Auction.class));
         }
 
         @Test
@@ -334,6 +405,20 @@ public class AuctionServiceIMPLTest {
                 // Assert
                 assertEquals(expectedAuction, actualAuction);
                 verify(auctionRepoMock).getAuctionById(auctionId);
+        }
+
+        @Test
+        void testGetTotalAuctionsCount_shouldReturnTotalAuctionCount() {
+                // Arrange
+                int expectedCount = 10;
+                when(auctionRepoMock.getTotalAuctionsCount()).thenReturn(expectedCount);
+
+                // Act
+                long actualCount = auctionService.getTotalAuctionsCount();
+
+                // Assert
+                assertEquals(expectedCount, actualCount);
+                verify(auctionRepoMock).getTotalAuctionsCount();
         }
 
         @Test
