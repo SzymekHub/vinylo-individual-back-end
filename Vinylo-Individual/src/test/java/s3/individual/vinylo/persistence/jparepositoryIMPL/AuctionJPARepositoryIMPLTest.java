@@ -1,4 +1,4 @@
-package s3.individual.vinylo.persistence.jparepositoryIMPL;
+package s3.individual.vinylo.persistence.jparepositoryimpl;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,6 +12,7 @@ import s3.individual.vinylo.persistence.entity.AuctionEntity;
 import s3.individual.vinylo.persistence.entity.UserEntity;
 import s3.individual.vinylo.persistence.entity.VinylEntity;
 import s3.individual.vinylo.persistence.jparepository.AuctionJPARepo;
+import s3.individual.vinylo.persistence.jparepositoryimpl.AuctionJPARepositoryIMPL;
 
 import java.time.LocalDate;
 // import java.util.List;

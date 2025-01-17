@@ -1,4 +1,4 @@
-package s3.individual.vinylo.persistence.jparepositoryIMPL;
+package s3.individual.vinylo.persistence.jparepositoryimpl;
 
 import java.util.List;
 import java.util.stream.Collectors;

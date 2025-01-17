@@ -1,4 +1,4 @@
-package s3.individual.vinylo.persistence.jparepositoryIMPL;
+package s3.individual.vinylo.persistence.jparepositoryimpl;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,6 +18,7 @@ import s3.individual.vinylo.persistence.entity.VinylEntity;
 import s3.individual.vinylo.persistence.entity.VinylTypeEnum;
 import s3.individual.vinylo.persistence.jparepository.ArtistJPARepo;
 import s3.individual.vinylo.persistence.jparepository.VinylJPARepo;
+import s3.individual.vinylo.persistence.jparepositoryimpl.VinylJPARepoIMPL;
 
 import java.util.Optional;
 
