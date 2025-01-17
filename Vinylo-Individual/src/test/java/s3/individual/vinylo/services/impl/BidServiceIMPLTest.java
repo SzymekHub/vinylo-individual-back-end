@@ -126,7 +126,7 @@ public class BidServiceIMPLTest {
         testVinyl.setState(StateEnum.ORIGINAL);
         testVinyl.setColor(VinylColorEnum.WHITE);
         testVinyl.setIsReleased(true);
-        testVinyl.setArtist(null);
+        testVinyl.setArtist(testArtist);
         testVinyl.setSpotifyAlbumId("afwqf123214");
 
         testAuction = new Auction();
@@ -164,6 +164,26 @@ public class BidServiceIMPLTest {
     }
 
     @Test
+    void testPlaceBid_ShouldDeductBidAmountAndFeeForRegularUsers() {
+        // Arrange
+        when(auctionServiceMock.getAuctionsById(1)).thenReturn(testAuction);
+        when(profileServiceMock.getProfileAndUserById(1)).thenReturn(testProfileAndUserDTO);
+        when(userServiceMock.getUserById(1)).thenReturn(testUser);
+        when(bidRepoMock.saveBid(any(Bid.class))).thenReturn(new Bid());
+
+        // Act
+        bidServiceMock.placeBid(1, 1, 60.0);
+        testProfile.setBalance(5000 - 60 - 15);
+
+        // Assert
+        assertEquals(5000 - 60 - 15, testProfile.getBalance());
+        verify(profileServiceMock).updateProfile(eq(1), any(ProfileDTO.class));
+        verify(bidRepoMock).saveBid(any(Bid.class));
+        verify(auctionServiceMock).getAuctionsById(1);
+        verify(profileServiceMock).getProfileAndUserById(1);
+    }
+
+    @Test
     void testPlaceBid_ShouldThrowExceptionWhenAuctionNotFound() {
         // Arrange
         when(auctionServiceMock.getAuctionsById(1)).thenReturn(null);
@@ -183,6 +203,27 @@ public class BidServiceIMPLTest {
         // Act & Assert
         assertThrows(CustomGlobalException.class, () -> bidServiceMock.placeBid(1, 1, 60.0));
         verify(auctionServiceMock).getAuctionsById(1);
+        verifyNoInteractions(profileServiceMock, userServiceMock, bidRepoMock);
+    }
+
+    @Test
+    void testPlaceBid_ShouldThrowExceptionWhenAuctionEndTimeIsTodayOrBefore() {
+        // Arrange
+        testAuction.setEndTime(LocalDate.now()); // End time is today
+        when(auctionServiceMock.getAuctionsById(1)).thenReturn(testAuction);
+
+        // Act & Assert
+        assertThrows(CustomGlobalException.class, () -> bidServiceMock.placeBid(1, 1, 60.0));
+        verify(auctionServiceMock).getAuctionsById(1);
+        verifyNoInteractions(profileServiceMock, userServiceMock, bidRepoMock);
+
+        // Arrange
+        testAuction.setEndTime(LocalDate.now().minusDays(1)); // End time is before today
+        when(auctionServiceMock.getAuctionsById(1)).thenReturn(testAuction);
+
+        // Act & Assert
+        assertThrows(CustomGlobalException.class, () -> bidServiceMock.placeBid(1, 1, 60.0));
+        verify(auctionServiceMock, times(2)).getAuctionsById(1);
         verifyNoInteractions(profileServiceMock, userServiceMock, bidRepoMock);
     }
 
@@ -276,4 +317,5 @@ public class BidServiceIMPLTest {
         assertNull(result);
         verify(bidRepoMock).getBidsByAuctionId(1);
     }
+
 }

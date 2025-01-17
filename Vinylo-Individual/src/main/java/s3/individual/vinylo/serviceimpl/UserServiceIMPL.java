@@ -79,8 +79,11 @@ public class UserServiceIMPL implements UserService {
 
             return userRepo.updateUser(userToUpdate);
 
-        } catch (Exception ex) {
-            throw new CustomInternalServerErrorException("Failed to update the user " + ex.getMessage());
+        } catch (CustomNotFoundException e) {
+            throw e; // Re-throw the expected exception
+        } catch (Exception e) {
+            throw new CustomInternalServerErrorException(
+                    "Failed to update the user: " + e.getMessage());
         }
     }
 

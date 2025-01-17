@@ -13,6 +13,7 @@ import s3.individual.vinylo.persistence.entity.VinylTypeEnum;
 import s3.individual.vinylo.serviceimpl.VinylServiceIMPL;
 import s3.individual.vinylo.domain.Artist;
 import s3.individual.vinylo.domain.Vinyl;
+import s3.individual.vinylo.exceptions.CustomInternalServerErrorException;
 import s3.individual.vinylo.exceptions.CustomNotFoundException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -77,6 +78,55 @@ class VinylServiceIMPLTests {
         // Assert
         assertEquals(newVinyl, savedVinyl);
         verify(vinylRepoMock).saveVinyl(newVinyl);
+    }
+
+    @Test
+    void testSaveVinyl_ShouldNotSaveAndReturnDuplicateItemException() {
+        // Arrange
+        Vinyl duplicateVinyl = createVinyl(2,
+                VinylTypeEnum.EP,
+                SpeedEnum.RPM_45,
+                "Rubber Soul",
+                "ROCK&ROLL",
+                StateEnum.NEW,
+                VinylColorEnum.COLORED,
+                true,
+                createArtist(2, "The Beatles", "Yeah yeah yeah"));
+
+        when(vinylRepoMock.saveVinyl(duplicateVinyl)).thenThrow(new CustomNotFoundException("Duplicate item"));
+
+        // Act & Assert
+        assertThrows(CustomNotFoundException.class, () -> {
+            vinylService.saveVinyl(null, duplicateVinyl);
+        });
+
+        // Verify that the repository's save method was called with the duplicate vinyl
+        verify(vinylRepoMock).saveVinyl(duplicateVinyl);
+    }
+
+    @Test
+    void testSaveVinyl_ShouldNotSaveAndReturnCustomInternalServerErrorException() {
+        // Arrange
+        Vinyl vinyl = createVinyl(2,
+                VinylTypeEnum.EP,
+                SpeedEnum.RPM_45,
+                "Rubber Soul",
+                "ROCK&ROLL",
+                StateEnum.NEW,
+                VinylColorEnum.COLORED,
+                true,
+                createArtist(2, "The Beatles", "Yeah yeah yeah"));
+
+        when(vinylRepoMock.saveVinyl(vinyl))
+                .thenThrow(new CustomInternalServerErrorException("Failed to save the vinyl."));
+
+        // Act & Assert
+        assertThrows(CustomInternalServerErrorException.class, () -> {
+            vinylService.saveVinyl(null, vinyl);
+        });
+
+        // Verify that the repository's save method was called with the vinyl
+        verify(vinylRepoMock).saveVinyl(vinyl);
     }
 
     @Test
@@ -213,5 +263,19 @@ class VinylServiceIMPLTests {
         // Ensure the method was called with the correct
         // parameter
         verify(vinylRepoMock).deleteVinylById(vinylId);
+    }
+
+    @Test
+    void testGetTotalVinylsCount_ShouldReturnTotalCount() {
+        // Arrange
+        int expectedCount = 100;
+        when(vinylRepoMock.getTotalVinylsCount()).thenReturn(expectedCount);
+
+        // Act
+        int actualCount = vinylService.getTotalVinylsCount();
+
+        // Assert
+        assertEquals(expectedCount, actualCount);
+        verify(vinylRepoMock).getTotalVinylsCount();
     }
 }

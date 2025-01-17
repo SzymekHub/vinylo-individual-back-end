@@ -13,6 +13,8 @@ import s3.individual.vinylo.persistence.entity.RoleEnum;
 import s3.individual.vinylo.serviceimpl.UserServiceIMPL;
 import s3.individual.vinylo.domain.User;
 import s3.individual.vinylo.exceptions.CustomInternalServerErrorException;
+import s3.individual.vinylo.exceptions.CustomNotFoundException;
+import s3.individual.vinylo.exceptions.DuplicateItemException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -62,6 +64,75 @@ public class UserServiceIMPLTest {
     }
 
     @Test
+    void testSaveUser_shouldThrowExceptionWhenUserAlreadyExists() {
+        // Arrange
+        User existingUser = createUser(1, "Username1", "UseerName1@gmail.com", "User1Password", RoleEnum.REGULAR);
+
+        when(userRepoMock.getUserById(1)).thenReturn(existingUser);
+
+        // Act and Assert
+        DuplicateItemException thrown = assertThrows(DuplicateItemException.class, () -> {
+            userService.createUser(existingUser);
+        });
+
+        assertEquals("User with ID 1 already exists.", thrown.getMessage());
+        verify(userRepoMock).getUserById(1);
+    }
+
+    @Test
+    void testSaveUser_shouldThrowInternalServerErrorOnException() {
+        // Arrange
+        User newUser = createUser(null, "Username1", "UseerName1@gmail.com", "User1Password", RoleEnum.REGULAR);
+
+        when(passwordEncoderMock.encode("User1Password")).thenThrow(new RuntimeException("Encoding error"));
+
+        // Act and Assert
+        CustomInternalServerErrorException thrown = assertThrows(CustomInternalServerErrorException.class, () -> {
+            userService.createUser(newUser);
+        });
+
+        assertEquals("Failed to save the user Encoding error", thrown.getMessage());
+        verify(passwordEncoderMock).encode("User1Password");
+    }
+
+    @Test
+    void testUpdateUser_shouldThrowNotFoundExceptionWhenUserDoesNotExist() {
+        // Arrange
+        User updatedUser = createUser(1, "Username1", "UseerName1@gmail.com", "User1Password", RoleEnum.REGULAR);
+
+        when(userRepoMock.getUserById(1)).thenReturn(null);
+
+        // Act and Assert
+        CustomNotFoundException thrown = assertThrows(CustomNotFoundException.class, () -> {
+            userService.updateUser(updatedUser);
+        });
+
+        // Verify the correct exception is thrown and contains the correct message
+        assertEquals("User with ID 1 was not found.", thrown.getMessage());
+        verify(userRepoMock).getUserById(1);
+    }
+
+    @Test
+    void testUpdateUser_shouldThrowInternalServerErrorOnException() {
+        // Arrange
+        User existingUser = createUser(1, "Username1", "UseerName1@gmail.com", "User1Password", RoleEnum.REGULAR);
+        User updatedUser = createUser(1, "UpdatedUsername", "UpdatedEmail@gmail.com", "UpdatedPassword",
+                RoleEnum.REGULAR);
+
+        when(userRepoMock.getUserById(1)).thenReturn(existingUser);
+        when(userRepoMock.updateUser(any(User.class))).thenThrow(new RuntimeException("Update error"));
+
+        // Act and Assert
+        CustomInternalServerErrorException thrown = assertThrows(CustomInternalServerErrorException.class, () -> {
+            userService.updateUser(updatedUser);
+        });
+
+        assertEquals("Failed to update the user: Update error", thrown.getMessage());
+        verify(userRepoMock).getUserById(1);
+        verify(userRepoMock).updateUser(any(User.class));
+    }
+
+    @Test
     void testSaveUser_shouldUpdateExistingUser() {
         // Arrange
         int userId = 2;
@@ -95,25 +166,6 @@ public class UserServiceIMPLTest {
 
         verify(userRepoMock).updateUser(existingUser);
         verify(userRepoMock).getUserById(userId);
-    }
-
-    @Test
-    void testSaveUser_shouldThrowExceptionWhenUserNotFoundForUpdate() {
-        // Arrange
-        int userId = 2;
-
-        User updatedUser = createUser(userId,
-                "Crazy Username",
-                "UseerName2@gmail.com",
-                "User2Password",
-                RoleEnum.REGULAR);
-
-        when(userRepoMock.getUserById(userId)).thenReturn(null);
-
-        // Act and Assert
-        assertThrows(CustomInternalServerErrorException.class, () -> {
-            userService.updateUser(updatedUser); // Should be updateUser, not createUser
-        });
     }
 
     @Test

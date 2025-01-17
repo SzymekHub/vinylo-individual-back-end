@@ -103,4 +103,30 @@ public class LoginServiceIMPLTest {
         verifyNoInteractions(accessTokenEncoder);
     }
 
+    @Test
+    void testRefresh_shouldSucceedAndReturnLoginResponse() {
+        // Arrange
+        when(userRepoMock.findByUsername(testUserEntity.getUsername())).thenReturn(Optional.of(testUserEntity));
+        when(accessTokenEncoder.encode(any(AccessTokenImpl.class))).thenReturn("accessToken");
+
+        // Act
+        LoginResponse response = loginService.refresh(testUserEntity.getUsername());
+
+        // Assert
+        assertEquals("accessToken", response.getAccessToken());
+        verify(userRepoMock).findByUsername("Test User");
+        verify(accessTokenEncoder).encode(any(AccessTokenImpl.class));
+    }
+
+    @Test
+    void testRefresh_shouldThrowInvalidCredentialsExceptionWhenUserNotFound() {
+        // Arrange
+        when(userRepoMock.findByUsername("Test User")).thenReturn(Optional.empty());
+
+        // Act & Assert
+        assertThrows(InvalidCredentialsException.class, () -> loginService.refresh("Test User"));
+        verify(userRepoMock).findByUsername("Test User");
+        verifyNoInteractions(accessTokenEncoder);
+    }
+
 }
