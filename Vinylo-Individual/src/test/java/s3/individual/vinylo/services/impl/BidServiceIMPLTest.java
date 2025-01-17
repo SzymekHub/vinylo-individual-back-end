@@ -198,6 +198,47 @@ public class BidServiceIMPLTest {
     }
 
     @Test
+    void testPlaceBid_ShouldThrowExceptionWhenAuctionNotStarted() {
+        // Arrange
+        testAuction.setStartTime(LocalDate.now().plusDays(1));
+        when(auctionServiceMock.getAuctionsById(1)).thenReturn(testAuction);
+
+        // Act & Assert
+        assertThrows(CustomGlobalException.class, () -> bidServiceMock.placeBid(1, 1, 60.0));
+        verify(auctionServiceMock).getAuctionsById(1);
+        verifyNoInteractions(profileServiceMock, userServiceMock, bidRepoMock);
+    }
+
+    @Test
+    void testPlaceBid_ShouldThrowExceptionWhenUserHasInsufficientFunds() {
+        // Arrange
+        when(auctionServiceMock.getAuctionsById(1)).thenReturn(testAuction);
+        when(profileServiceMock.getProfileAndUserById(1)).thenReturn(testProfileAndUserDTO);
+        testProfile.setBalance(10); // Insufficient funds
+        testProfileDTO.setBalance(10); // Update the balance in the DTO as well
+        when(userServiceMock.getUserById(1)).thenReturn(testUser);
+
+        // Act & Assert
+        assertThrows(CustomGlobalException.class, () -> bidServiceMock.placeBid(1, 1, 60.0));
+        verify(auctionServiceMock).getAuctionsById(1);
+        verify(profileServiceMock).getProfileAndUserById(1);
+        verifyNoInteractions(bidRepoMock);
+    }
+
+    @Test
+    void testPlaceBid_ShouldThrowExceptionWhenProfileNotFound() {
+        // Arrange
+        when(auctionServiceMock.getAuctionsById(1)).thenReturn(testAuction);
+        when(profileServiceMock.getProfileAndUserById(1)).thenThrow(new CustomNotFoundException("Profile not found"));
+
+        // Act & Assert
+        assertThrows(CustomNotFoundException.class, () -> bidServiceMock.placeBid(1, 1, 60.0));
+        verify(auctionServiceMock).getAuctionsById(1);
+        verify(profileServiceMock).getProfileAndUserById(1);
+        verifyNoInteractions(userServiceMock, bidRepoMock);
+    }
+
+    @Test
     void testGetHighestBid_ShouldReturnHighestBid() {
         // Arrange
         Bid highestBid = new Bid();
