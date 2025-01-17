@@ -196,10 +196,10 @@ public class ProfileServiceIMPLTest {
         when(userServiceMock.getUserById(testProfile.getUser().getId())).thenReturn(testUser);
 
         // Act & Assert
-        CustomInternalServerErrorException thrown = assertThrows(CustomInternalServerErrorException.class,
+        CustomGlobalException thrown = assertThrows(CustomGlobalException.class,
                 () -> profileService.upgradeToPremium(testProfile.getUser().getId()));
 
-        assertEquals("Failed to upgrade to premium. User is not a REGULAR user", thrown.getMessage());
+        assertEquals("User is not a REGULAR user", thrown.getMessage());
         verify(profileRepoMock, never()).saveProfile(testProfile);
         verify(userServiceMock, never()).updateUser(testUser);
     }
