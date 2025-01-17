@@ -9,7 +9,10 @@ import lombok.RequiredArgsConstructor;
 import s3.individual.vinylo.persistence.ArtistRepo;
 import s3.individual.vinylo.services.ArtistService;
 import s3.individual.vinylo.domain.Artist;
+import s3.individual.vinylo.domain.dtos.ArtistDTO;
+import s3.individual.vinylo.exceptions.CustomInternalServerErrorException;
 import s3.individual.vinylo.exceptions.CustomNotFoundException;
+import s3.individual.vinylo.exceptions.DuplicateItemException;
 
 @Service
 @RequiredArgsConstructor
@@ -19,24 +22,45 @@ public class ArtistServiceIMPL implements ArtistService {
 
     @Override
     @Transactional
-    public Artist saveArtist(Integer id, Artist newArtist) {
-        if (id != null) {
+    public Artist createArtist(Artist newArtist) {
+        try {
             // Check if the artist exists
-            Artist existingArtist = artistRepo.getArtistById(id);
-            if (existingArtist == null) {
+            Artist existingArtist = artistRepo.getArtistByName(newArtist.getName());
+
+            if (existingArtist != null) {
                 // Throw an exception if the artist does not exist
-                throw new CustomNotFoundException(
-                        "Artist with ID " + id + " was not found. A new artist will be created");
+                throw new DuplicateItemException(
+                        "An Artist with the same name already exists");
             }
-            // Update the existing artists bio with new details
-            existingArtist.setBio(newArtist.getBio());
-
-            // Save the updated artist to the database
-            return artistRepo.saveArtist(existingArtist);
-
+            return artistRepo.saveArtist(newArtist);
+        } catch (DuplicateItemException ex) {
+            throw ex;
+        } catch (Exception e) {
+            throw new CustomInternalServerErrorException("Failed to save the Artist. " + e.toString());
         }
-        // if no ID is provided or artist does not exist, create a new one
-        return artistRepo.saveArtist(newArtist);
+    }
+
+    @Override
+    @Transactional
+    public Artist updateArtist(Integer Id, ArtistDTO artistDTO) {
+        try {
+            Artist artistToUpdate = artistRepo.getArtistById(Id);
+
+            if (artistToUpdate == null) {
+                throw new CustomNotFoundException("Artist with ID: " + Id + " was not found");
+            }
+
+            artistToUpdate.setId(artistToUpdate.getId());
+
+            artistToUpdate.setName(artistToUpdate.getName());
+            artistToUpdate.setBio(artistToUpdate.getBio());
+
+            return artistRepo.saveArtist(artistToUpdate);
+        } catch (CustomNotFoundException ex) {
+            throw ex;
+        } catch (Exception e) {
+            throw new CustomInternalServerErrorException("Failed to update the artist. " + e.toString());
+        }
     }
 
     @Override
@@ -45,8 +69,16 @@ public class ArtistServiceIMPL implements ArtistService {
     }
 
     @Override
-    public List<Artist> getArtists() {
-        return artistRepo.getArtists();
+    public List<Artist> getArtists(int page, int size) {
+
+        int offset = page * size;
+
+        return artistRepo.getArtists(offset, size);
+    }
+
+    @Override
+    public int getTotalArtistsCount() {
+        return artistRepo.getTotalArtistsCount();
     }
 
     @Override

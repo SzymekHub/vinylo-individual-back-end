@@ -6,7 +6,9 @@ import s3.individual.vinylo.domain.Artist;
 
 public interface ArtistRepo {
 
-    List<Artist> getArtists();
+    List<Artist> getArtists(int offset, int limit);
+
+    int getTotalArtistsCount();
 
     Artist getArtistByName(String name);
 

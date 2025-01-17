@@ -47,9 +47,11 @@ public class WebConfig implements WebMvcConfigurer {
                                                                 "/auctions",
                                                                 "/collections/{id}",
                                                                 "/collections/{userId}",
+                                                                "/artist",
                                                                 "/collections/{userId}/{vinylId}")
                                                 .permitAll()
                                                 .requestMatchers(HttpMethod.PUT, "/users", "/users/{id}", "/artist",
+                                                                "/artist/{id}",
                                                                 "/vinyls", "/vinyls/{id}", "/ws/**", "/profile/**",
                                                                 "/spotify-embed", "/collections", "/collections/{id}",
                                                                 "/auctions", "/auctions/{id}",
@@ -57,6 +59,7 @@ public class WebConfig implements WebMvcConfigurer {
                                                                 "/collections/userVinyl/{userId}/{vinylId}")
                                                 .permitAll()
                                                 .requestMatchers(HttpMethod.GET, "/users", "/users/{id}", "/artist",
+                                                                "/artist/{id}",
                                                                 "/vinyls", "/vinyls/{id}", "/ws/**",
                                                                 "/spotify-embed", "/collections", "/collections/{id}",
                                                                 "/auctions", "/auctions/{id}", "/profile/{id}",
@@ -64,6 +67,7 @@ public class WebConfig implements WebMvcConfigurer {
                                                                 "/collections/userVinyl/{userId}/{vinylId}")
                                                 .permitAll()
                                                 .requestMatchers(HttpMethod.DELETE, "/users", "/users/{id}", "/artist",
+                                                                "/artist/{id}",
                                                                 "/vinyls", "/vinyls/{id}", "/ws/**",
                                                                 "/spotify-embed", "/collections",
                                                                 "/collections/{vinylId}/{userId}",
