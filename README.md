@@ -2,7 +2,7 @@
 
 The Spring Boot API for **Vinylo**, a year 2, semester 3 project which was a web platform for vinyl collectors. Users can manage a record collection, list records for sale, bid on other users' listings in real time, chat in a public room, and listen to album previews through Spotify.
 
-The front-end is in [vinylo-individual-front-end](../vinylo-individual-front-end). Design and planning documents are in [vinylo-individual-documentation](../vinylo-individual-documentation).
+The front-end is in [vinylo-individual-front-end](https://github.com/SzymekHub/vinylo-individual-front-end). Design and planning documents are in [vinylo-individual-documentation](https://github.com/SzymekHub/vinylo-individual-documentation).
 
 ## Features
 
@@ -138,8 +138,8 @@ Coverage (JaCoCo) and static analysis (SonarQube) are configured in `build.gradl
 
 ## Related repositories
 
-- [vinylo-individual-front-end](../vinylo-individual-front-end): the React web app
-- [vinylo-individual-documentation](../vinylo-individual-documentation): project plan, design document, diagrams and reports
+- [vinylo-individual-front-end](https://github.com/SzymekHub/vinylo-individual-front-end): the React web app
+- [vinylo-individual-documentation](https://github.com/SzymekHub/vinylo-individual-documentation): project plan, design document, diagrams and reports
 
 ## Author
 
